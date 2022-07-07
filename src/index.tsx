@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './index.css';
 
 // How to add tailwind: https://tailwindcss.com/docs/guides/create-react-app
 
