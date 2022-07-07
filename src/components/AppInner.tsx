@@ -6,7 +6,7 @@ interface AppInnerProps {
 
 function AppInner({children}: AppInnerProps) {
   return (
-    <main className='w-full flex-1 flex flex-col bg-snowWhite'>{children}</main>
+    <main className='w-full max-w-screen-xl flex-1 flex flex-col bg-snowWhite'>{children}</main>
   )
 }
 
