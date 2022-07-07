@@ -20,7 +20,7 @@ function Button({buttonStyle, children, innerText, onClick}: ButtonProps) {
 const getButtonStyle = (buttonStyle: ButtonStyles)=> {
   switch (buttonStyle) {
     case 'PRIMARY_CTA':
-      return 'pointer-events-auto text-white py-2 px-3 bg-indigo-600 rounded-md font-semibold hover:bg-indigo-500'  
+      return 'pointer-events-auto text-snowWhite py-2 px-3 bg-primary rounded-md font-semibold hover:bg-indigo-500'  
     default:
       break;
   }

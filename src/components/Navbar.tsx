@@ -3,7 +3,7 @@ import NavLogo from './NavLogo'
 
 function Navbar() {
   return (
-    <div className='bg-black p-4'>
+    <div className='p-4 bg-xiketicBlack'>
       <nav className='flex justify-between items-center'>
         <NavLogo />
         <NavAuthButtons />

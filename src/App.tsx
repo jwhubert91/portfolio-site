@@ -1,18 +1,23 @@
-import './App.css';
-import Navbar from './components/Navbar';
+// libraries
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+// components
+import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
+import AppInner from './components/AppInner';
 
 function App() {
   return (
-    <div className='min-w-screen min-h-screen m-0 p-0'>
+    <div className='min-w-screen min-h-screen flex flex-col App'>
      <BrowserRouter>
       <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/:profileId" element={<Profile />} />
-        </Routes>
+      <AppInner>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/:profileId" element={<Profile />} />
+          </Routes>
+      </AppInner>
      </BrowserRouter>
     </div>
   );
