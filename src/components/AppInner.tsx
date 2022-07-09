@@ -1,12 +1,14 @@
-import { ReactElement } from 'react'
+import { ReactElement } from "react"
 
 interface AppInnerProps {
-  children?: ReactElement;
+  children?: ReactElement
 }
 
-function AppInner({children}: AppInnerProps) {
+function AppInner({ children }: AppInnerProps) {
   return (
-    <main className='w-full max-w-screen-xl flex-1 flex flex-col bg-snowWhite'>{children}</main>
+    <div className="w-full items-center flex-1 flex flex-col bg-snowWhite">
+      {children}
+    </div>
   )
 }
 

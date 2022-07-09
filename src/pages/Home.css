@@ -1,0 +1,7 @@
+.Homepage {
+  background: var(--XiketicBlack);
+  /* background: linear-gradient(var(--MajorelleBlue), var(--XiketicBlack)) */
+  background: rgba(0, 0, 0, 0.9) url('../assets/images/pexels-karolina-grabowska-5725821.webp') no-repeat;
+  background-size: cover;
+  background-blend-mode: darken;
+}

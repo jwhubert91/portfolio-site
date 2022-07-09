@@ -1,13 +1,15 @@
-import React from 'react'
-import Button from './Button'
+import React from "react"
+import Button from "./Button"
 
 function NavAuthButtons() {
-  const handleAuthClick = ()=> {
+  const handleAuthClick = () => {
     console.log("Hey! You clicked me :)")
   }
   return (
     <div>
-      <Button innerText="Create a Portfolio" buttonStyle="PRIMARY_CTA" onClick={handleAuthClick} />
+      <Button buttonStyle="PRIMARY_CTA" onClick={handleAuthClick}>
+        Create a Portfolio
+      </Button>
     </div>
   )
 }
