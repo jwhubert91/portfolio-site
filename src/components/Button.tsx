@@ -29,7 +29,7 @@ const getButtonStyle = (buttonStyle: ButtonStyles) => {
     case "PRIMARY_CTA":
       return "pointer-events-auto text-snowWhite py-2 px-3 bg-primary rounded-md font-semibold hover:bg-indigo-500 text-xs sm:text-sm lg:text-base"
     case "LARGE":
-      return "text-3xl bg-primary hover:hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white font-semibold h-16 px-6 rounded-lg w-full flex items-center justify-center sm:w-auto highlight-white/20"
+      return "text-xl md:text-3xl bg-primary hover:hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white sm:font-semibold h-16 px-6 rounded-lg"
     default:
       break
   }
