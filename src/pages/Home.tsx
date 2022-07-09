@@ -6,7 +6,7 @@ function Home() {
   return (
     <div className="w-full flex-1 flex flex-col Homepage">
       <Navbar bgTransparent={true} />
-      <main className="flex-1 flex flex-col items-center mt-[30%] sm:mt-[15%] mx-auto px-4 md:max-w-4xl">
+      <main className="flex-1 flex flex-col items-center mt-[30%] sm:mt-[15%] lg:mt-[10%] xl:mt-[15%] mx-auto px-4 md:max-w-4xl lg:max-w-6xl">
         <div className="text-center">
           <h2 className="text-snowWhite font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight">
             You don't need a website.
@@ -17,7 +17,7 @@ function Home() {
           </p>
           <Button
             buttonStyle="LARGE"
-            className="mt-10 mx-auto"
+            className="mx-auto mt-10 lg:mt-16"
             onClick={() => console.log("hello!")}
           >
             Create a Portfolio
