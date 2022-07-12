@@ -1,0 +1,12 @@
+.Homepage {
+  background-size: cover;
+  background: var(--XiketicBlack);
+}
+
+@media only screen and (min-width: 600px) {
+  .Homepage {
+    background: rgba(0, 0, 0, 0.75) url('../assets/images/paper-g41d5939d2_1920.jpg') no-repeat;
+    background-size: cover;
+    background-blend-mode: darken;
+  }
+}
