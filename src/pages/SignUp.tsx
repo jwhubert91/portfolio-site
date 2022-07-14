@@ -3,7 +3,6 @@ import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
-import { elementClasses } from "../utilities/constants"
 
 // For more regarding synthetic input events: https://bobbyhadz.com/blog/typescript-property-value-not-exist-type-eventtarget
 
@@ -23,26 +22,26 @@ function SignUp() {
           onSubmit={handleSignUp}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white"
         >
-          <label className="flex flex-col items-start mt-4">
-            <span className={elementClasses.label}>email:</span>
-            <input type="email" name="email" className={elementClasses.input} />
-          </label>
-          <label className="flex flex-col items-start mt-4">
-            <span className={elementClasses.label}>password:</span>
-            <input
-              type="password"
-              name="password"
-              className={elementClasses.input}
-            />
-          </label>
-          <label>
-            <Input
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                console.log(value)
-              }}
-            />
-          </label>
+          <h2 className="mb-4 text-2xl font-bold sm:text-3xl">Sign Up</h2>
+          <Input
+            containerClassName="mb-2"
+            inputValue={email}
+            label="email"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setEmail(value)
+            }}
+            type="email"
+          />
+          <Input
+            inputValue={password}
+            label="password"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setPassword(value)
+            }}
+            type="password"
+          />
           <Button buttonStyle="LARGE" className="mt-4">
             Continue
           </Button>
