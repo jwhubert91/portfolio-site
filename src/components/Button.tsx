@@ -5,7 +5,7 @@ type ButtonStyles = "PRIMARY_CTA" | "SECONDARY_CTA" | "LARGE"
 interface ButtonProps {
   children?: ReactElement | string
   className?: string
-  onClick: () => void
+  onClick?: () => void
   buttonStyle: ButtonStyles
 }
 
@@ -24,7 +24,7 @@ function Button({
   )
 }
 
-const getButtonStyle = (buttonStyle: ButtonStyles) => {
+export const getButtonStyle = (buttonStyle: ButtonStyles) => {
   switch (buttonStyle) {
     case "PRIMARY_CTA":
       return "pointer-events-auto text-snowWhite py-2 px-3 bg-primary rounded-md font-semibold hover:bg-indigo-500 text-xs sm:text-sm lg:text-base"

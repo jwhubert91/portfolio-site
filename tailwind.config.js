@@ -9,6 +9,7 @@ module.exports = {
         goldenYellow: "#FFDE00",
         error: "#FF521B",
         xiketicBlack: "#020122",
+        mutedGray: "#F3F2EE",
       },
     },
   },

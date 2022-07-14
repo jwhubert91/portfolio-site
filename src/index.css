@@ -7,6 +7,8 @@
 * {
   margin: 0;
   padding: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 :root {
@@ -16,9 +18,5 @@
   --RedOrange: #FF521B;
   --XiketicBlack: #020122;
   --SnowWhite: #FFFBFF;
+  --MutedGray: #F3F2EE;
 }
-
-/* .Logo {
-  font-family: 'Audiowide';
-  font-weight: bold;
-} */

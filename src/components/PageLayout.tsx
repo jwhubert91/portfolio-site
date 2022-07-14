@@ -1,11 +1,28 @@
-import { ReactElement } from "react"
+import { ReactElement, ReactNode } from "react"
+import Navbar from "./Navbar"
 
 interface PageLayoutProps {
-  children?: ReactElement
+  children?: ReactElement | ReactNode
+  className?: string
+  isNavAuthShown?: boolean
+  isNavBgTransparent?: boolean
 }
 
-function PageLayout({ children }: PageLayoutProps) {
-  return <div className="flex-1 w-full">{children}</div>
+function PageLayout({
+  children,
+  className = "",
+  isNavAuthShown = true,
+  isNavBgTransparent = false,
+}: PageLayoutProps) {
+  return (
+    <div className={`min-h-screen ${className}`}>
+      <Navbar
+        isBgTransparent={isNavBgTransparent}
+        isNavAuthShown={isNavAuthShown}
+      />
+      {children}
+    </div>
+  )
 }
 
 export default PageLayout
