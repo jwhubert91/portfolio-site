@@ -13,12 +13,11 @@ function SignUp() {
   const [password, setPassword] = useState("")
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(`You signed up with ${email}.`)
     setEmail("")
     setPassword("")
   }
   return (
-    <PageLayout className="flex flex-col bg-mutedGray" isNavAuthShown={false}>
+    <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleSignUp}
