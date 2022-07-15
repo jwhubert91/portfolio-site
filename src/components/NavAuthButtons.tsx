@@ -7,7 +7,7 @@ function NavAuthButtons() {
       <Link className={getButtonStyle("PRIMARY_CTA")} to="/signup">
         Create a Portfolio
       </Link>
-      <Link to="/login" className="text-snowWhite ml-4">
+      <Link to="/login" className="text-snowWhite ml-2 sm:ml-4">
         Login
       </Link>
     </div>

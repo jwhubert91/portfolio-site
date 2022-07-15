@@ -1,9 +1,11 @@
 import Button from "../components/Button"
+import { useNavigate } from "react-router-dom"
 import CenteredContent from "../components/CenteredContent"
 import PageLayout from "../components/PageLayout"
 import "./Home.css"
 
 function Home() {
+  const navigate = useNavigate()
   return (
     <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
       <CenteredContent>
@@ -17,8 +19,8 @@ function Home() {
           </p>
           <Button
             buttonStyle="LARGE"
-            className="mx-auto mt-10 xl:mt-12"
-            onClick={() => console.log("hello!")}
+            className="mx-auto mt-4 xl:mt-12"
+            onClick={() => navigate("/signup")}
           >
             Create a Portfolio
           </Button>
