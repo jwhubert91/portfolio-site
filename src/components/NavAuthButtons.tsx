@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { getButtonStyle } from "./Button"
 
 function NavAuthButtons() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   return (
     <div className="overflow-visible">
       {isLoggedIn ? (
