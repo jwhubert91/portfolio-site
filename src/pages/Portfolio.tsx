@@ -3,8 +3,8 @@ import ProfileCard from "../components/ProfileCard"
 
 function Portfolio() {
   return (
-    <PageLayout>
-      <div className="w-full md:max-w-2xl mx-auto p-2">
+    <PageLayout className="bg-culturedBlue">
+      <div className="w-full md:max-w-3xl mx-auto p-2">
         <ProfileCard />
       </div>
     </PageLayout>

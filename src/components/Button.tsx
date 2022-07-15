@@ -1,12 +1,13 @@
 import { ReactElement } from "react"
 
-type ButtonStyles = "PRIMARY_CTA" | "SECONDARY_CTA" | "LARGE" | "CLEAN"
+type ButtonStyles = "PRIMARY_CTA" | "SECONDARY_CTA" | "LARGE" | "CLEAN" | "PILL"
 
 interface ButtonProps {
   children?: ReactElement | string
   className?: string
   onClick?: () => void
   buttonStyle: ButtonStyles
+  title?: string
 }
 
 function Button({
@@ -14,11 +15,12 @@ function Button({
   children,
   className = "",
   onClick,
+  title = "",
 }: ButtonProps) {
   const buttonInner = children
   const buttonClasses = `${getButtonStyle(buttonStyle)} ${className}`
   return (
-    <button onClick={onClick} className={buttonClasses}>
+    <button onClick={onClick} className={buttonClasses} title={title}>
       {buttonInner}
     </button>
   )
@@ -32,6 +34,8 @@ export const getButtonStyle = (buttonStyle: ButtonStyles) => {
       return "text-xl md:text-3xl bg-primary hover:hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white sm:font-semibold h-16 px-6 rounded-lg"
     case "CLEAN":
       return "text-xiketicBlack hover:text-primary font-medium underline"
+    case "PILL":
+      return "rounded-full text-culturedBlue border border-2 py-1 px-2 border-culturedBlue bg-xiketicBlack hover:bg-indigo-800"
     default:
       break
   }
