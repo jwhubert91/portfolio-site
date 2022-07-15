@@ -15,7 +15,7 @@ function PageLayout({
   isNavBgTransparent = false,
 }: PageLayoutProps) {
   return (
-    <div className={`min-h-screen ${className}`}>
+    <div className={`min-h-screen overflow-hidden ${className}`}>
       <Navbar
         isBgTransparent={isNavBgTransparent}
         isNavAuthShown={isNavAuthShown}

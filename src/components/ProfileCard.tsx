@@ -1,5 +1,6 @@
 import PillLink from "./PillLink"
 import ProfileImage from "./ProfileImage"
+import ShareButton from "./ShareButton"
 
 const myLinks = [
   {
@@ -35,21 +36,22 @@ function ProfileCard() {
       >
         <ProfileImage />
       </div>
-      <div className="text-center px-2 py-4">
+      <div className="relative text-center px-2 py-4">
         <h2 className="text-2xl font-bold">James Hubert</h2>
         <p className="text-slate-600">@james</p>
         <p>Frontend Software Developer</p>
         <p className="mb-2">New York, NY</p>
-        <p className="text-sm max-w-md mx-auto mb-2">
+        <p className="text-sm max-w-md mx-auto mb-4">
           I am a frontend-focused software developer based in New York City. My
           passions include startups, art, music, and non-profits.
         </p>
-        <div className="text-sm">
+        <div className="text-sm flex flex-wrap justify-center">
           {myLinks &&
-            myLinks.map((link) => (
-              <PillLink url={link.url} label={link.title} />
+            myLinks.map((link, idx) => (
+              <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
             ))}
         </div>
+        <ShareButton className="absolute rounded top-2 right-2" />
       </div>
     </div>
   )

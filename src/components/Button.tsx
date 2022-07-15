@@ -1,9 +1,15 @@
-import { ReactElement } from "react"
+import { ReactNode } from "react"
 
-type ButtonStyles = "PRIMARY_CTA" | "SECONDARY_CTA" | "LARGE" | "CLEAN" | "PILL"
+type ButtonStyles =
+  | "PRIMARY_CTA"
+  | "SECONDARY_CTA"
+  | "LARGE"
+  | "CLEAN"
+  | "PILL"
+  | "SHARE"
 
 interface ButtonProps {
-  children?: ReactElement | string
+  children?: ReactNode | string
   className?: string
   onClick?: () => void
   buttonStyle: ButtonStyles
@@ -36,6 +42,8 @@ export const getButtonStyle = (buttonStyle: ButtonStyles) => {
       return "text-xiketicBlack hover:text-primary font-medium underline"
     case "PILL":
       return "rounded-full text-culturedBlue border border-2 py-1 px-2 border-culturedBlue bg-xiketicBlack hover:bg-indigo-800"
+    case "SHARE":
+      return "border border-1 text-xiketicBlack p-1 text-center"
     default:
       break
   }
