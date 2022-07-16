@@ -5,7 +5,7 @@ import Project from "../components/Project"
 function Portfolio() {
   return (
     <PageLayout className="bg-culturedBlue">
-      <div className="w-full md:max-w-3xl mx-auto p-2">
+      <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
         <ProfileCard />
         <h3 className="mt-4 text-xl">Projects</h3>
         <Project />

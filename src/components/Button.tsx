@@ -6,6 +6,7 @@ type ButtonStyles =
   | "LARGE"
   | "CLEAN"
   | "PILL"
+  | "PILL_LIGHT"
   | "SHARE"
 
 interface ButtonProps {
@@ -42,6 +43,8 @@ export const getButtonStyle = (buttonStyle: ButtonStyles) => {
       return "text-xiketicBlack hover:text-primary font-medium underline"
     case "PILL":
       return "rounded-full text-culturedBlue border border-2 py-1 px-2 border-culturedBlue bg-xiketicBlack hover:bg-indigo-800"
+    case "PILL_LIGHT":
+      return "rounded-full text-xiketicBlack py-1 px-2 bg-culturedBlue hover:bg-slate-400"
     case "SHARE":
       return "border border-1 text-xiketicBlack p-1 text-center"
     default:

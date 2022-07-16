@@ -4,16 +4,21 @@ interface PillLinkProps {
   className?: string
   label: string
   url: string
+  type?: "LIGHT" | "DARK"
 }
 
-function PillLink({ className = "", label, url }: PillLinkProps) {
-  const openLink = () => {
-    window.open(url, "_blank")
-  }
+function PillLink({
+  className = "",
+  label,
+  url,
+  type = "DARK",
+}: PillLinkProps) {
   return (
     <a
       href={url}
-      className={`${getButtonStyle("PILL")} ${className}`}
+      className={`${getButtonStyle(
+        type === "DARK" ? "PILL" : "PILL_LIGHT"
+      )} ${className}`}
       target="_blank"
     >
       {label}
