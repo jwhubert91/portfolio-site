@@ -7,7 +7,11 @@ import "./Home.css"
 function Home() {
   const navigate = useNavigate()
   return (
-    <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
+    <PageLayout
+      className="flex flex-col Homepage"
+      isNavBgTransparent={true}
+      isFooterShown={false}
+    >
       <CenteredContent>
         <>
           <h2 className="text-snowWhite font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight">
