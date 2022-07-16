@@ -9,8 +9,6 @@ function Portfolio() {
         <ProfileCard />
         <h3 className="mt-4 text-xl">Projects</h3>
         <Project />
-        <Project />
-        <Project />
       </div>
     </PageLayout>
   )
