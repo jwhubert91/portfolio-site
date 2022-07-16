@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import CreateProfile from "./pages/CreateProfile"
 import Home from "./pages/Home"
 import Portfolio from "./pages/Portfolio"
-import Project from "./pages/Project"
+// import Project from "./pages/Project"
 import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
 import CreateProject from "./components/CreateProject"
@@ -23,7 +23,7 @@ function App() {
         <Route path={routes.createProfile} element={<CreateProfile />} />
         <Route path={routes.createProject} element={<CreateProject />} />
         <Route path={routes.portfolio} element={<Portfolio />} />
-        <Route path={routes.project} element={<Project />} />
+        {/* <Route path={routes.project} element={<Project />} /> */}
       </Routes>
     </BrowserRouter>
   )
