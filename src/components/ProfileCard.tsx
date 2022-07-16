@@ -1,3 +1,4 @@
+import Card from "./Card"
 import PillLink from "./PillLink"
 import ProfileImage from "./ProfileImage"
 import ShareButton from "./ShareButton"
@@ -29,14 +30,14 @@ function ProfileCard() {
   const backgroundImageSrc =
     "https://media.giphy.com/media/l0K47723zLLU11gac/giphy.gif"
   return (
-    <div className="bg-white p-1 rounded">
+    <Card>
       <div
         className="bg-xiketicBlack bg-cover h-36 md:h-52 flex items-end justify-center p-2"
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
       >
         <ProfileImage />
       </div>
-      <div className="relative text-center px-2 py-4">
+      <div className="relative text-center p-2">
         <h2 className="text-2xl font-bold">James Hubert</h2>
         <p className="text-slate-600">@james</p>
         <p>Frontend Software Developer</p>
@@ -53,7 +54,7 @@ function ProfileCard() {
         </div>
         <ShareButton className="absolute rounded top-2 right-2" />
       </div>
-    </div>
+    </Card>
   )
 }
 
