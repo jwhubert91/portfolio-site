@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode } from "react"
+import Footer from "./Footer"
 import Navbar from "./Navbar"
 
 interface PageLayoutProps {
@@ -21,6 +22,7 @@ function PageLayout({
         isNavAuthShown={isNavAuthShown}
       />
       {children}
+      <Footer />
     </div>
   )
 }

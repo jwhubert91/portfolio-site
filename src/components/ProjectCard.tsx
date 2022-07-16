@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom"
 import Card from "./Card"
 import PortfulScreenshot from "../assets/images/portful-screenshot.webp"
 import PillLink from "./PillLink"
 
-function Project() {
+function ProjectCard() {
   const myLinks = [
     {
       title: "Website",
@@ -29,7 +30,7 @@ function Project() {
       <div className="mb-2 p-4 h-108 border border-1 border-mutedGray rounded overflow-hidden">
         <img src={PortfulScreenshot} alt="portful" className="cover" />
       </div>
-      <div className="text-xs flex flex-wrap justify-start my-1">
+      <div className="text-xs flex flex-wrap justify-center my-1">
         {myLinks &&
           myLinks.map((link, idx) => (
             <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
@@ -39,4 +40,4 @@ function Project() {
   )
 }
 
-export default Project
+export default ProjectCard
