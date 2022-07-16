@@ -20,6 +20,7 @@ function PillLink({
         type === "DARK" ? "PILL" : "PILL_LIGHT"
       )} ${className}`}
       target="_blank"
+      rel="noreferrer"
     >
       {label}
     </a>
