@@ -4,6 +4,7 @@ import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
 import Input, { defaultInputClasses } from "../components/Input"
 import PageLayout from "../components/PageLayout"
+import TextArea from "./TextArea"
 
 function CreateProject() {
   const [title, setTitle] = useState("")
@@ -25,6 +26,7 @@ function CreateProject() {
           <FormHeader title="Create a new project" />
           <Input
             containerClassName="mb-2"
+            inputClassName="p-2 sm:p-2"
             inputValue={title}
             label="project title"
             onChange={(e) => {
@@ -33,14 +35,11 @@ function CreateProject() {
             }}
             type="text"
           />
-          <label className="text-left mb-2">
-            <span className="text-sm">summary (256 characters)...</span>
-            <textarea className={defaultInputClasses} maxLength={256} />
-          </label>
+          <TextArea label="summary (256 characters)..." />
           <div className="flex mb-2">
             <Input
               containerClassName="flex-1"
-              inputClassName="sm:text-sm"
+              inputClassName="sm:text-sm p-2 sm:p-2"
               inputValue={lastName}
               label="last name"
               onChange={(e) => {
@@ -51,7 +50,7 @@ function CreateProject() {
             />
             <Input
               containerClassName="flex-1"
-              inputClassName="sm:text-sm"
+              inputClassName="sm:text-sm p-2 sm:p-2"
               inputValue={lastName}
               label="last name"
               onChange={(e) => {
@@ -64,7 +63,7 @@ function CreateProject() {
           <div className="flex mb-2">
             <Input
               containerClassName="flex-1"
-              inputClassName="sm:text-sm"
+              inputClassName="sm:text-sm p-2 sm:p-2"
               inputValue={lastName}
               label="last name"
               onChange={(e) => {
@@ -75,7 +74,7 @@ function CreateProject() {
             />
             <Input
               containerClassName="flex-1"
-              inputClassName="sm:text-sm"
+              inputClassName="sm:text-sm p-2 sm:p-2"
               inputValue={lastName}
               label="last name"
               onChange={(e) => {
