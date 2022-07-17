@@ -17,7 +17,7 @@ function CreateProject() {
   }
   return (
     <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full sm:w-[540px]">
+      <CenteredContent innerClassName="w-full mt-16 sm:w-[540px]">
         <form
           onSubmit={handleLogin}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -34,8 +34,8 @@ function CreateProject() {
             type="text"
           />
           <label className="text-left mb-2">
-            <span className="text-sm">description (256 characters)...</span>
-            <textarea className={defaultInputClasses} />
+            <span className="text-sm">summary (256 characters)...</span>
+            <textarea className={defaultInputClasses} maxLength={256} />
           </label>
           <div className="flex mb-2">
             <Input
