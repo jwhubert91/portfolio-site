@@ -2,19 +2,17 @@ import React, { useState } from "react"
 import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
-import Input, { defaultInputClasses } from "../components/Input"
+import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import TextArea from "./TextArea"
 
 function CreateProject() {
   const [title, setTitle] = useState("")
   const [lastName, setLastName] = useState("")
-  const [username, setUsername] = useState("")
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     setTitle("")
     setLastName("")
-    setUsername("")
   }
   return (
     <PageLayout className="flex flex-col">

@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom"
 import Card from "./Card"
 import PortfulScreenshot from "../assets/images/portful-screenshot.webp"
 import PillLink from "./PillLink"
