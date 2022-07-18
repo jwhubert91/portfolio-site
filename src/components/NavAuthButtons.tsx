@@ -1,19 +1,30 @@
-import React from "react"
 import { Link } from "react-router-dom"
-import Button from "./Button"
+import { getButtonStyle } from "./Button"
 
 function NavAuthButtons() {
-  const handleAuthClick = () => {
-    console.log("Hey! You clicked me :)")
-  }
+  // Remove once redux is in place
+  const isLoggedIn = true
   return (
-    <div>
-      <Button buttonStyle="PRIMARY_CTA" onClick={handleAuthClick}>
-        Create a Portfolio
-      </Button>
-      <Link to="/login" className="text-snowWhite ml-4">
-        Login
-      </Link>
+    <div className="overflow-visible">
+      {isLoggedIn ? (
+        <>
+          <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
+            Profile
+          </Link>
+          <Link to="/" className="text-snowWhite ml-2 sm:ml-4">
+            Log Out
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link className={getButtonStyle("PRIMARY_CTA")} to="/signup">
+            Create a Portfolio
+          </Link>
+          <Link to="/login" className="text-snowWhite ml-2 sm:ml-4">
+            Login
+          </Link>
+        </>
+      )}
     </div>
   )
 }

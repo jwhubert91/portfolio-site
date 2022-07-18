@@ -2,16 +2,22 @@ import NavAuthButtons from "./NavAuthButtons"
 import NavLogo from "./NavLogo"
 
 interface NavbarProps {
-  bgTransparent?: boolean
+  className?: string
+  isBgTransparent?: boolean
+  isNavAuthShown?: boolean
 }
 
-function Navbar({ bgTransparent = false }: NavbarProps) {
-  const backgroundClasses = bgTransparent ? "bg-transparent" : "bg-xiketicBlack"
+function Navbar({
+  className = "",
+  isBgTransparent = false,
+  isNavAuthShown = true,
+}: NavbarProps) {
+  const bgColorClass = isBgTransparent ? "bg-transparent" : "bg-xiketicBlack"
   return (
-    <div className={`p-4 ${backgroundClasses}`}>
+    <div className={`p-4 ${bgColorClass} ${className}`}>
       <nav className="flex justify-between items-center">
         <NavLogo />
-        <NavAuthButtons />
+        {isNavAuthShown && <NavAuthButtons />}
       </nav>
     </div>
   )
