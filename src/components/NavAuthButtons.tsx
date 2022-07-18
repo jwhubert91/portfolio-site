@@ -4,7 +4,7 @@ import { getButtonStyle } from "./Button"
 
 function NavAuthButtons() {
   // Remove once redux is in place
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const isLoggedIn = true
   return (
     <div className="overflow-visible">
       {isLoggedIn ? (
