@@ -3,13 +3,18 @@ import { Link } from "react-router-dom"
 import { getButtonStyle } from "./Button"
 
 function NavAuthButtons() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   return (
     <div className="overflow-visible">
       {isLoggedIn ? (
-        <Link to="/" className="text-snowWhite ml-2 sm:ml-4">
-          Log Out
-        </Link>
+        <>
+          <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
+            Profile
+          </Link>
+          <Link to="/" className="text-snowWhite ml-2 sm:ml-4">
+            Log Out
+          </Link>
+        </>
       ) : (
         <>
           <Link className={getButtonStyle("PRIMARY_CTA")} to="/signup">

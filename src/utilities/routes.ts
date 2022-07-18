@@ -2,8 +2,8 @@ export const routes = {
   home: "/",
   login: "/login",
   signup: "/signup",
-  createProfile: "/create",
-  createProject: "/new-project",
-  portfolio: "/profile/:profileSlug",
-  project: "/project/:projectSlug",
+  createProfile: "/account",
+  createProject: "/create",
+  portfolio: "/@:profileSlug",
+  project: "/project/:projectId",
 };
