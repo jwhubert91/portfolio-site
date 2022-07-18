@@ -45,6 +45,11 @@ function Login() {
             Continue
           </Button>
         </form>
+        <p className="mb-2">
+          <Button buttonStyle="CLEAN" className="text-sm">
+            Forgot your password?
+          </Button>
+        </p>
         <p className="text-sm sm:text-base">
           Don't have an account?{" "}
           <Link to="/signup" className={getButtonStyle("CLEAN")}>

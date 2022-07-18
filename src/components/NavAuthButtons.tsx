@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { getButtonStyle } from "./Button"
 
 function NavAuthButtons() {
+  // Remove once redux is in place
   const [isLoggedIn, setIsLoggedIn] = useState(true)
   return (
     <div className="overflow-visible">

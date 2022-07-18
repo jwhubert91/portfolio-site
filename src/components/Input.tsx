@@ -5,6 +5,7 @@ export const defaultInputClasses =
 
 interface InputProps {
   containerClassName?: string
+  description?: string
   inputClassName?: string
   inputValue?: string | number | readonly string[] | undefined
   label?: string | ReactElement
@@ -16,6 +17,7 @@ interface InputProps {
 
 function Input({
   containerClassName = "",
+  description = "",
   inputClassName = "",
   inputValue = "",
   label,
@@ -29,6 +31,9 @@ function Input({
     <label className={`text-left ${containerClassName}`}>
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
+      )}
+      {description && (
+        <p className="text-xs italic text-black">{description}</p>
       )}
       <input
         type={type}
