@@ -61,6 +61,30 @@ function EditProfile() {
             }}
             inputValue={bio}
           />
+          <div className="flex mb-2">
+            <Input
+              inputValue={location}
+              containerClassName="p-0"
+              inputClassName="text-sm"
+              label="link 1 name"
+              onChange={(e) => {
+                const value = (e.target as HTMLInputElement).value
+                // setLocation(value)
+              }}
+              type="text"
+            />
+            <Input
+              inputValue={location}
+              containerClassName="p-0"
+              inputClassName="text-sm"
+              label="link 1 url"
+              onChange={(e) => {
+                const value = (e.target as HTMLInputElement).value
+                // setLocation(value)
+              }}
+              type="text"
+            />
+          </div>
         </form>
       </CenteredContent>
     </PageLayout>
