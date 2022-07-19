@@ -9,6 +9,7 @@ import Portfolio from "./pages/Portfolio"
 import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
 import CreateProject from "./components/CreateProject"
+import FourOhFour from "./pages/FourOhFour"
 
 // utils
 import { routes } from "./utilities/routes"
@@ -17,6 +18,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<FourOhFour />} />
         <Route path={routes.home} element={<Home />} />
         <Route path={routes.login} element={<Login />} />
         <Route path={routes.signup} element={<SignUp />} />

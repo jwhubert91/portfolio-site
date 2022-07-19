@@ -18,14 +18,16 @@ function PageLayout({
   isNavBgTransparent = false,
 }: PageLayoutProps) {
   return (
-    <div className={`min-h-screen overflow-x-hidden ${className}`}>
-      <Navbar
-        isBgTransparent={isNavBgTransparent}
-        isNavAuthShown={isNavAuthShown}
-      />
-      {children}
+    <>
+      <div className={`min-h-screen overflow-x-hidden ${className}`}>
+        <Navbar
+          isBgTransparent={isNavBgTransparent}
+          isNavAuthShown={isNavAuthShown}
+        />
+        {children}
+      </div>
       {isFooterShown && <Footer />}
-    </div>
+    </>
   )
 }
 

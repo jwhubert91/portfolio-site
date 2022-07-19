@@ -4,7 +4,7 @@ import { routes } from "../utilities/routes"
 
 function Footer() {
   return (
-    <footer className="h-24 bg-xiketicBlack py-4 px-8 mt-10 flex justify-center items-end">
+    <footer className="h-24 bg-xiketicBlack py-4 px-8 flex justify-center items-end">
       <Link to={routes.home}>
         <Logo className="text-base sm:text-base" />
       </Link>
