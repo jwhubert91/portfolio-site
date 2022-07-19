@@ -1,7 +1,7 @@
 import Card from "./Card"
 import PillLink from "./PillLink"
 import { getMonthStringFromInteger } from "../utilities/helpers"
-import { ProjectType } from "../utilities/types"
+import { ProjectType, ExternalLinkType } from "../utilities/types"
 
 const projectData: ProjectType = {
   title: "Portful.co",
@@ -57,9 +57,11 @@ function ProjectCard() {
       )}
       {projectData.externalLinks && (
         <div className="text-xs flex flex-wrap justify-center my-1">
-          {projectData.externalLinks.map((link, idx) => (
-            <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
-          ))}
+          {projectData.externalLinks.map(
+            (link: ExternalLinkType, idx: number) => (
+              <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
+            )
+          )}
         </div>
       )}
     </Card>
