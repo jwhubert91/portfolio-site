@@ -5,5 +5,5 @@ export const routes = {
   createProfile: "/account",
   createProject: "/create",
   portfolio: "/@:profileSlug",
-  project: "/project/:projectId",
+  project: "/work/:projectId",
 };
