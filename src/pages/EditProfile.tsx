@@ -1,10 +1,27 @@
+import React, { useState } from "react"
 import PageLayout from "../components/PageLayout"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
+import Input from "../components/Input"
+import TextArea from "../components/TextArea"
 
 function EditProfile() {
-  const handleSubmit = () => {
-    console.log("Hello")
+  const [profilePic, setProfilePic] = useState(null)
+  const [backgroundPic, setBackgroundPic] = useState(null)
+  const [title, setTitle] = useState("")
+  const [location, setLocation] = useState("")
+  const [bio, setBio] = useState("")
+  const [profileLinks, setProfileLinks] = useState([])
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log({
+      profilePic,
+      backgroundPic,
+      title,
+      location,
+      bio,
+      profileLinks,
+    })
   }
   return (
     <PageLayout className="flex flex-col">
@@ -15,6 +32,35 @@ function EditProfile() {
         >
           <FormHeader title="Edit Profile" />
           <p className="text-md italic">Introduce yourself to the community!</p>
+          <Input
+            containerClassName="mb-2"
+            inputValue={title}
+            label="title 💼"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setTitle(value)
+            }}
+            type="text"
+          />
+          <Input
+            containerClassName="mb-2"
+            inputValue={location}
+            label="location 🌎"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLocation(value)
+            }}
+            type="text"
+          />
+          <TextArea
+            label="A short bio 👀"
+            description="256 characters to tell your fellow humans who you are"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setBio(value)
+            }}
+            inputValue={bio}
+          />
         </form>
       </CenteredContent>
     </PageLayout>
