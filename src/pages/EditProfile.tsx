@@ -4,6 +4,8 @@ import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import TextArea from "../components/TextArea"
+import LinkInputRow from "../components/LinkInputRow"
+import Button from "../components/Button"
 
 function EditProfile() {
   const [profilePic, setProfilePic] = useState(null)
@@ -11,7 +13,17 @@ function EditProfile() {
   const [title, setTitle] = useState("")
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
-  const [profileLinks, setProfileLinks] = useState([])
+  const [link1Name, setLink1Name] = useState("")
+  const [link1Url, setLink1Url] = useState("")
+  const [link2Name, setLink2Name] = useState("")
+  const [link2Url, setLink2Url] = useState("")
+  const [link3Name, setLink3Name] = useState("")
+  const [link3Url, setLink3Url] = useState("")
+  const [link4Name, setLink4Name] = useState("")
+  const [link4Url, setLink4Url] = useState("")
+  const [link5Name, setLink5Name] = useState("")
+  const [link5Url, setLink5Url] = useState("")
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log({
@@ -20,7 +32,6 @@ function EditProfile() {
       title,
       location,
       bio,
-      profileLinks,
     })
   }
   return (
@@ -28,14 +39,17 @@ function EditProfile() {
       <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
+          className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white"
         >
-          <FormHeader title="Edit Profile" />
-          <p className="text-md italic">Introduce yourself to the community!</p>
+          <FormHeader className="mb-2" title="Edit Profile" />
+          <p className="text-md mb-2 text-slate-500">
+            Introduce yourself to the community
+          </p>
           <Input
             containerClassName="mb-2"
             inputValue={title}
             label="title 💼"
+            placeholder="Architect, Designer, Web Developer"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setTitle(value)
@@ -46,6 +60,7 @@ function EditProfile() {
             containerClassName="mb-2"
             inputValue={location}
             label="location 🌎"
+            placeholder="New York, NY"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setLocation(value)
@@ -55,36 +70,29 @@ function EditProfile() {
           <TextArea
             label="A short bio 👀"
             description="256 characters to tell your fellow humans who you are"
+            placeholder="I am a..."
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setBio(value)
             }}
             inputValue={bio}
           />
-          <div className="flex mb-2">
-            <Input
-              inputValue={location}
-              containerClassName="p-0"
-              inputClassName="text-sm"
-              label="link 1 name"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                // setLocation(value)
-              }}
-              type="text"
-            />
-            <Input
-              inputValue={location}
-              containerClassName="p-0"
-              inputClassName="text-sm"
-              label="link 1 url"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                // setLocation(value)
-              }}
-              type="text"
-            />
+          <div className="mb-2 text-left">
+            <h4 className="block text-sm font-medium text-gray-700">
+              Personal Links 🔗
+            </h4>
+            <p className="text-xs italic text-black">
+              Add up to 5 links to social media, a website, etc.
+            </p>
           </div>
+          <LinkInputRow />
+          <LinkInputRow />
+          <LinkInputRow />
+          <LinkInputRow />
+          <LinkInputRow />
+          <Button buttonStyle="LARGE" className="mt-4">
+            Publish
+          </Button>
         </form>
       </CenteredContent>
     </PageLayout>
