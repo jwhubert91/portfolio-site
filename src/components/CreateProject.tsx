@@ -1,9 +1,9 @@
 import React, { useState } from "react"
-import Button from "../components/Button"
-import CenteredContent from "../components/CenteredContent"
-import FormHeader from "../components/FormHeader"
-import Input from "../components/Input"
-import PageLayout from "../components/PageLayout"
+import Button from "./Button"
+import CenteredContent from "./CenteredContent"
+import FormHeader from "./FormHeader"
+import Input from "./Input"
+import PageLayout from "./PageLayout"
 import TextArea from "./TextArea"
 
 function CreateProject() {

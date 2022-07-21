@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import PageLayout from "../components/PageLayout"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
@@ -6,8 +7,10 @@ import Input from "../components/Input"
 import TextArea from "../components/TextArea"
 import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
+import { routes } from "../utilities/routes"
 
 function EditProfile() {
+  // Get back to this...
   // const [profilePic, setProfilePic] = useState(null)
   // const [backgroundPic, setBackgroundPic] = useState(null)
   const [title, setTitle] = useState("")
@@ -24,19 +27,50 @@ function EditProfile() {
   const [link5Name, setLink5Name] = useState("")
   const [link5Url, setLink5Url] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log({
-      // profilePic,
-      // backgroundPic,
+  const navigate = useNavigate()
+
+  function save() {
+    const currentTime = new Date().toUTCString()
+    const profileJSON = JSON.stringify({
       title,
       location,
       bio,
+      links: [
+        { title: link1Name, url: link1Url },
+        { title: link2Name, url: link2Url },
+        { title: link3Name, url: link3Url },
+        { title: link4Name, url: link4Url },
+        { title: link5Name, url: link5Url },
+      ],
+      lastSaved: currentTime,
     })
+    localStorage.setItem("profile", profileJSON)
   }
+
+  const load = async () => {
+    const storedData = localStorage.getItem("profile")
+    if (storedData) {
+      const { title, location, bio, links } = await JSON.parse(storedData)
+      setTitle(title)
+      setLocation(location)
+      setBio(bio)
+      console.log(links)
+    }
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    save()
+    navigate(routes.portfolio)
+  }
+
   return (
     <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full sm:w-[540px]">
+      <CenteredContent innerClassName="w-full sm:w-[540px] py-2 sm:py-4">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white"
@@ -71,6 +105,7 @@ function EditProfile() {
             label="A short bio 👀"
             description="256 characters to tell your fellow humans who you are"
             placeholder="I am a..."
+            maxLength={256}
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setBio(value)
