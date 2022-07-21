@@ -15,10 +15,10 @@ function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
   return (
     <Button
       buttonStyle="PILL"
-      className={`w-full sm:py-2 bg-white text-black hover:text-white border border-2 border-xiketicBlack hover:border-snowWhite ${className}`}
+      className={`w-full sm:py-2 bg-white text-black hover:text-white ${className}`}
       onClick={handleClick}
     >
-      <div className="flex items-center">
+      <div className="flex items-center justify-center sm:justify-start">
         <MdAddCircle className="mr-2 text-3xl sm:text-5xl" />
         Add new project
       </div>
