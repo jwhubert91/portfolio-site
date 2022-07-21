@@ -8,6 +8,7 @@ import { MdShortcut, MdModeEdit } from "react-icons/md"
 import { routes } from "../utilities/routes"
 
 interface ProfileCardProps {
+  className?: string
   title?: string
   location?: string
   bio?: string
@@ -15,6 +16,7 @@ interface ProfileCardProps {
 }
 
 function ProfileCard({
+  className = "",
   title = "",
   location = "",
   bio = "",
@@ -48,7 +50,7 @@ function ProfileCard({
   }
 
   return (
-    <Card>
+    <Card className={className}>
       <div
         className="bg-xiketicBlack bg-cover h-36 md:h-52 flex items-end justify-center p-2"
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}

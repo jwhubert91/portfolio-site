@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react"
+import Button from "../components/Button"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
 import ProjectCard from "../components/ProjectCard"
+import { MdAddCircle } from "react-icons/md"
+import AddProjectPrompt from "../components/AddProjectPrompt"
 
 function Portfolio() {
   const [title, setTitle] = useState("")
@@ -30,8 +33,10 @@ function Portfolio() {
           location={location}
           bio={bio}
           links={personalLinks}
+          className="mb-4"
         />
-        <h3 className="mt-4 text-md">Past Work</h3>
+        <AddProjectPrompt className="mb-2" />
+        <h3 className="text-md">Past Work</h3>
         <ProjectCard />
       </div>
     </PageLayout>
