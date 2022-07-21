@@ -85,11 +85,66 @@ function EditProfile() {
               Add up to 5 links to social media, a website, etc.
             </p>
           </div>
-          <LinkInputRow />
-          <LinkInputRow />
-          <LinkInputRow />
-          <LinkInputRow />
-          <LinkInputRow />
+          <LinkInputRow
+            linkNameInputValue={link1Name}
+            urlInputValue={link1Url}
+            onNameChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink1Name(value)
+            }}
+            onURLChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink1Url(value)
+            }}
+          />
+          <LinkInputRow
+            linkNameInputValue={link2Name}
+            urlInputValue={link2Url}
+            onNameChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink2Name(value)
+            }}
+            onURLChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink2Url(value)
+            }}
+          />
+          <LinkInputRow
+            linkNameInputValue={link3Name}
+            urlInputValue={link3Url}
+            onNameChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink3Name(value)
+            }}
+            onURLChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink3Url(value)
+            }}
+          />
+          <LinkInputRow
+            linkNameInputValue={link4Name}
+            urlInputValue={link4Url}
+            onNameChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink4Name(value)
+            }}
+            onURLChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink4Url(value)
+            }}
+          />
+          <LinkInputRow
+            linkNameInputValue={link5Name}
+            urlInputValue={link5Url}
+            onNameChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink5Name(value)
+            }}
+            onURLChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLink5Url(value)
+            }}
+          />
           <Button buttonStyle="LARGE" className="mt-4">
             Publish
           </Button>
