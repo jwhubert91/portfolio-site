@@ -8,8 +8,8 @@ import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
 
 function EditProfile() {
-  const [profilePic, setProfilePic] = useState(null)
-  const [backgroundPic, setBackgroundPic] = useState(null)
+  // const [profilePic, setProfilePic] = useState(null)
+  // const [backgroundPic, setBackgroundPic] = useState(null)
   const [title, setTitle] = useState("")
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
@@ -27,8 +27,8 @@ function EditProfile() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log({
-      profilePic,
-      backgroundPic,
+      // profilePic,
+      // backgroundPic,
       title,
       location,
       bio,
