@@ -20,14 +20,14 @@
   --CulturedBlue: #EDF2F4;
 }
 
-/* Chrome, Safari, Edge, Opera */
+/* REMOVE NUMBER INPUT ARROWS */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
-/* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+/* Customize checkbox */

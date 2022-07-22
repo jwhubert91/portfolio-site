@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Button from "./Button"
 import CenteredContent from "./CenteredContent"
+import Checkbox from "./Checkbox"
 import FormHeader from "./FormHeader"
 import Input from "./Input"
 import MonthPicker from "./MonthPicker"
@@ -17,7 +18,7 @@ function CreateProject() {
   }
   return (
     <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full mt-16 sm:w-[540px]">
+      <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleLogin}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -36,9 +37,7 @@ function CreateProject() {
           />
           <TextArea label="summary (256 characters)..." />
           <div className="mb-2">
-            <p className="text-left font-semibold text-sm text-slate-700">
-              Date started:
-            </p>
+            <p className="text-left font-semibold text-sm">Date started:</p>
             <div className="flex">
               <MonthPicker label="month" />
               <Input
@@ -55,9 +54,7 @@ function CreateProject() {
             </div>
           </div>
           <div className="mb-2">
-            <p className="text-left font-semibold text-sm text-slate-700">
-              Date ended:
-            </p>
+            <p className="text-left font-semibold text-sm">Date ended:</p>
             <div className="flex mb-2">
               <MonthPicker label="month" />
               <Input
@@ -72,14 +69,10 @@ function CreateProject() {
                 type="number"
               />
             </div>
-            <div className="text-left">
-              <label>
-                <span className="font-semibold text-xs text-slate-700">
-                  Is this project still in progress?
-                  <input type="checkbox" />
-                </span>
-              </label>
-            </div>
+            <Checkbox
+              label="Is this project still in progress?"
+              isChecked={true}
+            />
           </div>
           <Button buttonStyle="LARGE" className="mt-4">
             Publish
