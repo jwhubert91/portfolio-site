@@ -1,7 +1,7 @@
 import { HTMLInputTypeAttribute, SyntheticEvent, ReactElement } from "react"
 
 export const defaultInputClasses =
-  "mt-1 focus:ring-indigo-500 p-2 focus:border-indigo-500 block w-full shadow-sm text-sm sm:text-lg border border-gray-300 rounded-md focus:outline-primary"
+  "mt-1 focus:ring-indigo-500 p-2 sm:p-4 focus:border-indigo-500 block w-full shadow-sm text-sm sm:text-lg border border-gray-300 rounded-md"
 
 interface InputProps {
   containerClassName?: string

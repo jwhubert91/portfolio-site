@@ -1,56 +1,36 @@
-import { useNavigate } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
 import ProfileImage from "./ProfileImage"
-import CardAdminButton from "./CardAdminButton"
-import { ExternalLinkType } from "../utilities/types"
-import { MdShortcut, MdModeEdit } from "react-icons/md"
-import { routes } from "../utilities/routes"
+import ShareButton from "./ShareButton"
 
-interface ProfileCardProps {
-  className?: string
-  title?: string
-  location?: string
-  bio?: string
-  links?: ExternalLinkType[]
-}
+const myLinks = [
+  {
+    title: "LinkedIn",
+    url: "https://linkedin.com/in/jameswhubert",
+  },
+  {
+    title: "Twitter",
+    url: "https://twitter.com/jwhubert91",
+  },
+  {
+    title: "GitHub",
+    url: "https://github.com/jwhubert91",
+  },
+  {
+    title: "Blog",
+    url: "https://dev.to/jwhubert91",
+  },
+  {
+    title: "Website",
+    url: "https://jameshubert.com",
+  },
+]
 
-function ProfileCard({
-  className = "",
-  title = "",
-  location = "",
-  bio = "",
-  links = [],
-}: ProfileCardProps) {
+function ProfileCard() {
   const backgroundImageSrc =
     "https://media.giphy.com/media/l0K47723zLLU11gac/giphy.gif"
-
-  const LinkNodes = () => {
-    if (links.length > 0) {
-      const linkNodes = links.map((link, idx) => {
-        const { title, url } = link
-        if (title.length > 0 && url.length > 0) {
-          return <PillLink label={title} url={url} key={idx} />
-        }
-      })
-      return linkNodes
-    } else {
-      return <></>
-    }
-  }
-
-  const navigate = useNavigate()
-
-  const handleShareProfile = (): void => {
-    console.log("Profile shared!")
-  }
-
-  const handleEditProfile = (): void => {
-    navigate(routes.editProfile)
-  }
-
   return (
-    <Card className={className}>
+    <Card>
       <div
         className="bg-xiketicBlack bg-cover h-36 md:h-52 flex items-end justify-center p-2"
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
@@ -60,30 +40,19 @@ function ProfileCard({
       <div className="relative text-center p-2">
         <h2 className="text-2xl font-bold">James Hubert</h2>
         <p className="text-slate-600">@james</p>
-        <p>{title}</p>
-        <p className="mb-2">{location}</p>
-        <p className="text-sm max-w-md mx-auto mb-4">{bio}</p>
-        {links.length > 0 && (
-          <div className="text-sm flex flex-wrap justify-center">
-            {LinkNodes()}
-          </div>
-        )}
-        <div className="absolute top-2 right-2">
-          <CardAdminButton
-            className="rounded sm:px-2"
-            onClick={handleEditProfile}
-            textLabel={"Edit"}
-          >
-            <MdModeEdit className="mx-auto" />
-          </CardAdminButton>
-          <CardAdminButton
-            className="rounded ml-[3px]"
-            onClick={handleShareProfile}
-            textLabel={"Share Profile"}
-          >
-            <MdShortcut className="mx-auto" />
-          </CardAdminButton>
+        <p>Frontend Software Developer</p>
+        <p className="mb-2">New York, NY</p>
+        <p className="text-sm max-w-md mx-auto mb-4">
+          I am a frontend-focused software developer based in New York City. My
+          passions include startups, art, music, and non-profits.
+        </p>
+        <div className="text-sm flex flex-wrap justify-center">
+          {myLinks &&
+            myLinks.map((link, idx) => (
+              <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
+            ))}
         </div>
+        <ShareButton className="absolute rounded top-2 right-2" />
       </div>
     </Card>
   )
