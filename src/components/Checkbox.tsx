@@ -6,6 +6,7 @@ interface CheckboxProps {
   containerClassName?: string
   inputClassName?: string
   onChange?: (e: SyntheticEvent) => void
+  isCheckedOnDefault?: boolean
   isChecked?: boolean
 }
 
@@ -15,12 +16,14 @@ function Checkbox({
   inputClassName = "",
   labelClassName = "",
   isChecked = false,
+  onChange,
 }: CheckboxProps): ReactElement {
   return (
     <label className={`flex items-center ${containerClassName}`}>
       <input
         type="checkbox"
         className={`${inputClassName}`}
+        onChange={onChange}
         checked={isChecked}
       />
       {label && (

@@ -9,12 +9,16 @@ import PageLayout from "./PageLayout"
 import TextArea from "./TextArea"
 
 function CreateProject() {
-  const [title, setTitle] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [projectTitle, setProjectTitle] = useState("")
+  const [summary, setSummary] = useState("")
+  const [startMonth, setStartMonth] = useState("")
+  const [startYear, setStartYear] = useState("")
+  const [endMonth, setEndMonth] = useState("")
+  const [endYear, setEndYear] = useState("")
+  const [isInProgress, setIsInProgress] = useState(false)
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    setTitle("")
-    setLastName("")
+    setProjectTitle("")
   }
   return (
     <PageLayout className="flex flex-col">
@@ -27,27 +31,42 @@ function CreateProject() {
           <Input
             containerClassName="mb-2"
             inputClassName="p-2 sm:p-2"
-            inputValue={title}
+            inputValue={projectTitle}
             label="project title"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
-              setTitle(value)
+              setProjectTitle(value)
             }}
             type="text"
           />
-          <TextArea label="summary (256 characters)..." />
+          <TextArea
+            label="summary (256 characters)..."
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setSummary(value)
+            }}
+            maxLength={256}
+            inputValue={summary}
+          />
           <div className="mb-2">
             <p className="text-left font-semibold text-sm">Date started:</p>
             <div className="flex">
-              <MonthPicker label="month" />
+              <MonthPicker
+                label="month"
+                value={startMonth}
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setStartMonth(value)
+                }}
+              />
               <Input
                 containerClassName="flex-1 ml-2"
                 inputClassName="sm:text-sm"
-                inputValue={lastName}
+                inputValue={startYear}
                 label="year"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
-                  setLastName(value)
+                  setStartYear(value)
                 }}
                 type="number"
               />
@@ -56,15 +75,22 @@ function CreateProject() {
           <div className="mb-2">
             <p className="text-left font-semibold text-sm">Date ended:</p>
             <div className="flex mb-2">
-              <MonthPicker label="month" />
+              <MonthPicker
+                label="month"
+                value={endMonth}
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setEndMonth(value)
+                }}
+              />
               <Input
                 containerClassName="flex-1 ml-2"
                 inputClassName="sm:text-sm"
-                inputValue={lastName}
+                inputValue={endYear}
                 label="year"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
-                  setLastName(value)
+                  setEndYear(value)
                 }}
                 type="number"
               />
@@ -72,9 +98,13 @@ function CreateProject() {
           </div>
           <Checkbox
             label="Is this project still in progress?"
-            isChecked={true}
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).checked
+              setIsInProgress(value)
+            }}
+            isChecked={isInProgress}
           />
-          <Button buttonStyle="LARGE" className="mt-4">
+          <Button buttonStyle="LARGE" className="mt-8">
             Publish
           </Button>
         </form>

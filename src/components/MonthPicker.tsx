@@ -9,6 +9,7 @@ interface MonthPickerProps {
   labelClassName?: string
   label?: string
   onChange?: (e: SyntheticEvent) => void
+  value?: string
 }
 
 function MonthPicker({
@@ -18,6 +19,7 @@ function MonthPicker({
   labelClassName = "",
   label = "",
   onChange,
+  value = "",
 }: MonthPickerProps) {
   const monthOptions = months.map((month, idx) => (
     <option value={month} key={idx}>
@@ -25,7 +27,7 @@ function MonthPicker({
     </option>
   ))
   return (
-    <label className={`text-left ${containerClassName}`} onChange={onChange}>
+    <label className={`text-left ${containerClassName}`}>
       {label && (
         <span
           className={`block text-sm font-medium text-gray-700 ${labelClassName}`}
@@ -36,7 +38,11 @@ function MonthPicker({
       {description && (
         <p className="text-xs italic text-black">{description}</p>
       )}
-      <select className={`${defaultInputClasses} ${inputClassName}`}>
+      <select
+        className={`${defaultInputClasses} ${inputClassName}`}
+        value={value}
+        onChange={onChange}
+      >
         {monthOptions}
       </select>
     </label>
