@@ -69,11 +69,11 @@ function CreateProject() {
                 type="number"
               />
             </div>
-            <Checkbox
-              label="Is this project still in progress?"
-              isChecked={true}
-            />
           </div>
+          <Checkbox
+            label="Is this project still in progress?"
+            isChecked={true}
+          />
           <Button buttonStyle="LARGE" className="mt-4">
             Publish
           </Button>
