@@ -2,13 +2,17 @@ import React from "react"
 
 interface LogoProps {
   className?: string
+  sizeClasses?: string
 }
 
-function Logo({ className = "" }: LogoProps) {
+function Logo({
+  className = "",
+  sizeClasses = "text-lg sm:text-2xl",
+}: LogoProps) {
   return (
-    <h1 className={`text-goldenYellow text-lg sm:text-2xl ${className}`}>
+    <span className={`text-goldenYellow ${className} ${sizeClasses}`}>
       Portful.co
-    </h1>
+    </span>
   )
 }
 

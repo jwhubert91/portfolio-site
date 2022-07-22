@@ -1,20 +1,27 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button, { getButtonStyle } from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
+import { routes } from "../utilities/routes"
 
 // For more regarding synthetic input events: https://bobbyhadz.com/blog/typescript-property-value-not-exist-type-eventtarget
 
 function SignUp() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log({
+      email,
+      password,
+    })
     setEmail("")
     setPassword("")
+    navigate(routes.createProfile)
   }
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>

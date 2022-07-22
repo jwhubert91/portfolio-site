@@ -1,22 +1,28 @@
 import React, { useState } from "react"
-import Button from "../components/Button"
-import CenteredContent from "../components/CenteredContent"
-import FormHeader from "../components/FormHeader"
-import Input from "../components/Input"
-import PageLayout from "../components/PageLayout"
+import Button from "./Button"
+import CenteredContent from "./CenteredContent"
+import Checkbox from "./Checkbox"
+import FormHeader from "./FormHeader"
+import Input from "./Input"
+import MonthPicker from "./MonthPicker"
+import PageLayout from "./PageLayout"
 import TextArea from "./TextArea"
 
 function CreateProject() {
-  const [title, setTitle] = useState("")
-  const [lastName, setLastName] = useState("")
+  const [projectTitle, setProjectTitle] = useState("")
+  const [summary, setSummary] = useState("")
+  const [startMonth, setStartMonth] = useState("")
+  const [startYear, setStartYear] = useState("")
+  const [endMonth, setEndMonth] = useState("")
+  const [endYear, setEndYear] = useState("")
+  const [isInProgress, setIsInProgress] = useState(false)
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    setTitle("")
-    setLastName("")
+    setProjectTitle("")
   }
   return (
     <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full mt-16 sm:w-[540px]">
+      <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleLogin}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -25,64 +31,80 @@ function CreateProject() {
           <Input
             containerClassName="mb-2"
             inputClassName="p-2 sm:p-2"
-            inputValue={title}
+            inputValue={projectTitle}
             label="project title"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
-              setTitle(value)
+              setProjectTitle(value)
             }}
             type="text"
           />
-          <TextArea label="summary (256 characters)..." />
-          <div className="flex mb-2">
-            <Input
-              containerClassName="flex-1"
-              inputClassName="sm:text-sm p-2 sm:p-2"
-              inputValue={lastName}
-              label="last name"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                setLastName(value)
-              }}
-              type="text"
-            />
-            <Input
-              containerClassName="flex-1"
-              inputClassName="sm:text-sm p-2 sm:p-2"
-              inputValue={lastName}
-              label="last name"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                setLastName(value)
-              }}
-              type="text"
-            />
+          <TextArea
+            label="summary (256 characters)..."
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setSummary(value)
+            }}
+            maxLength={256}
+            inputValue={summary}
+          />
+          <div className="mb-2">
+            <p className="text-left font-semibold text-sm">Date started:</p>
+            <div className="flex">
+              <MonthPicker
+                label="month"
+                value={startMonth}
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setStartMonth(value)
+                }}
+              />
+              <Input
+                containerClassName="flex-1 ml-2"
+                inputClassName="sm:text-sm"
+                inputValue={startYear}
+                label="year"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setStartYear(value)
+                }}
+                type="number"
+              />
+            </div>
           </div>
-          <div className="flex mb-2">
-            <Input
-              containerClassName="flex-1"
-              inputClassName="sm:text-sm p-2 sm:p-2"
-              inputValue={lastName}
-              label="last name"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                setLastName(value)
-              }}
-              type="text"
-            />
-            <Input
-              containerClassName="flex-1"
-              inputClassName="sm:text-sm p-2 sm:p-2"
-              inputValue={lastName}
-              label="last name"
-              onChange={(e) => {
-                const value = (e.target as HTMLInputElement).value
-                setLastName(value)
-              }}
-              type="text"
-            />
+          <div className="mb-2">
+            <p className="text-left font-semibold text-sm">Date ended:</p>
+            <div className="flex mb-2">
+              <MonthPicker
+                label="month"
+                value={endMonth}
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setEndMonth(value)
+                }}
+              />
+              <Input
+                containerClassName="flex-1 ml-2"
+                inputClassName="sm:text-sm"
+                inputValue={endYear}
+                label="year"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setEndYear(value)
+                }}
+                type="number"
+              />
+            </div>
           </div>
-          <Button buttonStyle="LARGE" className="mt-4">
+          <Checkbox
+            label="Is this project still in progress?"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).checked
+              setIsInProgress(value)
+            }}
+            isChecked={isInProgress}
+          />
+          <Button buttonStyle="LARGE" className="mt-8">
             Publish
           </Button>
         </form>

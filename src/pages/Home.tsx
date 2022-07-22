@@ -2,6 +2,7 @@ import Button from "../components/Button"
 import { useNavigate } from "react-router-dom"
 import CenteredContent from "../components/CenteredContent"
 import PageLayout from "../components/PageLayout"
+import { routes } from "../utilities/routes"
 import "./Home.css"
 
 function Home() {
@@ -20,7 +21,7 @@ function Home() {
           <Button
             buttonStyle="LARGE"
             className="mx-auto mt-4 xl:mt-12"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate(routes.signup)}
           >
             Create a Portfolio
           </Button>
