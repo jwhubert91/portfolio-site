@@ -1,5 +1,5 @@
 import Button from "./Button"
-import { MdAddCircle } from "react-icons/md"
+import { MdAddCircleOutline } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import { routes } from "../utilities/routes"
 
@@ -14,14 +14,12 @@ function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
   }
   return (
     <Button
-      buttonStyle="PILL"
-      className={`w-full sm:py-2 bg-white text-black hover:text-white ${className}`}
+      buttonStyle="COMPACT_CTA"
+      className={`flex items-center ${className}`}
       onClick={handleClick}
     >
-      <div className="flex items-center justify-center sm:justify-start">
-        <MdAddCircle className="mr-2 text-3xl sm:text-5xl" />
-        Add new project
-      </div>
+      <MdAddCircleOutline className="text-3xl" />
+      <span className="ml-2">Create new project</span>
     </Button>
   )
 }
