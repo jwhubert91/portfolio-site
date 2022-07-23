@@ -51,7 +51,7 @@ function EditProfile() {
   const load = async () => {
     const storedData = localStorage.getItem("profile")
     if (storedData) {
-      const { title, location, bio, links } = await JSON.parse(storedData)
+      const { title, location, bio } = await JSON.parse(storedData)
       setTitle(title)
       setLocation(location)
       setBio(bio)
