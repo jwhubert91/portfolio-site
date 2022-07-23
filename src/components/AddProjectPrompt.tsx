@@ -15,7 +15,7 @@ function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
   return (
     <Button
       buttonStyle="COMPACT_CTA"
-      className={`flex items-center ${className}`}
+      className={`flex items-center px-4 sm:px-16 ${className}`}
       onClick={handleClick}
     >
       <MdAddCircleOutline className="text-3xl" />

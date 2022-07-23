@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
-import Button from "../components/Button"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
 import ProjectCard from "../components/ProjectCard"
-import { MdAddCircle } from "react-icons/md"
 import AddProjectPrompt from "../components/AddProjectPrompt"
 
 function Portfolio() {
@@ -35,7 +33,9 @@ function Portfolio() {
           links={personalLinks}
           className="mb-4"
         />
-        <AddProjectPrompt className="mb-2" />
+        <div className="w-full">
+          <AddProjectPrompt className="mb-2 mx-auto" />
+        </div>
         <h3 className="text-md">Past Work</h3>
         <ProjectCard />
       </div>
