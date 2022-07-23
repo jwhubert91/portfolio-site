@@ -9,6 +9,7 @@ function Portfolio() {
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
   const [personalLinks, setPersonalLinks] = useState(undefined)
+  const isLoggedInUser = false
   const load = async () => {
     const storedData = localStorage.getItem("profile")
     if (storedData) {
@@ -33,7 +34,7 @@ function Portfolio() {
           links={personalLinks}
           className="mb-4"
         />
-        <AddProjectPrompt className="mb-2" />
+        <AddProjectPrompt className="mb-2 mx-auto" />
         <h3 className="text-md">Past Work</h3>
         <ProjectCard />
       </div>
