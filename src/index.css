@@ -19,3 +19,15 @@
   --MutedGray: #E5E4E3;
   --CulturedBlue: #EDF2F4;
 }
+
+/* REMOVE NUMBER INPUT ARROWS */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Customize checkbox */
