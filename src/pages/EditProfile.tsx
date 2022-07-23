@@ -8,6 +8,7 @@ import TextArea from "../components/TextArea"
 import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
 import { routes } from "../utilities/routes"
+import ImageInput from "../components/ImageInput"
 
 function EditProfile() {
   // Get back to this...
@@ -50,11 +51,10 @@ function EditProfile() {
   const load = async () => {
     const storedData = localStorage.getItem("profile")
     if (storedData) {
-      const { title, location, bio, links } = await JSON.parse(storedData)
+      const { title, location, bio } = await JSON.parse(storedData)
       setTitle(title)
       setLocation(location)
       setBio(bio)
-      console.log(links)
     }
   }
 
@@ -111,6 +111,16 @@ function EditProfile() {
               setBio(value)
             }}
             inputValue={bio}
+          />
+          <ImageInput
+            containerClassName="py-2 mb-2"
+            label="Profile picture 📸"
+            description="This will be displayed above your portfolio"
+          />
+          <ImageInput
+            containerClassName="py-2 mb-2"
+            label="Background image 🌉"
+            description="This will be displayed behind your profile image"
           />
           <div className="mb-2 text-left">
             <h4 className="block text-sm font-medium text-gray-700">
