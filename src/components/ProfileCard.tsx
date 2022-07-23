@@ -31,6 +31,8 @@ function ProfileCard({
         const { title, url } = link
         if (title.length > 0 && url.length > 0) {
           return <PillLink label={title} url={url} key={idx} />
+        } else {
+          return null
         }
       })
       return linkNodes

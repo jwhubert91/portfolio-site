@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
-import Button from "../components/Button"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
 import ProjectCard from "../components/ProjectCard"
-import { MdAddCircle } from "react-icons/md"
 import AddProjectPrompt from "../components/AddProjectPrompt"
 
 function Portfolio() {

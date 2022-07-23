@@ -1,8 +1,4 @@
-import React, {
-  HTMLInputTypeAttribute,
-  SyntheticEvent,
-  ReactElement,
-} from "react"
+import { SyntheticEvent } from "react"
 import Input from "./Input"
 
 interface LinkInputRowProps {
