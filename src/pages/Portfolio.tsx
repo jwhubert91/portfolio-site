@@ -9,7 +9,6 @@ function Portfolio() {
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
   const [personalLinks, setPersonalLinks] = useState(undefined)
-  const isLoggedInUser = false
   const load = async () => {
     const storedData = localStorage.getItem("profile")
     if (storedData) {
