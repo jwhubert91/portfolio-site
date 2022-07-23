@@ -1,0 +1,27 @@
+import Button from "./Button"
+import { MdAddCircleOutline } from "react-icons/md"
+import { useNavigate } from "react-router-dom"
+import { routes } from "../utilities/routes"
+
+interface AddProjectPromptProps {
+  className?: string
+}
+
+function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate(routes.createProject)
+  }
+  return (
+    <Button
+      buttonStyle="COMPACT_CTA"
+      className={`flex items-center ${className}`}
+      onClick={handleClick}
+    >
+      <MdAddCircleOutline className="text-3xl" />
+      <span className="ml-2">Create new project</span>
+    </Button>
+  )
+}
+
+export default AddProjectPrompt
