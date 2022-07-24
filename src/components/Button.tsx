@@ -1,4 +1,4 @@
-import { ReactNode } from "react"
+import React, { ReactNode } from "react"
 
 type ButtonStyles =
   | "ALERT"
@@ -13,7 +13,7 @@ type ButtonStyles =
 interface ButtonProps {
   children?: ReactNode | string
   className?: string
-  onClick?: () => void
+  onClick?: (e: React.SyntheticEvent) => void
   buttonStyle: ButtonStyles
   title?: string
 }
