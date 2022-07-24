@@ -148,7 +148,10 @@ function CreateProject() {
           <Button buttonStyle="LARGE" className="mb-8 w-full lg:w-1/2 mx-auto">
             Publish
           </Button>
-          <Button buttonStyle="ALERT" className="w-1/2 mx-auto text-xl">
+          <Button
+            buttonStyle="ALERT"
+            className="w-full lg:w-1/2 mx-auto text-xl"
+          >
             <MdDeleteForever className="text-3xl mr-2" />
             <span>Delete Project</span>
           </Button>
