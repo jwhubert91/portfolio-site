@@ -8,50 +8,21 @@ import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
 
 function CreateProfile() {
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
   const [username, setUsername] = useState("")
   const navigate = useNavigate()
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log({
-      firstName,
-      lastName,
-      username,
-    })
-    setFirstName("")
-    setLastName("")
     setUsername("")
     navigate(routes.editProfile)
   }
   return (
-    <PageLayout className="flex flex-col">
+    <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
         >
           <FormHeader title="Let's get started" />
-          <Input
-            containerClassName="mb-2"
-            inputValue={firstName}
-            label="first name"
-            onChange={(e) => {
-              const value = (e.target as HTMLInputElement).value
-              setFirstName(value)
-            }}
-            type="text"
-          />
-          <Input
-            containerClassName="mb-2"
-            inputValue={lastName}
-            label="last name"
-            onChange={(e) => {
-              const value = (e.target as HTMLInputElement).value
-              setLastName(value)
-            }}
-            type="text"
-          />
           <Input
             inputValue={username}
             label="Please choose a username"

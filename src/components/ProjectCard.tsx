@@ -1,9 +1,11 @@
+import { useNavigate, Link } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
 import { getMonthStringFromInteger } from "../utilities/helpers"
 import { ProjectType, ExternalLinkType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
+import { routes } from "../utilities/routes"
 
 const projectData: ProjectType = {
   title: "Portful.co",
@@ -33,10 +35,6 @@ const projectData: ProjectType = {
   ],
 }
 
-const handleEditProject = () => {
-  console.log("Edit project!")
-}
-
 function ProjectCard() {
   const startDateString = `${getMonthStringFromInteger(
     projectData.startMonth
@@ -47,20 +45,27 @@ function ProjectCard() {
         projectData.startYear
       }`
   const completeDateString = `${startDateString} - ${endDateString}`
+  const navigate = useNavigate()
+  const handleEditProject = () => {
+    navigate(routes.createProject)
+  }
   return (
     <Card className="my-2 px-8 py-4 relative">
-      <h3 className="font-bold text-lg">{projectData.title}</h3>
-      <p className="text-slate-500">{completeDateString}</p>
-      <p className="text-xs sm:text-sm my-2">{projectData.summary256}</p>
-      {projectData.image && (
-        <div className="mb-2 p-4 h-108 border border-1 border-mutedGray rounded overflow-hidden">
-          <img
-            src={projectData.image}
-            alt={projectData.title}
-            className="cover"
-          />
-        </div>
-      )}
+      {/* Change route to project page when it's ready */}
+      <Link to={routes.home}>
+        <h3 className="font-bold text-lg">{projectData.title}</h3>
+        <p className="text-slate-500">{completeDateString}</p>
+        <p className="text-xs sm:text-sm my-2">{projectData.summary256}</p>
+        {projectData.image && (
+          <div className="mb-2 p-4 h-108 border border-1 border-mutedGray rounded overflow-hidden">
+            <img
+              src={projectData.image}
+              alt={projectData.title}
+              className="cover"
+            />
+          </div>
+        )}
+      </Link>
       {projectData.externalLinks && (
         <div className="text-xs flex flex-wrap justify-center my-1">
           {projectData.externalLinks.map(
