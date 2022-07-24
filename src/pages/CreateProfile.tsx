@@ -16,7 +16,7 @@ function CreateProfile() {
     navigate(routes.editProfile)
   }
   return (
-    <PageLayout className="flex flex-col">
+    <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleSubmit}

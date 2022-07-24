@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import PageLayout from "../components/PageLayout"
 import CenteredContent from "../components/CenteredContent"
@@ -44,7 +44,7 @@ function EditProfile() {
   }
 
   return (
-    <PageLayout className="flex flex-col">
+    <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
         <form
           onSubmit={handleSubmit}
@@ -54,7 +54,7 @@ function EditProfile() {
           <p className="text-md mb-2 text-slate-500">
             Introduce yourself to the community
           </p>
-          <div className="flex flex-col lg:flex-row gap-x-8">
+          <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
             <div className="flex-1 flex flex-col justify-start">
               <Input
                 containerClassName="mb-2"
@@ -122,12 +122,12 @@ function EditProfile() {
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Profile picture 📸"
-                description="This will be displayed above your portfolio"
+                description="A square headshot is best."
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Background image 🌉"
-                description="This will be displayed behind your profile image"
+                description="A wide or landscape image works best here."
               />
             </div>
             <div className="flex-1 flex flex-col lg:justify-start">
@@ -201,7 +201,7 @@ function EditProfile() {
               />
             </div>
           </div>
-          <Button buttonStyle="LARGE" className="mt-4 lg:w-1/2 mx-auto">
+          <Button buttonStyle="LARGE" className="w-full lg:w-1/2 mx-auto">
             Publish
           </Button>
         </form>
