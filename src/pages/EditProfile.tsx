@@ -14,6 +14,8 @@ function EditProfile() {
   // Get back to this...
   // const [profilePic, setProfilePic] = useState(null)
   // const [backgroundPic, setBackgroundPic] = useState(null)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [title, setTitle] = useState("")
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
@@ -79,6 +81,26 @@ function EditProfile() {
           <p className="text-md mb-2 text-slate-500">
             Introduce yourself to the community
           </p>
+          <Input
+            containerClassName="mb-2"
+            inputValue={firstName}
+            label="first name"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setFirstName(value)
+            }}
+            type="text"
+          />
+          <Input
+            containerClassName="mb-2"
+            inputValue={lastName}
+            label="last name"
+            onChange={(e) => {
+              const value = (e.target as HTMLInputElement).value
+              setLastName(value)
+            }}
+            type="text"
+          />
           <Input
             containerClassName="mb-2"
             inputValue={title}
