@@ -21,6 +21,7 @@ function ProjectDetail() {
   return (
     <PageLayout className="bg-culturedBlue">
       <div className="w-full sm:max-w-2xl mx-auto p-2 sm:px-2">
+        <div>Profile image and creator full name</div>
         <h2 className="font-bold text-xl">Title</h2>
         <p className="text-base">Date Started - Date Finished or Current</p>
         <p className="text-black text-sm mb-2">Summary</p>
