@@ -24,7 +24,9 @@ function TextArea({
 }: TextAreaProps) {
   return (
     <label className={`text-left mb-2 ${containerClassName}`}>
-      {label && <span className="text-sm">{label}</span>}
+      {label && (
+        <span className="block text-sm font-medium text-gray-700">{label}</span>
+      )}
       {description && (
         <p className="text-xs italic text-black">{description}</p>
       )}

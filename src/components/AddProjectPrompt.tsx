@@ -19,7 +19,7 @@ function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
       onClick={handleClick}
     >
       <MdAddCircleOutline className="text-3xl" />
-      <span className="ml-2">Create new project</span>
+      <span className="ml-2">Add new project</span>
     </Button>
   )
 }
