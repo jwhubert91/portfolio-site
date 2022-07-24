@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { MdDeleteForever } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import PageLayout from "../components/PageLayout"
 import CenteredContent from "../components/CenteredContent"
@@ -43,15 +44,17 @@ function EditProfile() {
     navigate(routes.portfolio)
   }
 
+  const handleDeactivate = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log("Profile deactivated")
+  }
+
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white"
-        >
+        <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
           <FormHeader className="mb-2" title="Edit Profile" />
-          <p className="text-md mb-2 text-slate-500">
+          <p className="text-md mb-2 lg:mb-8 text-slate-500">
             Introduce yourself to the community
           </p>
           <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
@@ -201,8 +204,20 @@ function EditProfile() {
               />
             </div>
           </div>
-          <Button buttonStyle="LARGE" className="w-full lg:w-1/2 mx-auto">
+          <Button
+            buttonStyle="LARGE"
+            className="mb-8 w-full lg:w-1/2 mx-auto"
+            onClick={handleSubmit}
+          >
             Publish
+          </Button>
+          <Button
+            buttonStyle="ALERT"
+            className="w-full lg:w-1/2 mx-auto text-xl"
+            onClick={handleDeactivate}
+          >
+            <MdDeleteForever className="text-3xl mr-2" />
+            <span>Deactivate Profile</span>
           </Button>
         </form>
       </CenteredContent>
