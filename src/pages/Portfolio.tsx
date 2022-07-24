@@ -33,7 +33,7 @@ function Portfolio() {
           links={personalLinks}
           className="mb-4"
         />
-        <AddProjectPrompt className="mb-2" />
+        <AddProjectPrompt className="mb-2 mx-auto" />
         <h3 className="text-md">Past Work</h3>
         <ProjectCard />
       </div>
