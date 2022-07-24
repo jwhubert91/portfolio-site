@@ -4,7 +4,7 @@ export const routes = {
   signup: "/signup",
   createProfile: "/account",
   editProfile: "/account/edit",
-  createProject: "/create",
   portfolio: "/@:profileSlug",
-  project: "/work/:projectId",
+  createProject: "/project/new",
+  projectDetail: "/project/:projectId",
 };

@@ -5,7 +5,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import CreateProfile from "./pages/CreateProfile"
 import Home from "./pages/Home"
 import Portfolio from "./pages/Portfolio"
-// import Project from "./pages/Project"
 import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
 import CreateProject from "./components/CreateProject"
@@ -14,6 +13,7 @@ import EditProfile from "./pages/EditProfile"
 
 // utils
 import { routes } from "./utilities/routes"
+import ProjectDetail from "./pages/ProjectDetail"
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
         <Route path={routes.editProfile} element={<EditProfile />} />
         <Route path={routes.createProject} element={<CreateProject />} />
         <Route path={routes.portfolio} element={<Portfolio />} />
-        {/* <Route path={routes.project} element={<Project />} /> */}
+        <Route path={routes.projectDetail} element={<ProjectDetail />} />
       </Routes>
     </BrowserRouter>
   )
