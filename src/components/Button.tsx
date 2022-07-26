@@ -41,7 +41,7 @@ export const getButtonStyle = (buttonStyle: ButtonStyles) => {
     case "COMPACT_CTA":
       return "pointer-events-auto text-snowWhite py-2 px-3 bg-primary rounded-md hover:bg-indigo-500 text-sm sm:text-base lg:text-md"
     case "ALERT":
-      return "text-red-700 bg-snowWhite shadow py-2 px-3 rounded-md hover:text-snowWhite hover:bg-error flex justify-center"
+      return "text-red-700 bg-snowWhite shadow py-2 px-3 rounded-md hover:text-snowWhite hover:bg-orangeRed flex justify-center"
     case "LARGE":
       return "text-xl md:text-3xl bg-primary hover:hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50 text-white sm:font-semibold h-16 px-6 rounded-lg"
     case "CLEAN":
