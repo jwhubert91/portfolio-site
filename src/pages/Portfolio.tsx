@@ -4,16 +4,15 @@ import ProfileCard from "../components/ProfileCard"
 import ProjectCard from "../components/ProjectCard"
 import ProjectList from "../components/ProjectList"
 import AddProjectPrompt from "../components/AddProjectPrompt"
-
-// firebase
-import { db } from "../firebase/config"
-import { collection, getDocs } from "firebase/firestore"
+import { useCollection } from "../hooks/useCollection"
 
 function Portfolio() {
   const [title, setTitle] = useState("")
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
   const [personalLinks, setPersonalLinks] = useState(undefined)
+
+  const { documents: projects } = useCollection("projects")
 
   const loadProfile = async () => {
     const storedData = localStorage.getItem("profile")
@@ -25,24 +24,8 @@ function Portfolio() {
       setPersonalLinks(links)
     }
   }
-  const [projects, setProjects] = useState(null)
-
   useEffect(() => {
     loadProfile()
-
-    const ref = collection(db, "projects")
-    getDocs(ref).then((snapshot) => {
-      // @ts-ignore
-      let projectsResults = []
-      snapshot.docs.forEach((doc) => {
-        projectsResults.push({
-          id: doc.id,
-          ...doc.data(),
-        })
-      })
-      // @ts-ignore
-      setProjects(projectsResults)
-    })
   }, [])
 
   return (

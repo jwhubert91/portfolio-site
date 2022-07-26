@@ -22,15 +22,17 @@ function CreateProject() {
   const [endYear, setEndYear] = useState("")
   const [isInProgress, setIsInProgress] = useState(false)
   const navigate = useNavigate()
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    navigate(routes.portfolio)
+    console.log(projectTitle)
+    setProjectTitle("")
+    // navigate(routes.portfolio)
   }
   return (
     <PageLayout className="flex flex-col">
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
         <form
-          onSubmit={handleLogin}
+          onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
         >
           <FormHeader title="Create a new project" />
