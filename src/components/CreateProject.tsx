@@ -13,6 +13,10 @@ import MonthPicker from "./MonthPicker"
 import PageLayout from "./PageLayout"
 import TextArea from "./TextArea"
 
+// firebase imports
+import { db } from "../firebase/config"
+import { collection, doc, addDoc, deleteDoc } from "firebase/firestore"
+
 function CreateProject() {
   const [projectTitle, setProjectTitle] = useState("")
   const [summary, setSummary] = useState("")
@@ -21,13 +25,30 @@ function CreateProject() {
   const [endMonth, setEndMonth] = useState("")
   const [endYear, setEndYear] = useState("")
   const [isInProgress, setIsInProgress] = useState(false)
+
+  const [link1Name, setLink1Name] = useState("")
+  const [link1Url, setLink1Url] = useState("")
+  const [link2Name, setLink2Name] = useState("")
+  const [link2Url, setLink2Url] = useState("")
+  const [link3Name, setLink3Name] = useState("")
+  const [link3Url, setLink3Url] = useState("")
+
   const navigate = useNavigate()
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(projectTitle)
-    setProjectTitle("")
-    // navigate(routes.portfolio)
+    const ref = collection(db, "projects")
+    await addDoc(ref, {
+      title: projectTitle,
+    })
+    navigate(routes.portfolio)
   }
+
+  const handleDelete = async (e: React.FormEvent, id: number) => {
+    e.preventDefault()
+    const ref = doc(db, "projects")
+  }
+
   return (
     <PageLayout className="flex flex-col">
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
@@ -141,9 +162,36 @@ function CreateProject() {
                 </p>
               </div>
               <div className="mb-8">
-                <LinkInputRow />
-                <LinkInputRow />
-                <LinkInputRow />
+                <LinkInputRow
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink1Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink1Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink2Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink2Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink3Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink3Url(value)
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -153,6 +201,7 @@ function CreateProject() {
           <Button
             buttonStyle="ALERT"
             className="w-full lg:w-1/2 mx-auto text-xl"
+            onClick={(e) => handleDelete(e, 1)}
           >
             <MdDeleteForever className="text-3xl mr-2" />
             <span>Delete Project</span>

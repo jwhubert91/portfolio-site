@@ -25,9 +25,12 @@ function App() {
         <Route path={routes.signup} element={<SignUp />} />
         <Route path={routes.createProfile} element={<CreateProfile />} />
         <Route path={routes.editProfile} element={<EditProfile />} />
-        <Route path={routes.createProject} element={<CreateProject />} />
         <Route path={routes.portfolio} element={<Portfolio />} />
-        <Route path={routes.projectDetail} element={<ProjectDetail />} />
+        <Route path={routes.projects}>
+          <Route path={routes.createProject} element={<CreateProject />} />
+          <Route path={routes.editProject} element={<CreateProject />} />
+          <Route path={routes.projectDetail} element={<ProjectDetail />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
