@@ -6,6 +6,7 @@ export const defaultInputClasses =
 interface InputProps {
   containerClassName?: string
   description?: string
+  validation?: string
   inputClassName?: string
   inputValue?: string | number | readonly string[] | undefined
   label?: string | ReactElement
@@ -18,6 +19,7 @@ interface InputProps {
 function Input({
   containerClassName = "",
   description = "",
+  validation,
   inputClassName = "",
   inputValue = "",
   label,
@@ -43,6 +45,7 @@ function Input({
         placeholder={placeholder}
         value={inputValue}
       />
+      {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )
 }
