@@ -7,7 +7,7 @@ import { useState } from "react"
 
 function NavAuthButtons() {
   // Remove once redux is in place
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const { logOut, error } = useLogOut()
   const navigate = useNavigate()
