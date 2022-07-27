@@ -7,7 +7,7 @@ import Home from "./pages/Home"
 import Portfolio from "./pages/Portfolio"
 import SignUp from "./pages/SignUp"
 import Login from "./pages/Login"
-import CreateProject from "./components/CreateProject"
+import ProjectForm from "./components/ProjectForm"
 import FourOhFour from "./pages/FourOhFour"
 import EditProfile from "./pages/EditProfile"
 
@@ -27,8 +27,8 @@ function App() {
         <Route path={routes.editProfile} element={<EditProfile />} />
         <Route path={routes.portfolio} element={<Portfolio />} />
         <Route path={routes.projects}>
-          <Route path={routes.createProject} element={<CreateProject />} />
-          <Route path={routes.editProject} element={<CreateProject />} />
+          <Route path={routes.createProject} element={<ProjectForm />} />
+          <Route path={routes.editProject} element={<ProjectForm />} />
           <Route path={routes.projectId} element={<ProjectDetail />} />
         </Route>
       </Routes>

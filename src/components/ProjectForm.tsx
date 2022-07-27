@@ -17,7 +17,7 @@ import TextArea from "./TextArea"
 import { db } from "../firebase/config"
 import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
 
-function CreateProject() {
+function ProjectForm() {
   const [projectTitle, setProjectTitle] = useState("")
   const [summary, setSummary] = useState("")
   const [startMonth, setStartMonth] = useState("")
@@ -45,12 +45,14 @@ function CreateProject() {
     navigate(routes.portfolio)
   }
 
-  const handleDelete = async (e: React.FormEvent, id: number) => {
+  const handleDelete = async (e: React.FormEvent, id: string) => {
     e.preventDefault()
-    const ref = doc(db, "projects")
+    const ref = doc(db, "projects", id)
+    await deleteDoc(ref)
+    navigate(routes.portfolio)
   }
 
-  const getProject = async (id: string) => {
+  const getProjectFromParams = async (id: string) => {
     const ref = doc(db, "projects", id)
     const docSnap = await getDoc(ref)
     if (docSnap.exists()) {
@@ -63,7 +65,7 @@ function CreateProject() {
 
   useEffect(() => {
     if (!!projectId) {
-      getProject(projectId)
+      getProjectFromParams(projectId)
     }
   }, [projectId])
 
@@ -216,18 +218,20 @@ function CreateProject() {
           <Button buttonStyle="LARGE" className="mb-8 w-full lg:w-1/2 mx-auto">
             Publish
           </Button>
-          <Button
-            buttonStyle="ALERT"
-            className="w-full lg:w-1/2 mx-auto text-xl"
-            onClick={(e) => handleDelete(e, 1)}
-          >
-            <MdDeleteForever className="text-3xl mr-2" />
-            <span>Delete Project</span>
-          </Button>
+          {!!projectId && (
+            <Button
+              buttonStyle="ALERT"
+              className="w-full lg:w-1/2 mx-auto text-xl"
+              onClick={(e) => handleDelete(e, projectId)}
+            >
+              <MdDeleteForever className="text-3xl mr-2" />
+              <span>Delete Project</span>
+            </Button>
+          )}
         </form>
       </CenteredContent>
     </PageLayout>
   )
 }
 
-export default CreateProject
+export default ProjectForm
