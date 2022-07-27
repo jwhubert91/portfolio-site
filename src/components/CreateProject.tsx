@@ -1,6 +1,6 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { MdDeleteForever } from "react-icons/md"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { routes } from "../utilities/routes"
 import Button from "./Button"
 import CenteredContent from "./CenteredContent"
@@ -15,7 +15,7 @@ import TextArea from "./TextArea"
 
 // firebase imports
 import { db } from "../firebase/config"
-import { collection, doc, addDoc, deleteDoc } from "firebase/firestore"
+import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
 
 function CreateProject() {
   const [projectTitle, setProjectTitle] = useState("")
@@ -34,6 +34,7 @@ function CreateProject() {
   const [link3Url, setLink3Url] = useState("")
 
   const navigate = useNavigate()
+  const { projectId } = useParams()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -48,6 +49,23 @@ function CreateProject() {
     e.preventDefault()
     const ref = doc(db, "projects")
   }
+
+  const getProject = async (id: string) => {
+    const ref = doc(db, "projects", id)
+    const docSnap = await getDoc(ref)
+    if (docSnap.exists()) {
+      const { title } = docSnap.data()
+      setProjectTitle(title)
+    } else {
+      console.log("There was an error getting the document")
+    }
+  }
+
+  useEffect(() => {
+    if (!!projectId) {
+      getProject(projectId)
+    }
+  }, [projectId])
 
   return (
     <PageLayout className="flex flex-col">

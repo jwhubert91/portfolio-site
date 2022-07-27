@@ -19,3 +19,18 @@ export const getMonthStringFromInteger = (monthInt:number): null | string => {
   }
   return months[monthInt - 1];
 }
+
+export const makePath = (...args: string[]): string=> {
+  let output = "";
+  const argsLength = args.length
+  for (let i = 0; i < argsLength; i++) {
+    // if last arg do not add a slash
+    if (i == argsLength - 1) {
+      output += args[i]
+    } else {
+    // otherwise, add a slash
+      output += `${args[i]}/`
+    }
+  }
+  return output;
+}

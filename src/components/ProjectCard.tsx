@@ -1,13 +1,14 @@
 import { useNavigate, Link } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
-import { getMonthStringFromInteger } from "../utilities/helpers"
+import { getMonthStringFromInteger, makePath } from "../utilities/helpers"
 import { ProjectType, ExternalLinkType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
 import { routes } from "../utilities/routes"
 
 const projectData: ProjectType = {
+  id: 1,
   title: "Portful.co",
   startMonth: 6,
   startYear: 2022,
@@ -49,10 +50,11 @@ function ProjectCard() {
   const handleEditProject = () => {
     navigate(routes.createProject)
   }
+  const path = makePath(routes.projects, String(projectData.id))
   return (
     <Card className="my-2 px-8 py-4 relative">
       {/* Change route to project page when it's ready */}
-      <Link to={routes.projectDetail}>
+      <Link to={path}>
         <h3 className="font-bold text-lg">{projectData.title}</h3>
         <p className="text-slate-500">{completeDateString}</p>
         <p className="text-xs sm:text-sm my-2">{projectData.summary256}</p>

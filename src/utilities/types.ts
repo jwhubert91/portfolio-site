@@ -6,6 +6,7 @@ export interface ExternalLinkType {
 }
 
 export interface ProjectType {
+  id: 1,
   title: string,
   startMonth: number,
   startYear: number,
