@@ -1,9 +1,25 @@
 import { Link } from "react-router-dom"
 import { getButtonStyle } from "./Button"
+import { useLogOut } from "../hooks/useLogOut"
+import { useNavigate } from "react-router-dom"
+import { routes } from "../utilities/routes"
+import { useState } from "react"
 
 function NavAuthButtons() {
   // Remove once redux is in place
-  const isLoggedIn = true
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
+
+  const { logOut, error } = useLogOut()
+  const navigate = useNavigate()
+
+  const handleLogOut = () => {
+    logOut()
+    if (!error) {
+      setIsLoggedIn(false)
+      navigate(routes.home)
+    }
+  }
+
   return (
     <div className="overflow-visible">
       {isLoggedIn ? (
@@ -11,9 +27,12 @@ function NavAuthButtons() {
           <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
             Profile
           </Link>
-          <Link to="/" className="text-snowWhite ml-2 sm:ml-4">
+          <button
+            onClick={handleLogOut}
+            className="text-snowWhite ml-2 sm:ml-4"
+          >
             Log Out
-          </Link>
+          </button>
         </>
       ) : (
         <>
