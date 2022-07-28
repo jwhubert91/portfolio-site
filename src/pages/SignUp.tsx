@@ -27,7 +27,7 @@ function SignUp() {
     if (!error && user) {
       navigate(routes.createProfile)
     }
-  }, [error, user])
+  }, [error, user, navigate])
 
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>

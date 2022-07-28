@@ -21,7 +21,7 @@ export const useCollection = (collectionName: string)=> {
     })
 
     return ()=> unsub()
-  },[])
+  },[collection, collectionName])
 
   return { documents }
 }

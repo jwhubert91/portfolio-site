@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
-import ProjectCard from "../components/ProjectCard"
+// import ProjectCard from "../components/ProjectCard"
 import ProjectList from "../components/ProjectList"
 import AddProjectPrompt from "../components/AddProjectPrompt"
 import { useCollection } from "../hooks/useCollection"

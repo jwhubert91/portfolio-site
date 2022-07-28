@@ -25,7 +25,7 @@ export const makePath = (...args: string[]): string=> {
   const argsLength = args.length
   for (let i = 0; i < argsLength; i++) {
     // if last arg do not add a slash
-    if (i == argsLength - 1) {
+    if (i === argsLength - 1) {
       output += args[i]
     } else {
     // otherwise, add a slash

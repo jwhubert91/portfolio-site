@@ -22,7 +22,7 @@ function Login() {
     if (!error && user) {
       navigate(routes.portfolio)
     }
-  }, [error, user])
+  }, [error, user, navigate])
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
