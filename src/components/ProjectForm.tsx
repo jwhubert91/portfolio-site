@@ -12,6 +12,8 @@ import LinkInputRow from "./LinkInputRow"
 import MonthPicker from "./MonthPicker"
 import PageLayout from "./PageLayout"
 import TextArea from "./TextArea"
+import { useAuthContext } from "../hooks/useAuthContext"
+import { User } from "firebase/auth"
 
 // firebase imports
 import { db } from "../firebase/config"
@@ -36,11 +38,14 @@ function ProjectForm() {
   const navigate = useNavigate()
   const { projectId } = useParams()
 
+  const { user } = useAuthContext()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const ref = collection(db, "projects")
     await addDoc(ref, {
       title: projectTitle,
+      creatorId: user?.uid,
     })
     navigate(routes.portfolio)
   }

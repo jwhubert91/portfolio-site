@@ -8,7 +8,8 @@ import { MdModeEdit } from "react-icons/md"
 import { routes } from "../utilities/routes"
 
 const projectData: ProjectType = {
-  id: 1,
+  id: "1",
+  creatorId: "1",
   title: "Portful.co",
   startMonth: 6,
   startYear: 2022,
