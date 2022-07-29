@@ -27,6 +27,7 @@ function CreateProfile() {
             inputValue={username}
             label="Please choose a username"
             description="This will be how users find your portfolio"
+            placeholder="@"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setUsername(value)

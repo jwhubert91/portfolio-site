@@ -31,28 +31,13 @@ function App() {
               path={routes.login}
               element={user ? <Portfolio /> : <Login />}
             />
-            <Route
-              path={routes.signup}
-              element={user ? <Portfolio /> : <SignUp />}
-            />
-            <Route
-              path={routes.createProfile}
-              element={user ? <Portfolio /> : <CreateProfile />}
-            />
-            <Route
-              path={routes.editProfile}
-              element={user ? <EditProfile /> : <Login />}
-            />
+            <Route path={routes.signup} element={<SignUp />} />
+            <Route path={routes.createProfile} element={<CreateProfile />} />
+            <Route path={routes.editProfile} element={<EditProfile />} />
             <Route path={routes.portfolio} element={<Portfolio />} />
             <Route path={routes.projects}>
-              <Route
-                path={routes.createProject}
-                element={user ? <ProjectForm /> : <Login />}
-              />
-              <Route
-                path={routes.editProject}
-                element={user ? <ProjectForm /> : <Login />}
-              />
+              <Route path={routes.createProject} element={<ProjectForm />} />
+              <Route path={routes.editProject} element={<ProjectForm />} />
               <Route path={routes.projectId} element={<ProjectDetail />} />
             </Route>
           </Routes>
