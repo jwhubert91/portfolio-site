@@ -14,6 +14,8 @@ interface InputProps {
   onChange?: (e: SyntheticEvent) => void
   placeholder?: string
   type?: HTMLInputTypeAttribute
+  required?: boolean
+  pattern?: string
 }
 
 function Input({
@@ -27,6 +29,8 @@ function Input({
   onChange,
   placeholder = "",
   type = "text",
+  required = false,
+  pattern,
 }: InputProps) {
   const inputClasses = `${defaultInputClasses} ${inputClassName}`
   return (
@@ -43,7 +47,9 @@ function Input({
         name={name}
         onChange={onChange}
         placeholder={placeholder}
+        pattern={pattern}
         value={inputValue}
+        required={required}
       />
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>

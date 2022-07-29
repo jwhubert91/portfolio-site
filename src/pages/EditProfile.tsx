@@ -9,12 +9,13 @@ import TextArea from "../components/TextArea"
 import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
 import { routes } from "../utilities/routes"
-import ImageInput from "../components/ImageInput"
+import ImageInput, { validateImageChange } from "../components/ImageInput"
 
 function EditProfile() {
-  // Get back to this...
-  // const [profilePic, setProfilePic] = useState(null)
-  // const [backgroundPic, setBackgroundPic] = useState(null)
+  const [profilePic, setProfilePic] = useState<File | null>(null)
+  const [profilePicError, setProfilePicError] = useState("")
+  const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
+  const [backgroundPicError, setBackgroundPicError] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [pronouns, setPronouns] = useState("")
@@ -126,11 +127,41 @@ function EditProfile() {
                 containerClassName="py-2 mb-2"
                 label="Profile picture 📸"
                 description="A square headshot is best."
+                onChange={(e) => {
+                  setProfilePic(null)
+                  setProfilePicError("")
+                  let { imageError, validatedImage } = validateImageChange(
+                    e,
+                    500000,
+                    "profile image"
+                  )
+                  if (imageError) {
+                    setProfilePicError(imageError)
+                  } else {
+                    setProfilePic(validatedImage)
+                  }
+                }}
+                validation={profilePicError}
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Background image 🌉"
                 description="A wide or landscape image works best here."
+                onChange={(e) => {
+                  setBackgroundPic(null)
+                  setBackgroundPicError("")
+                  let { imageError, validatedImage } = validateImageChange(
+                    e,
+                    500000,
+                    "profile image"
+                  )
+                  if (imageError) {
+                    setBackgroundPicError(imageError)
+                  } else {
+                    setBackgroundPic(validatedImage)
+                  }
+                }}
+                validation={backgroundPicError}
               />
             </div>
             <div className="flex-1 flex flex-col lg:justify-start">

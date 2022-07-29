@@ -6,10 +6,12 @@ import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
+import { useAuthContext } from "../hooks/useAuthContext"
 
-function CreateProfile() {
+function CreateHandle() {
   const [username, setUsername] = useState("")
   const navigate = useNavigate()
+  const { user } = useAuthContext()
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setUsername("")
@@ -27,12 +29,12 @@ function CreateProfile() {
             inputValue={username}
             label="Please choose a username"
             description="This will be how users find your portfolio"
-            placeholder="@"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setUsername(value)
             }}
-            type="text"
+            type=""
+            required
           />
           <Button buttonStyle="LARGE" className="mt-4">
             Create Profile
@@ -43,4 +45,4 @@ function CreateProfile() {
   )
 }
 
-export default CreateProfile
+export default CreateHandle

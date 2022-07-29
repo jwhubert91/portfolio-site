@@ -25,7 +25,7 @@ function SignUp() {
 
   useEffect(() => {
     if (!error && user) {
-      navigate(routes.createProfile)
+      navigate(routes.createHandle)
     }
   }, [error, user, navigate])
 
@@ -47,6 +47,7 @@ function SignUp() {
               setEmail(value)
             }}
             type="email"
+            required
           />
           <Input
             inputValue={password}
@@ -56,6 +57,7 @@ function SignUp() {
               setPassword(value)
             }}
             type="password"
+            required
           />
           <Button buttonStyle="LARGE" className="mt-4">
             Continue

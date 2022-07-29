@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 
 // components
-import CreateProfile from "./pages/CreateProfile"
+import CreateHandle from "./pages/CreateHandle"
 import Home from "./pages/Home"
 import Portfolio from "./pages/Portfolio"
 import SignUp from "./pages/SignUp"
@@ -32,7 +32,7 @@ function App() {
               element={user ? <Portfolio /> : <Login />}
             />
             <Route path={routes.signup} element={<SignUp />} />
-            <Route path={routes.createProfile} element={<CreateProfile />} />
+            <Route path={routes.createHandle} element={<CreateHandle />} />
             <Route path={routes.editProfile} element={<EditProfile />} />
             <Route path={routes.portfolio} element={<Portfolio />} />
             <Route path={routes.projects}>
