@@ -21,7 +21,9 @@ export interface ProjectType {
 }
 
 export interface User {
-  name: string,
+  firstName: string,
+  lastName: string,
+  profileType: number,
   username: string,
   pronouns?: string,
   title: string,
