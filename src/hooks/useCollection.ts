@@ -11,6 +11,7 @@ export const useCollection = (collectionName: string)=> {
     let ref = collection(db, collectionName)
 
     const unsub = onSnapshot(ref, (snapshot)=> {
+      // TODO: When the collection objects are finalized, type these two ignored values
       // @ts-ignore
       let results = []
       snapshot.docs.forEach(doc => {
@@ -21,7 +22,7 @@ export const useCollection = (collectionName: string)=> {
     })
 
     return ()=> unsub()
-  },[collection, collectionName])
+  },[collectionName])
 
   return { documents }
 }
