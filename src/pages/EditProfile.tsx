@@ -126,13 +126,13 @@ function EditProfile() {
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Profile picture 📸"
-                description="A square headshot is best."
+                description="A square headshot is best. Less than 1 MB"
                 onChange={(e) => {
                   setProfilePic(null)
                   setProfilePicError("")
                   let { imageError, validatedImage } = validateImageChange(
                     e,
-                    500000,
+                    1000000,
                     "profile image"
                   )
                   if (imageError) {
@@ -142,18 +142,20 @@ function EditProfile() {
                   }
                 }}
                 validation={profilePicError}
+                preview={profilePic}
+                previewClassName="h-20 w-20"
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Background image 🌉"
-                description="A wide or landscape image works best here."
+                description="A wide or landscape image works best here. Less than 1 MB."
                 onChange={(e) => {
                   setBackgroundPic(null)
                   setBackgroundPicError("")
                   let { imageError, validatedImage } = validateImageChange(
                     e,
-                    500000,
-                    "profile image"
+                    1000000,
+                    "background image"
                   )
                   if (imageError) {
                     setBackgroundPicError(imageError)
@@ -162,6 +164,8 @@ function EditProfile() {
                   }
                 }}
                 validation={backgroundPicError}
+                preview={backgroundPic}
+                previewClassName="h-20 w-40"
               />
             </div>
             <div className="flex-1 flex flex-col lg:justify-start">

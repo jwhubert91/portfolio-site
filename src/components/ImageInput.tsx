@@ -7,6 +7,8 @@ interface ImageInputProps {
   label?: string
   onChange?: (e: SyntheticEvent) => void
   validation?: string
+  preview?: File | null
+  previewClassName?: string
 }
 
 function ImageInput({
@@ -16,7 +18,10 @@ function ImageInput({
   label,
   onChange,
   validation,
+  preview,
+  previewClassName,
 }: ImageInputProps) {
+  const previewURL = preview ? URL.createObjectURL(preview) : ""
   return (
     <label className={`text-left ${containerClassName}`}>
       {label && (
@@ -26,6 +31,7 @@ function ImageInput({
         <p className="text-xs italic text-black">{description}</p>
       )}
       <input type="file" className={`${inputClasses}`} onChange={onChange} />
+      {preview && <img className={previewClassName} src={previewURL} />}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )
@@ -43,6 +49,7 @@ export const validateImageChange = (
 ) => {
   let selected = (e.target as HTMLInputElement).files
   let image = selected ? selected[0] : null
+  const maxSizeInMb = maxSizeInBytes / 1000000
   let results: validateImageResultProps = {
     imageError: null,
     validatedImage: null,
@@ -61,7 +68,7 @@ export const validateImageChange = (
   }
   if (!!image && image.size > maxSizeInBytes) {
     return (results = {
-      imageError: `The ${imageName} selected is too large`,
+      imageError: `${imageName} must be smaller than ${maxSizeInMb} MB`,
       validatedImage: null,
     })
   }
