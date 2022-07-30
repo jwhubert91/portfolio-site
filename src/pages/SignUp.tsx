@@ -8,6 +8,7 @@ import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
 import { useSignUp } from "../hooks/useSignUp"
 import ErrorMessage from "../components/ErrorMessage"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 // For more regarding synthetic input events: https://bobbyhadz.com/blog/typescript-property-value-not-exist-type-eventtarget
 
@@ -15,8 +16,10 @@ function SignUp() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  const { user } = useAuthContext()
+
   const navigate = useNavigate()
-  const { signUp, error, user } = useSignUp()
+  const { signUp, error } = useSignUp()
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()

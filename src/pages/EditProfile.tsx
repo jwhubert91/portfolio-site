@@ -123,6 +123,7 @@ function EditProfile() {
                 }}
                 inputValue={bio}
               />
+              {/* Net Ninja videos on uploading videos are: 160 */}
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Profile picture 📸"

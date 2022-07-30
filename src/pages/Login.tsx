@@ -8,11 +8,13 @@ import PageLayout from "../components/PageLayout"
 import ErrorMessage from "../components/ErrorMessage"
 import { useLogIn } from "../hooks/useLogin"
 import { routes } from "../utilities/routes"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { login, user, error } = useLogIn()
+  const { user } = useAuthContext()
+  const { login, error } = useLogIn()
   const navigate = useNavigate()
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
