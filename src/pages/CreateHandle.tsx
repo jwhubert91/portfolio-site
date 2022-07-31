@@ -7,15 +7,31 @@ import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
+import { useUpdateProfile } from "../hooks/useUpdateProfile"
+import ErrorMessage from "../components/ErrorMessage"
 
 function CreateHandle() {
   const [username, setUsername] = useState("")
   const navigate = useNavigate()
   const { user } = useAuthContext()
+  const { updateUserProfile, error, isPending } = useUpdateProfile()
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    setUsername("")
-    navigate(routes.editProfile)
+    if (user) {
+      try {
+        updateUserProfile(user, {
+          ...user,
+          displayName: username,
+        })
+        if (!error && !isPending) {
+          console.log("Username set successfully")
+          navigate(routes.editProfile)
+        }
+      } catch {
+        console.error(error)
+      }
+    }
+    // navigate(routes.editProfile)
   }
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
@@ -36,9 +52,16 @@ function CreateHandle() {
             type=""
             required
           />
-          <Button buttonStyle="LARGE" className="mt-4">
-            Create Profile
-          </Button>
+          {error && <ErrorMessage error={error} />}
+          {isPending ? (
+            <Button buttonStyle="LARGE" className="mt-4" disabled>
+              Create Profile
+            </Button>
+          ) : (
+            <Button buttonStyle="LARGE" className="mt-4">
+              Create Profile
+            </Button>
+          )}
         </form>
       </CenteredContent>
     </PageLayout>
