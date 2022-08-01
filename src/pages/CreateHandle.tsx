@@ -1,38 +1,68 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react"
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore"
 import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
-import { routes } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
-import { useUpdateProfile } from "../hooks/useUpdateProfile"
+import { db } from "../firebase/config"
+import { useNavigate } from "react-router-dom"
+
 import ErrorMessage from "../components/ErrorMessage"
+import { routes } from "../utilities/routes"
 
 function CreateHandle() {
   const [username, setUsername] = useState("")
-  const navigate = useNavigate()
+  const [error, setError] = useState("")
+  const [isQueryPending, setIsQueryPending] = useState(false)
+  const [isSubmitPending, setIsSubmitPending] = useState(false)
+  const [isUsernameTaken, setIsUsernameTaken] = useState<boolean | null>(null)
+
   const { user } = useAuthContext()
-  const { updateUserProfile, error, isPending } = useUpdateProfile()
-  const handleSubmit = (e: React.FormEvent) => {
+  const navigate = useNavigate()
+
+  const addUsernameToUserDoc = async () => {
+    await addDoc(collection(db, "users"), {
+      userId: user?.uid,
+      username,
+    })
+      .then(() => {
+        navigate(routes.editProfile)
+      })
+      .catch((err) => {
+        setError(err.message)
+      })
+    setIsSubmitPending(false)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (user) {
-      try {
-        updateUserProfile(user, {
-          ...user,
-          displayName: username,
-        })
-        if (!error && !isPending) {
-          console.log("Username set successfully")
-          navigate(routes.editProfile)
-        }
-      } catch {
-        console.error(error)
+    setError("")
+    setIsSubmitPending(true)
+    setIsQueryPending(true)
+    // Check if username exists
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("username", "==", username))
+    const querySnapshot = await getDocs(q)
+    if (querySnapshot.empty) {
+      setIsUsernameTaken(false)
+    } else {
+      setIsUsernameTaken(true)
+      setError("Sorry, that username is taken, please try again.")
+      setIsSubmitPending(false)
+    }
+    setIsQueryPending(false)
+  }
+
+  useEffect(() => {
+    if (!isQueryPending && isUsernameTaken === false) {
+      if (!error) {
+        addUsernameToUserDoc()
       }
     }
-    // navigate(routes.editProfile)
-  }
+  }, [isQueryPending, isUsernameTaken, error, addUsernameToUserDoc])
+
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
@@ -44,7 +74,7 @@ function CreateHandle() {
           <Input
             inputValue={username}
             label="Please choose a username"
-            description="This will be how users find your portfolio"
+            description="This is one of the easiest ways to find your portfolio"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setUsername(value)
@@ -52,8 +82,7 @@ function CreateHandle() {
             type=""
             required
           />
-          {error && <ErrorMessage error={error} />}
-          {isPending ? (
+          {isSubmitPending ? (
             <Button buttonStyle="LARGE" className="mt-4" disabled>
               Create Profile
             </Button>
@@ -62,6 +91,7 @@ function CreateHandle() {
               Create Profile
             </Button>
           )}
+          {error && <ErrorMessage error={error} className="my-2" />}
         </form>
       </CenteredContent>
     </PageLayout>

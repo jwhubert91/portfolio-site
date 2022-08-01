@@ -19,11 +19,11 @@ function SignUp() {
   const { user } = useAuthContext()
 
   const navigate = useNavigate()
-  const { signUp, error } = useSignUp()
+  const { signUp, error, isPending } = useSignUp()
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    await signUp(email, password)
+    signUp(email, password)
   }
 
   useEffect(() => {
@@ -62,9 +62,15 @@ function SignUp() {
             type="password"
             required
           />
-          <Button buttonStyle="LARGE" className="mt-4">
-            Continue
-          </Button>
+          {isPending ? (
+            <Button buttonStyle="LARGE" className="mt-4" disabled>
+              Continue
+            </Button>
+          ) : (
+            <Button buttonStyle="LARGE" className="mt-4">
+              Continue
+            </Button>
+          )}
         </form>
         <p className="text-sm sm:text-base">
           Already have an account?{" "}

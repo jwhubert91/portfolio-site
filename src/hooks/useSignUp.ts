@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth"
 import { useAuthContext } from "./useAuthContext"
 
 export const useSignUp = () => {
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isPending, setIsPending] = useState<boolean>(false)
   const { dispatch } = useAuthContext()
 
