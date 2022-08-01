@@ -1,6 +1,14 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
+import {
+  updateDoc,
+  where,
+  getDocs,
+  collection,
+  query,
+} from "firebase/firestore"
+import { useAuthContext } from "../hooks/useAuthContext"
 import PageLayout from "../components/PageLayout"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
@@ -10,8 +18,12 @@ import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
 import { routes } from "../utilities/routes"
 import ImageInput, { validateImageChange } from "../components/ImageInput"
+import { db } from "../firebase/config"
+import ErrorMessage from "../components/ErrorMessage"
+import { ProfileType } from "../utilities/types"
 
 function EditProfile() {
+  const [error, setError] = useState("")
   const [profilePic, setProfilePic] = useState<File | null>(null)
   const [profilePicError, setProfilePicError] = useState("")
   const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
@@ -33,16 +45,98 @@ function EditProfile() {
   const [link5Name, setLink5Name] = useState("")
   const [link5Url, setLink5Url] = useState("")
 
+  const { user } = useAuthContext()
   const navigate = useNavigate()
 
-  function save() {
-    console.log("Saved!")
+  const fillInputs = ({
+    firstName,
+    lastName,
+    pronouns = "",
+    title,
+    location = "",
+    bio = "",
+    profileLink1,
+    profileLink2,
+    profileLink3,
+    profileLink4,
+    profileLink5,
+  }: ProfileType) => {
+    setFirstName(firstName)
+    setLastName(lastName)
+    setPronouns(pronouns)
+    setTitle(title)
+    setLocation(location)
+    setBio(bio)
+    setLink1Name(profileLink1?.title || "")
+    setLink1Url(profileLink1?.url || "")
+    setLink2Name(profileLink2?.title || "")
+    setLink2Url(profileLink2?.url || "")
+    setLink3Name(profileLink3?.title || "")
+    setLink3Url(profileLink3?.url || "")
+    setLink4Name(profileLink4?.title || "")
+    setLink4Url(profileLink4?.url || "")
+    setLink5Name(profileLink5?.title || "")
+    setLink5Url(profileLink5?.url || "")
   }
+
+  const load = async () => {
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("userId", "==", user?.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      const profileData: ProfileType = doc.data() as ProfileType
+      fillInputs(profileData)
+    })
+  }
+
+  const save = async () => {
+    // 1 - first query for the current user's User document in firestore
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("userId", "==", user?.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      // 2 - get the data and the reference object from the document
+      const profileData = doc.data()
+      const profileRef = doc.ref
+      // 3 - update the document
+      updateDoc(profileRef, {
+        ...profileData,
+        firstName,
+        lastName,
+        pronouns,
+        title,
+        location,
+        bio,
+        profileLinks: [
+          link1Name,
+          link1Url,
+          link2Name,
+          link2Url,
+          link3Name,
+          link3Url,
+          link4Name,
+          link4Url,
+          link5Name,
+          link5Url,
+        ],
+      })
+        // 4 - handle the promise
+        .then(() => {
+          navigate(routes.portfolio)
+        })
+        .catch((err) => {
+          setError(err.message)
+        })
+    })
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     save()
-    navigate(routes.portfolio)
   }
 
   const handleDeactivate = (e: React.FormEvent) => {
@@ -240,6 +334,7 @@ function EditProfile() {
               />
             </div>
           </div>
+          {error && <ErrorMessage error={error} />}
           <Button
             buttonStyle="LARGE"
             className="mb-8 w-full lg:w-1/2 mx-auto"

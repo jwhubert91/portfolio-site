@@ -5,6 +5,8 @@ export interface ExternalLinkType {
   url: string,
 }
 
+export type PermissionsType = "CREATOR_FREE" | "CREATOR_PAID" | "AGENCY_FREE" | "AGENCY_PAID"
+
 export interface ProjectType {
   id: string,
   creatorId: string
@@ -17,19 +19,26 @@ export interface ProjectType {
   summary256: string,
   description?: string,
   image: string,
-  externalLinks: ExternalLinkType[],
+  projectLink1: ExternalLinkType,
+  projectLink2: ExternalLinkType,
+  projectLink3: ExternalLinkType,
 }
 
-export interface User {
+export interface ProfileType {
+  userId: string
   firstName: string,
   lastName: string,
-  profileType: number,
-  username: string,
   pronouns?: string,
+  profileType: PermissionsType,
+  username: string,
   title: string,
   location?: string,
   bio?: string,
-  profileLinks: ExternalLinkType[],
   profileImage: Url,
   backgroundImage: Url,
+  profileLink1: ExternalLinkType,
+  profileLink2: ExternalLinkType,
+  profileLink3: ExternalLinkType,
+  profileLink4: ExternalLinkType,
+  profileLink5: ExternalLinkType,
 }

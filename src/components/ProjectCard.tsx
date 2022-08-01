@@ -21,20 +21,18 @@ const projectData: ProjectType = {
   Tailwind, and Firebase.`,
   image:
     "https://d1zdxptf8tk3f9.cloudfront.net/ckeditor_assets/pictures/2252/content_guilherme-vasconcelos-560064-unsplash.jpg",
-  externalLinks: [
-    {
-      title: "Website",
-      url: "https://jameshubert.com",
-    },
-    {
-      title: "GitHub",
-      url: "https://github.com/jwhubert91",
-    },
-    {
-      title: "Blog Post",
-      url: "https://dev.to/jwhubert91",
-    },
-  ],
+  projectLink1: {
+    title: "Website",
+    url: "https://jameshubert.com",
+  },
+  projectLink2: {
+    title: "GitHub",
+    url: "https://github.com/jwhubert91",
+  },
+  projectLink3: {
+    title: "Blog Post",
+    url: "https://dev.to/jwhubert91",
+  },
 }
 
 function ProjectCard() {
@@ -69,15 +67,26 @@ function ProjectCard() {
           </div>
         )}
       </Link>
-      {projectData.externalLinks && (
-        <div className="text-xs flex flex-wrap justify-center my-1">
-          {projectData.externalLinks.map(
-            (link: ExternalLinkType, idx: number) => (
-              <PillLink url={link.url} label={link.title} key={`link-${idx}`} />
-            )
-          )}
-        </div>
-      )}
+      <div className="text-xs flex flex-wrap justify-center my-1">
+        {projectData.projectLink1 && (
+          <PillLink
+            url={projectData.projectLink1.url}
+            label={projectData.projectLink1.title}
+          />
+        )}
+        {projectData.projectLink2 && (
+          <PillLink
+            url={projectData.projectLink2.url}
+            label={projectData.projectLink2.title}
+          />
+        )}
+        {projectData.projectLink3 && (
+          <PillLink
+            url={projectData.projectLink3.url}
+            label={projectData.projectLink3.title}
+          />
+        )}
+      </div>
       <CardAdminButton
         className="rounded sm:px-2 absolute top-2 right-2"
         onClick={handleEditProject}
