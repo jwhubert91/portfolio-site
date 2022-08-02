@@ -18,16 +18,19 @@ import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
 import { routes } from "../utilities/routes"
 import ImageInput, { validateImageChange } from "../components/ImageInput"
-import { db } from "../firebase/config"
+import { db, storage } from "../firebase/config"
 import ErrorMessage from "../components/ErrorMessage"
 import { ProfileType } from "../utilities/types"
 import { permissionsLevels } from "../utilities/constants"
+import { ref, uploadBytes } from "firebase/storage"
 
 function EditProfile() {
   const [error, setError] = useState("")
   const [profilePic, setProfilePic] = useState<File | null>(null)
+  const [profilePicUrl, setProfilePicUrl] = useState("")
   const [profilePicError, setProfilePicError] = useState("")
   const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
+  const [backgroundPicUrl, setBackgroundPicUrl] = useState("")
   const [backgroundPicError, setBackgroundPicError] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -91,7 +94,36 @@ function EditProfile() {
     })
   }
 
-  const save = async () => {
+  const uploadImages = async () => {
+    // upload user thumbnail
+    if (user?.uid) {
+      const { uid } = user
+      if (profilePic) {
+        const uploadPath: string = `images/${uid}/profilePic/${profilePic.name}`
+        const storageRef = ref(storage, uploadPath)
+        await uploadBytes(storageRef, profilePic)
+          .then((snapshot) => {
+            console.log("Profile image uploaded successfully", snapshot)
+          })
+          .catch((err) => {
+            setProfilePicError(err.message)
+          })
+      }
+      if (backgroundPic) {
+        const uploadPath: string = `images/${uid}/backgroundPic/${backgroundPic.name}`
+        const storageRef = ref(storage, uploadPath)
+        await uploadBytes(storageRef, backgroundPic)
+          .then((snapshot) => {
+            console.log("Background image uploaded successfully", snapshot)
+          })
+          .catch((err) => {
+            setBackgroundPicError(err.message)
+          })
+      }
+    }
+  }
+
+  const saveProfile = async () => {
     // 1 - first query for the current user's User document in firestore
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
@@ -146,7 +178,10 @@ function EditProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    await save()
+    if (profilePic || backgroundPic) {
+      await uploadImages()
+    }
+    await saveProfile()
     navigate(routes.portfolio)
   }
 
