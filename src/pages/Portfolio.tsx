@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
-// import ProjectCard from "../components/ProjectCard"
 import ProjectList from "../components/ProjectList"
 import AddProjectPrompt from "../components/AddProjectPrompt"
 import { useCollection } from "../hooks/useCollection"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 function Portfolio() {
   const [title, setTitle] = useState("")
@@ -40,14 +40,7 @@ function Portfolio() {
         />
         <AddProjectPrompt className="mb-2 mx-auto" />
         <h3 className="text-md mb-4">Past Work</h3>
-        {projects ? (
-          <ProjectList projects={projects} />
-        ) : (
-          <p>
-            You don't have any projects yet. Click "Add new project" to create
-            one.
-          </p>
-        )}
+        {projects ? <ProjectList projects={projects} /> : <LoadingIndicator />}
         {/* <ProjectCard /> */}
       </div>
     </PageLayout>

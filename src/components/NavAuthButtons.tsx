@@ -6,7 +6,7 @@ import { routes } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 function NavAuthButtons() {
-  const { user } = useAuthContext()
+  const { user, authIsReady } = useAuthContext()
 
   const { logOut, error } = useLogOut()
   const navigate = useNavigate()
@@ -20,26 +20,30 @@ function NavAuthButtons() {
 
   return (
     <div className="overflow-visible">
-      {user ? (
+      {authIsReady && (
         <>
-          <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
-            Profile
-          </Link>
-          <button
-            onClick={handleLogOut}
-            className="text-snowWhite ml-2 sm:ml-4"
-          >
-            Log Out
-          </button>
-        </>
-      ) : (
-        <>
-          <Link className={getButtonStyle("PRIMARY_CTA")} to="/signup">
-            Create a Portfolio
-          </Link>
-          <Link to="/login" className="text-snowWhite ml-2 sm:ml-4">
-            Login
-          </Link>
+          {user ? (
+            <>
+              <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
+                Profile
+              </Link>
+              <button
+                onClick={handleLogOut}
+                className="text-snowWhite ml-2 sm:ml-4"
+              >
+                Log Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link className={getButtonStyle("PRIMARY_CTA")} to="/signup">
+                Create a Portfolio
+              </Link>
+              <Link to="/login" className="text-snowWhite ml-2 sm:ml-4">
+                Login
+              </Link>
+            </>
+          )}
         </>
       )}
     </div>

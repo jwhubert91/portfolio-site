@@ -195,6 +195,8 @@ function ProjectForm() {
                     const value = (e.target as HTMLInputElement).value
                     setLink1Url(value)
                   }}
+                  linkNameInputValue={link1Name}
+                  urlInputValue={link1Url}
                 />
                 <LinkInputRow
                   onNameChange={(e) => {
@@ -205,6 +207,8 @@ function ProjectForm() {
                     const value = (e.target as HTMLInputElement).value
                     setLink2Url(value)
                   }}
+                  linkNameInputValue={link2Name}
+                  urlInputValue={link2Url}
                 />
                 <LinkInputRow
                   onNameChange={(e) => {
@@ -215,6 +219,8 @@ function ProjectForm() {
                     const value = (e.target as HTMLInputElement).value
                     setLink3Url(value)
                   }}
+                  linkNameInputValue={link3Name}
+                  urlInputValue={link3Url}
                 />
               </div>
             </div>

@@ -19,30 +19,28 @@ import { useAuthContext } from "./hooks/useAuthContext"
 import { routes } from "./utilities/routes"
 
 function App() {
-  const { user, authIsReady } = useAuthContext()
+  const { user } = useAuthContext()
   return (
     <>
-      {authIsReady && (
-        <BrowserRouter>
-          <Routes>
-            <Route path="*" element={<FourOhFour />} />
-            <Route path={routes.home} element={<Home />} />
-            <Route
-              path={routes.login}
-              element={user ? <Portfolio /> : <Login />}
-            />
-            <Route path={routes.signup} element={<SignUp />} />
-            <Route path={routes.createHandle} element={<CreateHandle />} />
-            <Route path={routes.editProfile} element={<EditProfile />} />
-            <Route path={routes.portfolio} element={<Portfolio />} />
-            <Route path={routes.projects}>
-              <Route path={routes.createProject} element={<ProjectForm />} />
-              <Route path={routes.editProject} element={<ProjectForm />} />
-              <Route path={routes.projectId} element={<ProjectDetail />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<FourOhFour />} />
+          <Route path={routes.home} element={<Home />} />
+          <Route
+            path={routes.login}
+            element={user ? <Portfolio /> : <Login />}
+          />
+          <Route path={routes.signup} element={<SignUp />} />
+          <Route path={routes.createHandle} element={<CreateHandle />} />
+          <Route path={routes.editProfile} element={<EditProfile />} />
+          <Route path={routes.portfolio} element={<Portfolio />} />
+          <Route path={routes.projects}>
+            <Route path={routes.createProject} element={<ProjectForm />} />
+            <Route path={routes.editProject} element={<ProjectForm />} />
+            <Route path={routes.projectId} element={<ProjectDetail />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }

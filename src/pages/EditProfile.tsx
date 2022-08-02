@@ -21,6 +21,7 @@ import ImageInput, { validateImageChange } from "../components/ImageInput"
 import { db } from "../firebase/config"
 import ErrorMessage from "../components/ErrorMessage"
 import { ProfileType } from "../utilities/types"
+import { permissionsLevels } from "../utilities/constants"
 
 function EditProfile() {
   const [error, setError] = useState("")
@@ -45,7 +46,7 @@ function EditProfile() {
   const [link5Name, setLink5Name] = useState("")
   const [link5Url, setLink5Url] = useState("")
 
-  const { user } = useAuthContext()
+  const { user, authIsReady } = useAuthContext()
   const navigate = useNavigate()
 
   const fillInputs = ({
@@ -67,16 +68,16 @@ function EditProfile() {
     setTitle(title)
     setLocation(location)
     setBio(bio)
-    setLink1Name(profileLink1?.title || "")
-    setLink1Url(profileLink1?.url || "")
-    setLink2Name(profileLink2?.title || "")
-    setLink2Url(profileLink2?.url || "")
-    setLink3Name(profileLink3?.title || "")
-    setLink3Url(profileLink3?.url || "")
-    setLink4Name(profileLink4?.title || "")
-    setLink4Url(profileLink4?.url || "")
-    setLink5Name(profileLink5?.title || "")
-    setLink5Url(profileLink5?.url || "")
+    setLink1Name(profileLink1?.title)
+    setLink1Url(profileLink1?.url)
+    setLink2Name(profileLink2?.title)
+    setLink2Url(profileLink2?.url)
+    setLink3Name(profileLink3?.title)
+    setLink3Url(profileLink3?.url)
+    setLink4Name(profileLink4?.title)
+    setLink4Url(profileLink4?.url)
+    setLink5Name(profileLink5?.title)
+    setLink5Url(profileLink5?.url)
   }
 
   const load = async () => {
@@ -85,6 +86,7 @@ function EditProfile() {
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
+      console.log(profileData)
       fillInputs(profileData)
     })
   }
@@ -101,29 +103,35 @@ function EditProfile() {
       // 3 - update the document
       updateDoc(profileRef, {
         ...profileData,
+        profileType: permissionsLevels[0],
         firstName,
         lastName,
         pronouns,
         title,
         location,
         bio,
-        profileLinks: [
-          link1Name,
-          link1Url,
-          link2Name,
-          link2Url,
-          link3Name,
-          link3Url,
-          link4Name,
-          link4Url,
-          link5Name,
-          link5Url,
-        ],
+        profileLink1: {
+          title: link1Name || "",
+          url: link1Url || "",
+        },
+        profileLink2: {
+          title: link2Name || "",
+          url: link2Url || "",
+        },
+        profileLink3: {
+          title: link3Name || "",
+          url: link3Url || "",
+        },
+        profileLink4: {
+          title: link4Name || "",
+          url: link4Url || "",
+        },
+        profileLink5: {
+          title: link5Name || "",
+          url: link5Url || "",
+        },
       })
         // 4 - handle the promise
-        .then(() => {
-          navigate(routes.portfolio)
-        })
         .catch((err) => {
           setError(err.message)
         })
@@ -131,12 +139,15 @@ function EditProfile() {
   }
 
   useEffect(() => {
-    load()
-  }, [])
+    if (authIsReady) {
+      load()
+    }
+  }, [authIsReady])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    save()
+    await save()
+    navigate(routes.portfolio)
   }
 
   const handleDeactivate = (e: React.FormEvent) => {
@@ -147,210 +158,214 @@ function EditProfile() {
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
-        <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
-          <FormHeader className="mb-2" title="Edit Profile" />
-          <p className="text-md mb-2 lg:mb-8 text-slate-500">
-            Introduce yourself to the community
-          </p>
-          <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
-            <div className="flex-1 flex flex-col justify-start">
-              <Input
-                containerClassName="mb-2"
-                inputValue={firstName}
-                label="first name"
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setFirstName(value)
-                }}
-                type="text"
-              />
-              <Input
-                containerClassName="mb-2"
-                inputValue={lastName}
-                label="last name"
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLastName(value)
-                }}
-                type="text"
-              />
-              <Input
-                containerClassName="mb-2"
-                inputValue={pronouns}
-                label="optional pronouns"
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setPronouns(value)
-                }}
-                type="text"
-              />
-              <Input
-                containerClassName="mb-2"
-                inputValue={title}
-                label="title 💼"
-                placeholder="Architect, Designer, Web Developer"
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setTitle(value)
-                }}
-                type="text"
-              />
-              <Input
-                containerClassName="mb-2"
-                inputValue={location}
-                label="location 🌎"
-                placeholder="New York, NY"
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLocation(value)
-                }}
-                type="text"
-              />
-              <TextArea
-                label="A short bio 👀"
-                description="256 characters to tell your fellow humans who you are"
-                placeholder="I am a..."
-                maxLength={256}
-                onChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setBio(value)
-                }}
-                inputValue={bio}
-              />
-              {/* Net Ninja videos on uploading videos are: 160 */}
-              <ImageInput
-                containerClassName="py-2 mb-2"
-                label="Profile picture 📸"
-                description="A square headshot is best. Less than 1 MB"
-                onChange={(e) => {
-                  setProfilePic(null)
-                  setProfilePicError("")
-                  let { imageError, validatedImage } = validateImageChange(
-                    e,
-                    1000000,
-                    "profile image"
-                  )
-                  if (imageError) {
-                    setProfilePicError(imageError)
-                  } else {
-                    setProfilePic(validatedImage)
-                  }
-                }}
-                validation={profilePicError}
-                preview={profilePic}
-                previewClassName="h-20 w-20"
-              />
-              <ImageInput
-                containerClassName="py-2 mb-2"
-                label="Background image 🌉"
-                description="A wide or landscape image works best here. Less than 1 MB."
-                onChange={(e) => {
-                  setBackgroundPic(null)
-                  setBackgroundPicError("")
-                  let { imageError, validatedImage } = validateImageChange(
-                    e,
-                    1000000,
-                    "background image"
-                  )
-                  if (imageError) {
-                    setBackgroundPicError(imageError)
-                  } else {
-                    setBackgroundPic(validatedImage)
-                  }
-                }}
-                validation={backgroundPicError}
-                preview={backgroundPic}
-                previewClassName="h-20 w-40"
-              />
-            </div>
-            <div className="flex-1 flex flex-col lg:justify-start">
-              <div className="mb-2 text-left">
-                <h4 className="block text-sm font-medium text-gray-700">
-                  Personal Links 🔗
-                </h4>
-                <p className="text-xs italic text-black">
-                  Add up to 5 links to social media, a website, etc.
-                </p>
+        {authIsReady ? (
+          <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
+            <FormHeader className="mb-2" title="Edit Profile" />
+            <p className="text-md mb-2 lg:mb-8 text-slate-500">
+              Introduce yourself to the community
+            </p>
+            <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
+              <div className="flex-1 flex flex-col justify-start">
+                <Input
+                  containerClassName="mb-2"
+                  inputValue={firstName}
+                  label="first name"
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setFirstName(value)
+                  }}
+                  type="text"
+                />
+                <Input
+                  containerClassName="mb-2"
+                  inputValue={lastName}
+                  label="last name"
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLastName(value)
+                  }}
+                  type="text"
+                />
+                <Input
+                  containerClassName="mb-2"
+                  inputValue={pronouns}
+                  label="optional pronouns"
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setPronouns(value)
+                  }}
+                  type="text"
+                />
+                <Input
+                  containerClassName="mb-2"
+                  inputValue={title}
+                  label="title 💼"
+                  placeholder="Architect, Designer, Web Developer"
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setTitle(value)
+                  }}
+                  type="text"
+                />
+                <Input
+                  containerClassName="mb-2"
+                  inputValue={location}
+                  label="location 🌎"
+                  placeholder="New York, NY"
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLocation(value)
+                  }}
+                  type="text"
+                />
+                <TextArea
+                  label="A short bio 👀"
+                  description="256 characters to tell your fellow humans who you are"
+                  placeholder="I am a..."
+                  maxLength={256}
+                  onChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setBio(value)
+                  }}
+                  inputValue={bio}
+                />
+                {/* Net Ninja videos on uploading images are: 160 */}
+                <ImageInput
+                  containerClassName="py-2 mb-2"
+                  label="Profile picture 📸"
+                  description="A square headshot is best. Less than 1 MB"
+                  onChange={(e) => {
+                    setProfilePic(null)
+                    setProfilePicError("")
+                    let { imageError, validatedImage } = validateImageChange(
+                      e,
+                      1000000,
+                      "profile image"
+                    )
+                    if (imageError) {
+                      setProfilePicError(imageError)
+                    } else {
+                      setProfilePic(validatedImage)
+                    }
+                  }}
+                  validation={profilePicError}
+                  preview={profilePic}
+                  previewClassName="h-20 w-20"
+                />
+                <ImageInput
+                  containerClassName="py-2 mb-2"
+                  label="Background image 🌉"
+                  description="A wide or landscape image works best here. Less than 1 MB."
+                  onChange={(e) => {
+                    setBackgroundPic(null)
+                    setBackgroundPicError("")
+                    let { imageError, validatedImage } = validateImageChange(
+                      e,
+                      1000000,
+                      "background image"
+                    )
+                    if (imageError) {
+                      setBackgroundPicError(imageError)
+                    } else {
+                      setBackgroundPic(validatedImage)
+                    }
+                  }}
+                  validation={backgroundPicError}
+                  preview={backgroundPic}
+                  previewClassName="h-20 w-40"
+                />
               </div>
-              <LinkInputRow
-                linkNameInputValue={link1Name}
-                urlInputValue={link1Url}
-                onNameChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink1Name(value)
-                }}
-                onURLChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink1Url(value)
-                }}
-              />
-              <LinkInputRow
-                linkNameInputValue={link2Name}
-                urlInputValue={link2Url}
-                onNameChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink2Name(value)
-                }}
-                onURLChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink2Url(value)
-                }}
-              />
-              <LinkInputRow
-                linkNameInputValue={link3Name}
-                urlInputValue={link3Url}
-                onNameChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink3Name(value)
-                }}
-                onURLChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink3Url(value)
-                }}
-              />
-              <LinkInputRow
-                linkNameInputValue={link4Name}
-                urlInputValue={link4Url}
-                onNameChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink4Name(value)
-                }}
-                onURLChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink4Url(value)
-                }}
-              />
-              <LinkInputRow
-                linkNameInputValue={link5Name}
-                urlInputValue={link5Url}
-                onNameChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink5Name(value)
-                }}
-                onURLChange={(e) => {
-                  const value = (e.target as HTMLInputElement).value
-                  setLink5Url(value)
-                }}
-              />
+              <div className="flex-1 flex flex-col lg:justify-start">
+                <div className="mb-2 text-left">
+                  <h4 className="block text-sm font-medium text-gray-700">
+                    Personal Links 🔗
+                  </h4>
+                  <p className="text-xs italic text-black">
+                    Add up to 5 links to social media, a website, etc.
+                  </p>
+                </div>
+                <LinkInputRow
+                  linkNameInputValue={link1Name}
+                  urlInputValue={link1Url}
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink1Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink1Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  linkNameInputValue={link2Name}
+                  urlInputValue={link2Url}
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink2Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink2Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  linkNameInputValue={link3Name}
+                  urlInputValue={link3Url}
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink3Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink3Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  linkNameInputValue={link4Name}
+                  urlInputValue={link4Url}
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink4Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink4Url(value)
+                  }}
+                />
+                <LinkInputRow
+                  linkNameInputValue={link5Name}
+                  urlInputValue={link5Url}
+                  onNameChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink5Name(value)
+                  }}
+                  onURLChange={(e) => {
+                    const value = (e.target as HTMLInputElement).value
+                    setLink5Url(value)
+                  }}
+                />
+              </div>
             </div>
-          </div>
-          {error && <ErrorMessage error={error} />}
-          <Button
-            buttonStyle="LARGE"
-            className="mb-8 w-full lg:w-1/2 mx-auto"
-            onClick={handleSubmit}
-          >
-            Publish
-          </Button>
-          <Button
-            buttonStyle="ALERT"
-            className="w-full lg:w-1/2 mx-auto text-xl"
-            onClick={handleDeactivate}
-          >
-            <MdDeleteForever className="text-3xl mr-2" />
-            <span>Deactivate Profile</span>
-          </Button>
-        </form>
+            {error && <ErrorMessage error={error} />}
+            <Button
+              buttonStyle="LARGE"
+              className="mb-8 w-full lg:w-1/2 mx-auto"
+              onClick={handleSubmit}
+            >
+              Publish
+            </Button>
+            <Button
+              buttonStyle="ALERT"
+              className="w-full lg:w-1/2 mx-auto text-xl"
+              onClick={handleDeactivate}
+            >
+              <MdDeleteForever className="text-3xl mr-2" />
+              <span>Deactivate Profile</span>
+            </Button>
+          </form>
+        ) : (
+          <p>Loading...</p>
+        )}
       </CenteredContent>
     </PageLayout>
   )
