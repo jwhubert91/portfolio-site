@@ -8,7 +8,7 @@ import "./Home.css"
 
 function Home() {
   const navigate = useNavigate()
-  const { user } = useAuthContext()
+  const { user, authIsReady } = useAuthContext()
   const handleHeroCTAClick = () => {
     user ? navigate(routes.portfolio) : navigate(routes.signup)
   }
@@ -23,13 +23,15 @@ function Home() {
             Share your past work, highlight projects, and display your contact
             info. All for free.
           </p>
-          <Button
-            buttonStyle="LARGE"
-            className="mx-auto mt-4 xl:mt-12"
-            onClick={handleHeroCTAClick}
-          >
-            Create a Portfolio
-          </Button>
+          {authIsReady && (
+            <Button
+              buttonStyle="LARGE"
+              className="mx-auto mt-4 xl:mt-12"
+              onClick={handleHeroCTAClick}
+            >
+              Create a Portfolio
+            </Button>
+          )}
         </>
       </CenteredContent>
     </PageLayout>

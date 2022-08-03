@@ -49,7 +49,7 @@ function CreateHandle() {
       setIsUsernameTaken(false)
     } else {
       setIsUsernameTaken(true)
-      setError("Sorry, that username is taken, please try again.")
+      setError("Sorry, that username is taken. Please try another.")
       setIsSubmitPending(false)
     }
     setIsQueryPending(false)
@@ -77,7 +77,7 @@ function CreateHandle() {
             description="This is one of the easiest ways to find your portfolio"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
-              setUsername(value)
+              setUsername(value.toLowerCase())
             }}
             type=""
             required

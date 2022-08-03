@@ -1,4 +1,5 @@
 import React from "react"
+import "./LoadingIndicator.css"
 
 interface LoadingIndicatorProps {
   className?: string
@@ -6,8 +7,8 @@ interface LoadingIndicatorProps {
 
 function LoadingIndicator({ className = "" }: LoadingIndicatorProps) {
   return (
-    <div className={`text-center ${className}`}>
-      <p className="text-2xl">Loading...</p>
+    <div className={`w-full flex justify-center ${className}`}>
+      <div className="loading-spinner"></div>
     </div>
   )
 }
