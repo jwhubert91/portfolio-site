@@ -7,7 +7,7 @@ interface ImageInputProps {
   label?: string
   onChange?: (e: SyntheticEvent) => void
   validation?: string
-  preview?: File | null
+  previewUrl?: string
   previewClassName?: string
 }
 
@@ -18,10 +18,9 @@ function ImageInput({
   label,
   onChange,
   validation,
-  preview,
+  previewUrl,
   previewClassName,
 }: ImageInputProps) {
-  const previewURL = preview ? URL.createObjectURL(preview) : ""
   return (
     <label className={`text-left ${containerClassName}`}>
       {label && (
@@ -31,7 +30,7 @@ function ImageInput({
         <p className="text-xs italic text-black">{description}</p>
       )}
       <input type="file" className={`${inputClasses}`} onChange={onChange} />
-      {preview && <img className={previewClassName} src={previewURL} />}
+      {previewUrl && <img className={previewClassName} src={previewUrl} />}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )

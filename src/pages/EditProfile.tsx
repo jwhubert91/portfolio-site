@@ -22,15 +22,16 @@ import { db, storage } from "../firebase/config"
 import ErrorMessage from "../components/ErrorMessage"
 import { ProfileType } from "../utilities/types"
 import { permissionsLevels } from "../utilities/constants"
-import { ref, uploadBytes } from "firebase/storage"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import { updateProfile } from "firebase/auth"
+import LoadingIndicator from "../components/LoadingIndicator"
 
 function EditProfile() {
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const [profilePic, setProfilePic] = useState<File | null>(null)
-  const [profilePicUrl, setProfilePicUrl] = useState("")
   const [profilePicError, setProfilePicError] = useState("")
   const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
-  const [backgroundPicUrl, setBackgroundPicUrl] = useState("")
   const [backgroundPicError, setBackgroundPicError] = useState("")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
@@ -59,6 +60,8 @@ function EditProfile() {
     title,
     location = "",
     bio = "",
+    profileImageUrl,
+    backgroundImageUrl,
     profileLink1,
     profileLink2,
     profileLink3,
@@ -84,6 +87,7 @@ function EditProfile() {
   }
 
   const load = async () => {
+    setIsLoading(true)
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
     const querySnapshot = await getDocs(q)
@@ -92,47 +96,71 @@ function EditProfile() {
       console.log(profileData)
       fillInputs(profileData)
     })
+    setIsLoading(false)
   }
 
   const uploadImages = async () => {
+    let imageUrls = {
+      profilePicUrl: "",
+      backgroundPicUrl: "",
+    }
     // upload user thumbnail
     if (user?.uid) {
       const { uid } = user
       if (profilePic) {
-        const uploadPath: string = `images/${uid}/profilePic/${profilePic.name}`
+        const uploadPath: string = `images/${uid}/${profilePic.name}`
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, profilePic)
-          .then((snapshot) => {
-            console.log("Profile image uploaded successfully", snapshot)
+          .then(async (snapshot) => {
+            console.log("Profile image uploaded successfully")
+            imageUrls.profilePicUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
             setProfilePicError(err.message)
           })
       }
       if (backgroundPic) {
-        const uploadPath: string = `images/${uid}/backgroundPic/${backgroundPic.name}`
+        const uploadPath: string = `images/${uid}/${backgroundPic.name}`
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, backgroundPic)
-          .then((snapshot) => {
-            console.log("Background image uploaded successfully", snapshot)
+          .then(async (snapshot) => {
+            console.log("Background image uploaded successfully")
+            imageUrls.backgroundPicUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
             setBackgroundPicError(err.message)
           })
       }
     }
+    return imageUrls
   }
 
-  const saveProfile = async () => {
-    // 1 - first query for the current user's User document in firestore
+  const saveProfile = async (imageUrls: {
+    profilePicUrl: string
+    backgroundPicUrl: string
+  }) => {
+    // 1 - first, save the profile image, displayname, and full name to the user's auth document
+    if (user) {
+      await updateProfile(user, {
+        photoURL: imageUrls.profilePicUrl,
+      })
+        .then(() => console.log("Profile image successfully saved"))
+        .catch((err) =>
+          console.log(
+            "There was an error saving the profile image. ",
+            err.message
+          )
+        )
+    }
+    // 2 - second, query for the current user's User document in firestore
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
-      // 2 - get the data and the reference object from the document
+      // 3 - get the data and the reference object from the document
       const profileData = doc.data()
       const profileRef = doc.ref
-      // 3 - update the document
+      // 4 - update the document
       updateDoc(profileRef, {
         ...profileData,
         profileType: permissionsLevels[0],
@@ -142,6 +170,7 @@ function EditProfile() {
         title,
         location,
         bio,
+        backgroundImageUrl: imageUrls.backgroundPicUrl,
         profileLink1: {
           title: link1Name || "",
           url: link1Url || "",
@@ -163,7 +192,7 @@ function EditProfile() {
           url: link5Url || "",
         },
       })
-        // 4 - handle the promise
+        // 5 - handle the promise
         .catch((err) => {
           setError(err.message)
         })
@@ -178,10 +207,8 @@ function EditProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (profilePic || backgroundPic) {
-      await uploadImages()
-    }
-    await saveProfile()
+    const imageUrls = await uploadImages()
+    await saveProfile(imageUrls)
     navigate(routes.portfolio)
   }
 
@@ -193,7 +220,7 @@ function EditProfile() {
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
-        {authIsReady ? (
+        {authIsReady && !isLoading ? (
           <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
             <FormHeader className="mb-2" title="Edit Profile" />
             <p className="text-md mb-2 lg:mb-8 text-slate-500">
@@ -284,7 +311,7 @@ function EditProfile() {
                     }
                   }}
                   validation={profilePicError}
-                  preview={profilePic}
+                  previewUrl={profilePic ? URL.createObjectURL(profilePic) : ""}
                   previewClassName="h-20 w-20"
                 />
                 <ImageInput
@@ -306,7 +333,9 @@ function EditProfile() {
                     }
                   }}
                   validation={backgroundPicError}
-                  preview={backgroundPic}
+                  previewUrl={
+                    backgroundPic ? URL.createObjectURL(backgroundPic) : ""
+                  }
                   previewClassName="h-20 w-40"
                 />
               </div>
@@ -386,6 +415,7 @@ function EditProfile() {
               buttonStyle="LARGE"
               className="mb-8 w-full lg:w-1/2 mx-auto"
               onClick={handleSubmit}
+              disabled={isLoading}
             >
               Publish
             </Button>
@@ -393,13 +423,14 @@ function EditProfile() {
               buttonStyle="ALERT"
               className="w-full lg:w-1/2 mx-auto text-xl"
               onClick={handleDeactivate}
+              disabled={isLoading}
             >
               <MdDeleteForever className="text-3xl mr-2" />
               <span>Deactivate Profile</span>
             </Button>
           </form>
         ) : (
-          <p>Loading...</p>
+          <LoadingIndicator />
         )}
       </CenteredContent>
     </PageLayout>
