@@ -58,7 +58,8 @@ function Portfolio() {
   useEffect(() => {
     setIsLoading(true)
     if (authIsReady && user) {
-      loadProfile()
+      // loadProfile()
+      console.log("problem is with loadProfile")
     }
     setIsLoading(false)
   }, [authIsReady, user])

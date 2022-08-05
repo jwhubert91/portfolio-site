@@ -24,6 +24,7 @@ function ProfileCard({
   bio = "",
   links = [],
   backgroundImageSrc = "",
+  profileImageSrc = "",
 }: ProfileCardProps) {
   const LinkNodes = () => {
     if (links.length > 0) {
@@ -59,7 +60,7 @@ function ProfileCard({
         } flex items-center md:items-end justify-center p-2`}
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
       >
-        <ProfileImage />
+        <ProfileImage profileImageSrc={profileImageSrc} />
       </div>
       <div className="relative text-center p-2">
         <h2 className="text-2xl font-bold">James Hubert</h2>
