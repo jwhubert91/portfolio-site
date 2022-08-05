@@ -30,15 +30,16 @@ function ImageInput({
         <p className="text-xs italic text-black">{description}</p>
       )}
       <input type="file" className={`${inputClasses}`} onChange={onChange} />
-      {previewUrl && <img className={previewClassName} src={previewUrl} />}
+      {previewUrl && (
+        <img
+          className={`my-2 ${previewClassName}`}
+          src={previewUrl}
+          alt={label}
+        />
+      )}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )
-}
-
-interface validateImageResultProps {
-  imageError: string | null
-  validatedImage: File | null
 }
 
 export const validateImageChange = (
@@ -49,32 +50,28 @@ export const validateImageChange = (
   let selected = (e.target as HTMLInputElement).files
   let image = selected ? selected[0] : null
   const maxSizeInMb = maxSizeInBytes / 1000000
-  let results: validateImageResultProps = {
-    imageError: null,
-    validatedImage: null,
-  }
   if (!image) {
-    return (results = {
+    return {
       imageError: `${imageName} not selected`,
       validatedImage: null,
-    })
+    }
   }
   if (!image?.type.includes("image")) {
-    return (results = {
+    return {
       imageError: "Selected file must be an image",
       validatedImage: null,
-    })
+    }
   }
   if (!!image && image.size > maxSizeInBytes) {
-    return (results = {
+    return {
       imageError: `${imageName} must be smaller than ${maxSizeInMb} MB`,
       validatedImage: null,
-    })
+    }
   }
-  return (results = {
+  return {
     imageError: null,
     validatedImage: image,
-  })
+  }
 }
 
 export default ImageInput

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import {
@@ -30,8 +30,10 @@ function EditProfile() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [profilePic, setProfilePic] = useState<File | null>(null)
+  const [profilePicUrl, setProfilePicUrl] = useState<string>("")
   const [profilePicError, setProfilePicError] = useState("")
   const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
+  const [backgroundPicUrl, setBackgroundPicUrl] = useState<string>("")
   const [backgroundPicError, setBackgroundPicError] = useState("")
   const [firstName, setFirstName] = useState<string>("")
   const [lastName, setLastName] = useState<string>("")
@@ -50,6 +52,7 @@ function EditProfile() {
   const [link5Name, setLink5Name] = useState("")
   const [link5Url, setLink5Url] = useState("")
 
+  let newUserRef = useRef(true)
   const { user, authIsReady } = useAuthContext()
   const navigate = useNavigate()
 
@@ -84,6 +87,8 @@ function EditProfile() {
     setLink4Url(profileLink4?.url)
     setLink5Name(profileLink5?.title)
     setLink5Url(profileLink5?.url)
+    setBackgroundPicUrl(backgroundImageUrl || "")
+    setProfilePicUrl(profileImageUrl || "")
   }
 
   const validate = () => {
@@ -111,6 +116,7 @@ function EditProfile() {
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
       console.log(profileData)
+      newUserRef.current = profileData.firstName ? false : true
       fillInputs(profileData)
     })
     setIsLoading(false)
@@ -156,20 +162,23 @@ function EditProfile() {
     profilePicUrl: string
     backgroundPicUrl: string
   }) => {
-    // 1 - second, save the profile image, displayname, and full name to the user's auth document
+    setIsLoading(true)
+    // 1 - save the profile image, displayname, and full name to the user's auth document
     if (user && !error) {
       await updateProfile(user, {
         photoURL: imageUrls.profilePicUrl,
       })
-        .then(() => console.log("Profile image successfully saved"))
-        .catch((err) =>
+        .then((res) => res)
+        .catch((err) => {
           console.log(
             "There was an error saving the profile image. ",
             err.message
           )
-        )
+          setIsLoading(false)
+          setError("There was an error saving the profile image.")
+        })
     }
-    // 2 - then query for the current user's User document in firestore
+    // 2 - second, query for the current user's User document in firestore
     if (error) {
       return
     }
@@ -191,6 +200,7 @@ function EditProfile() {
         location,
         bio,
         backgroundImageUrl: imageUrls.backgroundPicUrl,
+        profileImageUrl: imageUrls.profilePicUrl,
         profileLink1: {
           title: link1Name || "",
           url: link1Url || "",
@@ -217,6 +227,7 @@ function EditProfile() {
           setError(err.message)
         })
     })
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -241,7 +252,10 @@ function EditProfile() {
   }
 
   return (
-    <PageLayout className="flex flex-col" isNavAuthShown={false}>
+    <PageLayout
+      className="flex flex-col"
+      isNavAuthShown={newUserRef.current ? false : true}
+    >
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
         {authIsReady && !isLoading ? (
           <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
@@ -336,8 +350,10 @@ function EditProfile() {
                     }
                   }}
                   validation={profilePicError}
-                  previewUrl={profilePic ? URL.createObjectURL(profilePic) : ""}
-                  previewClassName="h-20 w-20"
+                  previewUrl={
+                    profilePic ? URL.createObjectURL(profilePic) : profilePicUrl
+                  }
+                  previewClassName="h-40 w-40"
                 />
                 <ImageInput
                   containerClassName="py-2 mb-2"
@@ -359,9 +375,11 @@ function EditProfile() {
                   }}
                   validation={backgroundPicError}
                   previewUrl={
-                    backgroundPic ? URL.createObjectURL(backgroundPic) : ""
+                    backgroundPic
+                      ? URL.createObjectURL(backgroundPic)
+                      : backgroundPicUrl
                   }
-                  previewClassName="h-20 w-40"
+                  previewClassName="h-40 w-80"
                 />
               </div>
               <div className="flex-1 flex flex-col lg:justify-start">
@@ -444,15 +462,17 @@ function EditProfile() {
             >
               Publish
             </Button>
-            <Button
-              buttonStyle="ALERT"
-              className="w-full lg:w-1/2 mx-auto text-xl"
-              onClick={handleDeactivate}
-              disabled={isLoading}
-            >
-              <MdDeleteForever className="text-3xl mr-2" />
-              <span>Deactivate Profile</span>
-            </Button>
+            {!newUserRef.current && (
+              <Button
+                buttonStyle="ALERT"
+                className="w-full lg:w-1/2 mx-auto text-xl"
+                onClick={handleDeactivate}
+                disabled={isLoading}
+              >
+                <MdDeleteForever className="text-3xl mr-2" />
+                <span>Deactivate Profile</span>
+              </Button>
+            )}
           </form>
         ) : (
           <LoadingIndicator />
