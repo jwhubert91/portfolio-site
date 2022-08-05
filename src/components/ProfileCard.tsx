@@ -55,9 +55,9 @@ function ProfileCard({
   return (
     <Card className={className}>
       <div
-        className={`bg-mutedGray bg-cover h-32 ${
-          backgroundImageSrc && "md:h-52"
-        } flex items-center md:items-end justify-center p-2`}
+        className={`bg-white bg-cover h-32 ${
+          backgroundImageSrc && "md:h-52 p-2"
+        } flex items-center md:items-end justify-center`}
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
       >
         <ProfileImage profileImageSrc={profileImageSrc} />

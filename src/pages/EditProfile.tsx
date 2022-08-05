@@ -70,6 +70,8 @@ function EditProfile() {
     profileLink4,
     profileLink5,
   }: ProfileType) => {
+    console.log(profileImageUrl)
+    console.log(backgroundImageUrl)
     setFirstName(firstName)
     setLastName(lastName)
     setPronouns(pronouns)
@@ -129,7 +131,7 @@ function EditProfile() {
     // upload user thumbnail
     if (user?.uid) {
       const { uid } = user
-      if (profilePic) {
+      if (!!profilePic) {
         const uploadPath: string = `images/${uid}/${profilePic.name}`
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, profilePic)
@@ -141,7 +143,7 @@ function EditProfile() {
             setProfilePicError(err.message)
           })
       }
-      if (backgroundPic) {
+      if (!!backgroundPic) {
         const uploadPath: string = `images/${uid}/${backgroundPic.name}`
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, backgroundPic)
@@ -196,8 +198,12 @@ function EditProfile() {
         title,
         location,
         bio,
-        backgroundImageUrl: imageUrls.backgroundPicUrl,
-        profileImageUrl: imageUrls.profilePicUrl,
+        backgroundImageUrl: backgroundPicUrl
+          ? backgroundPicUrl
+          : imageUrls.backgroundPicUrl,
+        profileImageUrl: profilePicUrl
+          ? profilePicUrl
+          : imageUrls.profilePicUrl,
         profileLink1: {
           title: link1Name || "",
           url: link1Url || "",
