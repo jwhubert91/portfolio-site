@@ -22,7 +22,7 @@ function ImageInput({
   previewClassName,
 }: ImageInputProps) {
   return (
-    <label className={`text-left ${containerClassName}`}>
+    <label className={`text-left w-min ${containerClassName}`}>
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
       )}

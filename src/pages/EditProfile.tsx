@@ -254,228 +254,225 @@ function EditProfile() {
     <PageLayout
       className="flex flex-col"
       isNavAuthShown={newUserRef.current ? false : true}
+      isLoading={isLoading}
     >
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
-        {authIsReady && !isLoading ? (
-          <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
-            <FormHeader className="mb-2" title="Edit Profile" />
-            <p className="text-md mb-2 lg:mb-8 text-slate-500">
-              Introduce yourself to the community
-            </p>
-            <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
-              <div className="flex-1 flex flex-col justify-start">
-                <Input
-                  containerClassName="mb-2"
-                  inputValue={firstName}
-                  label="first name"
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setFirstName(value)
-                  }}
-                  type="text"
-                  required
-                />
-                <Input
-                  containerClassName="mb-2"
-                  inputValue={lastName}
-                  label="last name"
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLastName(value)
-                  }}
-                  type="text"
-                  required
-                />
-                <Input
-                  containerClassName="mb-2"
-                  inputValue={pronouns}
-                  label="optional pronouns"
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setPronouns(value)
-                  }}
-                  type="text"
-                />
-                <Input
-                  containerClassName="mb-2"
-                  inputValue={title}
-                  label="title 💼"
-                  placeholder="Architect, Designer, Web Developer"
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setTitle(value)
-                  }}
-                  type="text"
-                />
-                <Input
-                  containerClassName="mb-2"
-                  inputValue={location}
-                  label="location 🌎"
-                  placeholder="New York, NY"
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLocation(value)
-                  }}
-                  type="text"
-                />
-                <TextArea
-                  label="A short bio 👀"
-                  description="256 characters to tell your fellow humans who you are"
-                  placeholder="I am a..."
-                  maxLength={256}
-                  onChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setBio(value)
-                  }}
-                  inputValue={bio}
-                />
-                {/* Net Ninja videos on uploading images are: 160 */}
-                <ImageInput
-                  containerClassName="py-2 mb-2"
-                  label="Profile picture 📸"
-                  description="A square headshot is best. Less than 1 MB"
-                  onChange={(e) => {
-                    setProfilePic(null)
-                    setProfilePicError("")
-                    let { imageError, validatedImage } = validateImageChange(
-                      e,
-                      1000000,
-                      "profile image"
-                    )
-                    if (imageError) {
-                      setProfilePicError(imageError)
-                    } else {
-                      setProfilePic(validatedImage)
-                    }
-                  }}
-                  validation={profilePicError}
-                  previewUrl={
-                    profilePic ? URL.createObjectURL(profilePic) : profilePicUrl
+        <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
+          <FormHeader className="mb-2" title="Edit Profile" />
+          <p className="text-md mb-2 lg:mb-8 text-slate-500">
+            Introduce yourself to the community
+          </p>
+          <div className="flex flex-col lg:flex-row gap-x-8 mb-4">
+            <div className="flex-1 flex flex-col justify-start">
+              <Input
+                containerClassName="mb-2"
+                inputValue={firstName}
+                label="first name"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setFirstName(value)
+                }}
+                type="text"
+                required
+              />
+              <Input
+                containerClassName="mb-2"
+                inputValue={lastName}
+                label="last name"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLastName(value)
+                }}
+                type="text"
+                required
+              />
+              <Input
+                containerClassName="mb-2"
+                inputValue={pronouns}
+                label="optional pronouns"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setPronouns(value)
+                }}
+                type="text"
+              />
+              <Input
+                containerClassName="mb-2"
+                inputValue={title}
+                label="title 💼"
+                placeholder="Architect, Designer, Web Developer"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setTitle(value)
+                }}
+                type="text"
+              />
+              <Input
+                containerClassName="mb-2"
+                inputValue={location}
+                label="location 🌎"
+                placeholder="New York, NY"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLocation(value)
+                }}
+                type="text"
+              />
+              <TextArea
+                label="A short bio 👀"
+                description="256 characters to tell your fellow humans who you are"
+                placeholder="I am a..."
+                maxLength={256}
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setBio(value)
+                }}
+                inputValue={bio}
+              />
+              {/* Net Ninja videos on uploading images are: 160 */}
+              <ImageInput
+                containerClassName="py-2 mb-2"
+                label="Profile picture 📸"
+                description="A square headshot is best. Less than 1 MB"
+                onChange={(e) => {
+                  setProfilePic(null)
+                  setProfilePicError("")
+                  let { imageError, validatedImage } = validateImageChange(
+                    e,
+                    1000000,
+                    "profile image"
+                  )
+                  if (imageError) {
+                    setProfilePicError(imageError)
+                  } else {
+                    setProfilePic(validatedImage)
                   }
-                  previewClassName="h-40 w-40"
-                />
-                <ImageInput
-                  containerClassName="py-2 mb-2"
-                  label="Background image 🌉"
-                  description="A wide or landscape image works best here. Less than 1 MB."
-                  onChange={(e) => {
-                    setBackgroundPic(null)
-                    setBackgroundPicError("")
-                    let { imageError, validatedImage } = validateImageChange(
-                      e,
-                      1000000,
-                      "background image"
-                    )
-                    if (imageError) {
-                      setBackgroundPicError(imageError)
-                    } else {
-                      setBackgroundPic(validatedImage)
-                    }
-                  }}
-                  validation={backgroundPicError}
-                  previewUrl={
-                    backgroundPic
-                      ? URL.createObjectURL(backgroundPic)
-                      : backgroundPicUrl
+                }}
+                validation={profilePicError}
+                previewUrl={
+                  profilePic ? URL.createObjectURL(profilePic) : profilePicUrl
+                }
+                previewClassName="h-40 w-40"
+              />
+              <ImageInput
+                containerClassName="py-2 mb-2"
+                label="Background image 🌉"
+                description="A wide or landscape image works best here. Less than 1 MB."
+                onChange={(e) => {
+                  setBackgroundPic(null)
+                  setBackgroundPicError("")
+                  let { imageError, validatedImage } = validateImageChange(
+                    e,
+                    1000000,
+                    "background image"
+                  )
+                  if (imageError) {
+                    setBackgroundPicError(imageError)
+                  } else {
+                    setBackgroundPic(validatedImage)
                   }
-                  previewClassName="h-40 w-80"
-                />
-              </div>
-              <div className="flex-1 flex flex-col lg:justify-start">
-                <div className="mb-2 text-left">
-                  <h4 className="block text-sm font-medium text-gray-700">
-                    Personal Links 🔗
-                  </h4>
-                  <p className="text-xs italic text-black">
-                    Add up to 5 links to social media, a website, etc.
-                  </p>
-                </div>
-                <LinkInputRow
-                  linkNameInputValue={link1Name}
-                  urlInputValue={link1Url}
-                  onNameChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink1Name(value)
-                  }}
-                  onURLChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink1Url(value)
-                  }}
-                />
-                <LinkInputRow
-                  linkNameInputValue={link2Name}
-                  urlInputValue={link2Url}
-                  onNameChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink2Name(value)
-                  }}
-                  onURLChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink2Url(value)
-                  }}
-                />
-                <LinkInputRow
-                  linkNameInputValue={link3Name}
-                  urlInputValue={link3Url}
-                  onNameChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink3Name(value)
-                  }}
-                  onURLChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink3Url(value)
-                  }}
-                />
-                <LinkInputRow
-                  linkNameInputValue={link4Name}
-                  urlInputValue={link4Url}
-                  onNameChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink4Name(value)
-                  }}
-                  onURLChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink4Url(value)
-                  }}
-                />
-                <LinkInputRow
-                  linkNameInputValue={link5Name}
-                  urlInputValue={link5Url}
-                  onNameChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink5Name(value)
-                  }}
-                  onURLChange={(e) => {
-                    const value = (e.target as HTMLInputElement).value
-                    setLink5Url(value)
-                  }}
-                />
-              </div>
+                }}
+                validation={backgroundPicError}
+                previewUrl={
+                  backgroundPic
+                    ? URL.createObjectURL(backgroundPic)
+                    : backgroundPicUrl
+                }
+                previewClassName="h-40 w-80"
+              />
             </div>
-            {error && <ErrorMessage error={error} className="my-2" />}
+            <div className="flex-1 flex flex-col lg:justify-start">
+              <div className="mb-2 text-left">
+                <h4 className="block text-sm font-medium text-gray-700">
+                  Personal Links 🔗
+                </h4>
+                <p className="text-xs italic text-black">
+                  Add up to 5 links to social media, a website, etc.
+                </p>
+              </div>
+              <LinkInputRow
+                linkNameInputValue={link1Name}
+                urlInputValue={link1Url}
+                onNameChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink1Name(value)
+                }}
+                onURLChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink1Url(value)
+                }}
+              />
+              <LinkInputRow
+                linkNameInputValue={link2Name}
+                urlInputValue={link2Url}
+                onNameChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink2Name(value)
+                }}
+                onURLChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink2Url(value)
+                }}
+              />
+              <LinkInputRow
+                linkNameInputValue={link3Name}
+                urlInputValue={link3Url}
+                onNameChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink3Name(value)
+                }}
+                onURLChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink3Url(value)
+                }}
+              />
+              <LinkInputRow
+                linkNameInputValue={link4Name}
+                urlInputValue={link4Url}
+                onNameChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink4Name(value)
+                }}
+                onURLChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink4Url(value)
+                }}
+              />
+              <LinkInputRow
+                linkNameInputValue={link5Name}
+                urlInputValue={link5Url}
+                onNameChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink5Name(value)
+                }}
+                onURLChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setLink5Url(value)
+                }}
+              />
+            </div>
+          </div>
+          {error && <ErrorMessage error={error} className="my-2" />}
+          <Button
+            buttonStyle="LARGE"
+            className="mb-8 w-full lg:w-1/2 mx-auto"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            Publish
+          </Button>
+          {!newUserRef.current && (
             <Button
-              buttonStyle="LARGE"
-              className="mb-8 w-full lg:w-1/2 mx-auto"
-              onClick={handleSubmit}
+              buttonStyle="ALERT"
+              className="w-full lg:w-1/2 mx-auto text-xl"
+              onClick={handleDeactivate}
               disabled={isLoading}
             >
-              Publish
+              <MdDeleteForever className="text-3xl mr-2" />
+              <span>Deactivate Profile</span>
             </Button>
-            {!newUserRef.current && (
-              <Button
-                buttonStyle="ALERT"
-                className="w-full lg:w-1/2 mx-auto text-xl"
-                onClick={handleDeactivate}
-                disabled={isLoading}
-              >
-                <MdDeleteForever className="text-3xl mr-2" />
-                <span>Deactivate Profile</span>
-              </Button>
-            )}
-          </form>
-        ) : (
-          <LoadingIndicator />
-        )}
+          )}
+        </form>
       </CenteredContent>
     </PageLayout>
   )
