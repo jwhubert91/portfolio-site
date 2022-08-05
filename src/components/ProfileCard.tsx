@@ -13,6 +13,8 @@ interface ProfileCardProps {
   location?: string
   bio?: string
   links?: ExternalLinkType[]
+  backgroundImageSrc?: string
+  profileImageSrc?: string
 }
 
 function ProfileCard({
@@ -21,13 +23,11 @@ function ProfileCard({
   location = "",
   bio = "",
   links = [],
+  backgroundImageSrc = "",
 }: ProfileCardProps) {
-  const backgroundImageSrc =
-    "https://media.giphy.com/media/l0K47723zLLU11gac/giphy.gif"
-
   const LinkNodes = () => {
     if (links.length > 0) {
-      const linkNodes = links.map((link, idx) => {
+      const linkNodes = links.map((link: ExternalLinkType, idx) => {
         const { title, url } = link
         if (title.length > 0 && url.length > 0) {
           return <PillLink label={title} url={url} key={idx} />
@@ -54,7 +54,9 @@ function ProfileCard({
   return (
     <Card className={className}>
       <div
-        className="bg-xiketicBlack bg-cover h-36 md:h-52 flex items-end justify-center p-2"
+        className={`bg-mutedGray bg-cover h-32 ${
+          backgroundImageSrc && "md:h-52"
+        } flex items-center md:items-end justify-center p-2`}
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
       >
         <ProfileImage />

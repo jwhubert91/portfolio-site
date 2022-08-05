@@ -24,7 +24,6 @@ import { ProfileType } from "../utilities/types"
 import { permissionsLevels } from "../utilities/constants"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { updateProfile } from "firebase/auth"
-import LoadingIndicator from "../components/LoadingIndicator"
 
 function EditProfile() {
   const [error, setError] = useState("")
