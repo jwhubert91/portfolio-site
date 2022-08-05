@@ -45,6 +45,7 @@ function ProfileCard({
   const navigate = useNavigate()
 
   const handleShareProfile = (): void => {
+    // TODO
     console.log("Profile shared!")
   }
 

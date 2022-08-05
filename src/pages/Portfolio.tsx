@@ -22,6 +22,7 @@ function Portfolio() {
   const { user, authIsReady } = useAuthContext()
 
   const loadProfile = async () => {
+    setIsLoading(true)
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
     const querySnapshot = await getDocs(q)
@@ -53,18 +54,17 @@ function Portfolio() {
       setProfilePicUrl(profileImageUrl || "")
       setBackgroundPicUrl(backgroundImageUrl || "")
     })
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    setIsLoading(true)
     if (authIsReady && user) {
       loadProfile()
     }
-    setIsLoading(false)
   }, [authIsReady, user])
 
   return (
-    <PageLayout className="bg-culturedBlue" isLoading={isLoading}>
+    <PageLayout className="bg-culturedBlue" isLoading={false}>
       <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
         <ProfileCard
           title={title}

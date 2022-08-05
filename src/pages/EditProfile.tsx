@@ -70,8 +70,6 @@ function EditProfile() {
     profileLink4,
     profileLink5,
   }: ProfileType) => {
-    console.log(profileImageUrl)
-    console.log(backgroundImageUrl)
     setFirstName(firstName)
     setLastName(lastName)
     setPronouns(pronouns)
@@ -116,7 +114,6 @@ function EditProfile() {
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
-      console.log(profileData)
       newUserRef.current = profileData.firstName ? false : true
       fillInputs(profileData)
     })
@@ -136,7 +133,6 @@ function EditProfile() {
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, profilePic)
           .then(async (snapshot) => {
-            console.log("Profile image uploaded successfully")
             imageUrls.profilePicUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
@@ -148,7 +144,6 @@ function EditProfile() {
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, backgroundPic)
           .then(async (snapshot) => {
-            console.log("Background image uploaded successfully")
             imageUrls.backgroundPicUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
@@ -252,6 +247,7 @@ function EditProfile() {
 
   const handleDeactivate = (e: React.FormEvent) => {
     e.preventDefault()
+    // TODO
     console.log("Profile deactivated")
   }
 

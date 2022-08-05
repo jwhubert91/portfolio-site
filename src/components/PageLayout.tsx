@@ -22,7 +22,9 @@ function PageLayout({
 }: PageLayoutProps) {
   return (
     <div className="flex flex-col">
-      <div className={`min-h-screen overflow-x-hidden ${className}`}>
+      <div
+        className={`flex flex-col min-h-screen overflow-x-hidden ${className}`}
+      >
         <Navbar
           isBgTransparent={isNavBgTransparent}
           isNavAuthShown={isNavAuthShown}
