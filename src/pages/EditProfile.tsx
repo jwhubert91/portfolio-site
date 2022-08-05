@@ -33,10 +33,10 @@ function EditProfile() {
   const [profilePicError, setProfilePicError] = useState("")
   const [backgroundPic, setBackgroundPic] = useState<File | null>(null)
   const [backgroundPicError, setBackgroundPicError] = useState("")
-  const [firstName, setFirstName] = useState("")
-  const [lastName, setLastName] = useState("")
-  const [pronouns, setPronouns] = useState("")
-  const [title, setTitle] = useState("")
+  const [firstName, setFirstName] = useState<string>("")
+  const [lastName, setLastName] = useState<string>("")
+  const [pronouns, setPronouns] = useState<string>("")
+  const [title, setTitle] = useState<string>("")
   const [location, setLocation] = useState("")
   const [bio, setBio] = useState("")
   const [link1Name, setLink1Name] = useState("")
@@ -84,6 +84,23 @@ function EditProfile() {
     setLink4Url(profileLink4?.url)
     setLink5Name(profileLink5?.title)
     setLink5Url(profileLink5?.url)
+  }
+
+  const validate = () => {
+    setError("")
+    if (firstName === undefined) {
+      setError("Please enter a first name")
+      return false
+    }
+    if (lastName === undefined) {
+      setError("Please enter a last name")
+      return false
+    }
+    if (title === undefined) {
+      setError("Please enter your professional title")
+      return false
+    }
+    return true
   }
 
   const load = async () => {
@@ -139,8 +156,8 @@ function EditProfile() {
     profilePicUrl: string
     backgroundPicUrl: string
   }) => {
-    // 1 - first, save the profile image, displayname, and full name to the user's auth document
-    if (user) {
+    // 1 - second, save the profile image, displayname, and full name to the user's auth document
+    if (user && !error) {
       await updateProfile(user, {
         photoURL: imageUrls.profilePicUrl,
       })
@@ -152,7 +169,10 @@ function EditProfile() {
           )
         )
     }
-    // 2 - second, query for the current user's User document in firestore
+    // 2 - then query for the current user's User document in firestore
+    if (error) {
+      return
+    }
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
     const querySnapshot = await getDocs(q)
@@ -207,9 +227,12 @@ function EditProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const imageUrls = await uploadImages()
-    await saveProfile(imageUrls)
-    navigate(routes.portfolio)
+    const isReady = validate()
+    if (isReady) {
+      const imageUrls = await uploadImages()
+      await saveProfile(imageUrls)
+      navigate(routes.portfolio)
+    }
   }
 
   const handleDeactivate = (e: React.FormEvent) => {
@@ -237,6 +260,7 @@ function EditProfile() {
                     setFirstName(value)
                   }}
                   type="text"
+                  required
                 />
                 <Input
                   containerClassName="mb-2"
@@ -247,6 +271,7 @@ function EditProfile() {
                     setLastName(value)
                   }}
                   type="text"
+                  required
                 />
                 <Input
                   containerClassName="mb-2"
@@ -410,7 +435,7 @@ function EditProfile() {
                 />
               </div>
             </div>
-            {error && <ErrorMessage error={error} />}
+            {error && <ErrorMessage error={error} className="my-2" />}
             <Button
               buttonStyle="LARGE"
               className="mb-8 w-full lg:w-1/2 mx-auto"
