@@ -162,7 +162,6 @@ function EditProfile() {
     profilePicUrl: string
     backgroundPicUrl: string
   }) => {
-    setIsLoading(true)
     // 1 - save the profile image, displayname, and full name to the user's auth document
     if (user && !error) {
       await updateProfile(user, {
@@ -174,7 +173,6 @@ function EditProfile() {
             "There was an error saving the profile image. ",
             err.message
           )
-          setIsLoading(false)
           setError("There was an error saving the profile image.")
         })
     }
@@ -227,7 +225,6 @@ function EditProfile() {
           setError(err.message)
         })
     })
-    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -238,12 +235,14 @@ function EditProfile() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     const isReady = validate()
     if (isReady) {
       const imageUrls = await uploadImages()
       await saveProfile(imageUrls)
       navigate(routes.portfolio)
     }
+    setIsLoading(false)
   }
 
   const handleDeactivate = (e: React.FormEvent) => {
