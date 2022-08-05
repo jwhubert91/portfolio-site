@@ -27,6 +27,7 @@ function Portfolio() {
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
+      console.log(profileData)
       const {
         title,
         location,
@@ -42,14 +43,14 @@ function Portfolio() {
       setTitle(title)
       setLocation(location || "")
       setBio(bio || "")
-      const links: ExternalLinkType[] = [
-        profileLink1,
-        profileLink2,
-        profileLink3,
-        profileLink4,
-        profileLink5,
-      ]
-      setPersonalLinks(links)
+      // const links: ExternalLinkType[] = [
+      //   profileLink1,
+      //   profileLink2,
+      //   profileLink3,
+      //   profileLink4,
+      //   profileLink5,
+      // ]
+      // setPersonalLinks(links)
       setProfilePicUrl(profileImageUrl || "")
       setBackgroundPicUrl(backgroundImageUrl || "")
     })
@@ -58,8 +59,7 @@ function Portfolio() {
   useEffect(() => {
     setIsLoading(true)
     if (authIsReady && user) {
-      // loadProfile()
-      console.log("problem is with loadProfile")
+      loadProfile()
     }
     setIsLoading(false)
   }, [authIsReady, user])
