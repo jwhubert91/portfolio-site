@@ -1,14 +1,45 @@
 import { SyntheticEvent } from "react"
+import Button from "./Button"
+import { MdDeleteForever } from "react-icons/md"
+
+interface ImagePreviewProps {
+  containerClassName?: string
+  imageClassName?: string
+  previewUrl: string
+  label: string
+  onDelete: () => void
+}
 
 interface ImageInputProps {
   containerClassName?: string
   description?: string
   inputClasses?: string
-  label?: string
+  label: string
   onChange?: (e: SyntheticEvent) => void
   validation?: string
   previewUrl?: string
-  previewClassName?: string
+  previewSizeClasses?: string
+  imageDeleteButtonLabel?: string
+}
+
+function ImagePreview({
+  containerClassName = "",
+  imageClassName = "",
+  previewUrl,
+  label,
+  onDelete,
+}: ImagePreviewProps) {
+  return (
+    <div className={`my-2 ${containerClassName}`}>
+      <img className={imageClassName} src={previewUrl} alt={label} />
+      <div className="my-2 flex items-start">
+        <Button buttonStyle="ALERT" className="text-base" onClick={onDelete}>
+          <MdDeleteForever className="text-2xl mr-2" />
+          <span>Delete image</span>
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 function ImageInput({
@@ -18,8 +49,9 @@ function ImageInput({
   label,
   onChange,
   validation,
-  previewUrl,
-  previewClassName,
+  previewUrl = "",
+  previewSizeClasses = "w-40 h-40",
+  imageDeleteButtonLabel = "Delete image",
 }: ImageInputProps) {
   return (
     <label className={`text-left w-min ${containerClassName}`}>
@@ -30,14 +62,15 @@ function ImageInput({
         <p className="text-xs italic text-black">{description}</p>
       )}
       <input type="file" className={`${inputClasses}`} onChange={onChange} />
+      {validation && <p className="text-sm text-red-600">{validation}</p>}
       {previewUrl && (
-        <img
-          className={`my-2 ${previewClassName}`}
-          src={previewUrl}
-          alt={label}
+        <ImagePreview
+          imageClassName={previewSizeClasses}
+          previewUrl={previewUrl}
+          label={imageDeleteButtonLabel}
+          onDelete={() => console.log("Deleted")}
         />
       )}
-      {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )
 }
