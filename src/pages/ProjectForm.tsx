@@ -104,7 +104,7 @@ function ProjectForm() {
                 maxLength={256}
                 inputValue={summary}
               />
-              <ImageInput label="image preview" containerClassName="mb-4" />
+              {/* <ImageInput label="image preview" containerClassName="mb-4" /> */}
               <TextArea
                 label="Description"
                 description="Space for a longer description of the project, its motivations, process, other contributors, outcome, etc."

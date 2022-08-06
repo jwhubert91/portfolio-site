@@ -353,6 +353,7 @@ function EditProfile() {
                 previewUrl={
                   profilePic ? URL.createObjectURL(profilePic) : profilePicUrl
                 }
+                onDelete={() => "deleted!"}
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
@@ -373,16 +374,13 @@ function EditProfile() {
                   }
                 }}
                 validation={backgroundPicError}
-              />
-              <ImagePreview
-                imageClassName="h-40 w-80"
                 previewUrl={
                   backgroundPic
                     ? URL.createObjectURL(backgroundPic)
                     : backgroundPicUrl
                 }
-                label="background pic"
-                onDelete={() => console.log("deleted!")}
+                previewSizeClasses="h-40 w-80"
+                onDelete={() => "deleted!"}
               />
             </div>
             <div className="flex-1 flex flex-col lg:justify-start">

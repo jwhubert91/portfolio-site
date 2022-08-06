@@ -20,6 +20,7 @@ interface ImageInputProps {
   previewUrl?: string
   previewSizeClasses?: string
   imageDeleteButtonLabel?: string
+  onDelete: () => void
 }
 
 function ImagePreview({
@@ -52,6 +53,7 @@ function ImageInput({
   previewUrl = "",
   previewSizeClasses = "w-40 h-40",
   imageDeleteButtonLabel = "Delete image",
+  onDelete,
 }: ImageInputProps) {
   return (
     <label className={`text-left w-min ${containerClassName}`}>
@@ -68,7 +70,7 @@ function ImageInput({
           imageClassName={previewSizeClasses}
           previewUrl={previewUrl}
           label={imageDeleteButtonLabel}
-          onDelete={() => console.log("Deleted")}
+          onDelete={onDelete}
         />
       )}
     </label>
