@@ -64,7 +64,7 @@ function Portfolio() {
   }, [authIsReady, user])
 
   return (
-    <PageLayout className="bg-culturedBlue" isLoading={false}>
+    <PageLayout className="bg-culturedBlue" isLoading={isLoading}>
       <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
         <ProfileCard
           title={title}
