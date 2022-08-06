@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import {
@@ -107,7 +107,7 @@ function EditProfile() {
     return true
   }
 
-  const load = async () => {
+  const memoizedLoad = useCallback(async () => {
     setIsLoading(true)
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("userId", "==", user?.uid))
@@ -118,7 +118,7 @@ function EditProfile() {
       fillInputs(profileData)
     })
     setIsLoading(false)
-  }
+  }, [user])
 
   const uploadImages = async () => {
     let imageUrls = {
@@ -229,9 +229,9 @@ function EditProfile() {
 
   useEffect(() => {
     if (authIsReady) {
-      load()
+      memoizedLoad()
     }
-  }, [authIsReady])
+  }, [authIsReady, memoizedLoad])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
