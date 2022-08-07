@@ -7,7 +7,7 @@ interface ImagePreviewProps {
   imageClassName?: string
   previewUrl: string
   label: string
-  onDelete: () => void
+  onDelete: (e: SyntheticEvent) => void
 }
 
 interface ImageInputProps {
@@ -20,7 +20,8 @@ interface ImageInputProps {
   previewUrl?: string
   previewSizeClasses?: string
   imageDeleteButtonLabel?: string
-  onDelete: () => void
+  onDelete: (e: SyntheticEvent) => void
+  isSelectShown?: boolean
 }
 
 function ImagePreview({
@@ -54,16 +55,24 @@ function ImageInput({
   previewSizeClasses = "w-40 h-40",
   imageDeleteButtonLabel = "Delete image",
   onDelete,
+  isSelectShown = true,
 }: ImageInputProps) {
+  function ImageSelect({ inputClasses }: { inputClasses?: string }) {
+    return (
+      <label className={`text-left w-min ${containerClassName}`}>
+        <input type="file" className={`${inputClasses}`} onChange={onChange} />
+      </label>
+    )
+  }
   return (
-    <label className={`text-left w-min ${containerClassName}`}>
+    <div className={`w-full text-left ${containerClassName}`}>
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
       )}
       {description && (
         <p className="text-xs italic text-black">{description}</p>
       )}
-      <input type="file" className={`${inputClasses}`} onChange={onChange} />
+      {isSelectShown && <ImageSelect inputClasses={inputClasses} />}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
       {previewUrl && (
         <ImagePreview
@@ -73,7 +82,7 @@ function ImageInput({
           onDelete={onDelete}
         />
       )}
-    </label>
+    </div>
   )
 }
 

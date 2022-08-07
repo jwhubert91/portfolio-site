@@ -356,7 +356,11 @@ function EditProfile() {
                 previewUrl={
                   profilePic ? URL.createObjectURL(profilePic) : profilePicUrl
                 }
-                onDelete={() => "deleted!"}
+                onDelete={(e) => {
+                  e.preventDefault()
+                  console.log("deleted!")
+                }}
+                isSelectShown={!profilePic && !profilePicUrl}
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
@@ -383,7 +387,11 @@ function EditProfile() {
                     : backgroundPicUrl
                 }
                 previewSizeClasses="h-40 w-80"
-                onDelete={() => "deleted!"}
+                onDelete={(e) => {
+                  e.preventDefault()
+                  console.log("deleted!")
+                }}
+                isSelectShown={!backgroundPic && !backgroundPicUrl}
               />
             </div>
             <div className="flex-1 flex flex-col lg:justify-start">
