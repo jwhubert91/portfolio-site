@@ -107,6 +107,9 @@ function EditProfile() {
     return true
   }
 
+  // useCallback to get rid of useEffect missing deps warning for functions --
+  // https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
+
   const memoizedLoad = useCallback(async () => {
     setIsLoading(true)
     const usersRef = collection(db, "users")
