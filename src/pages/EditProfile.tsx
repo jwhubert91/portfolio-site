@@ -198,10 +198,6 @@ function EditProfile() {
       // 3 - get the data and the reference object from the document
       const profileData = doc.data()
       const profileRef = doc.ref
-      console.log({
-        backgroundPicStateUrl: backgroundPicUrl,
-        imageUrlsObjectUrl: imageUrls.backgroundUrl,
-      })
       // 4 - update the document
       updateDoc(profileRef, {
         ...profileData,
