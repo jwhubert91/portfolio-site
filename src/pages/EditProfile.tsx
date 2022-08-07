@@ -24,6 +24,7 @@ import { ProfileType } from "../utilities/types"
 import { permissionsLevels } from "../utilities/constants"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { updateProfile } from "firebase/auth"
+import { useStorage } from "../hooks/useStorage"
 
 function EditProfile() {
   const [error, setError] = useState("")
@@ -53,6 +54,7 @@ function EditProfile() {
 
   let newUserRef = useRef(true)
   const { user, authIsReady } = useAuthContext()
+  const { getFilePath, deleteFile } = useStorage()
   const navigate = useNavigate()
 
   const fillInputs = ({
@@ -125,29 +127,39 @@ function EditProfile() {
 
   const uploadImages = async () => {
     let imageUrls = {
-      profilePicUrl: "",
-      backgroundPicUrl: "",
+      profileUrl: "",
+      backgroundUrl: "",
     }
     // upload user thumbnail
     if (user?.uid) {
       const { uid } = user
       if (!!profilePic) {
-        const uploadPath: string = `images/${uid}/${profilePic.name}`
+        const uploadPath: string = getFilePath(
+          "images",
+          uid,
+          "profilePic",
+          profilePic.name
+        )
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, profilePic)
           .then(async (snapshot) => {
-            imageUrls.profilePicUrl = await getDownloadURL(snapshot.ref)
+            imageUrls.profileUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
             setProfilePicError(err.message)
           })
       }
       if (!!backgroundPic) {
-        const uploadPath: string = `images/${uid}/${backgroundPic.name}`
+        const uploadPath: string = getFilePath(
+          "images",
+          uid,
+          "backgroundPic",
+          backgroundPic.name
+        )
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, backgroundPic)
           .then(async (snapshot) => {
-            imageUrls.backgroundPicUrl = await getDownloadURL(snapshot.ref)
+            imageUrls.backgroundUrl = await getDownloadURL(snapshot.ref)
           })
           .catch((err) => {
             setBackgroundPicError(err.message)
@@ -158,13 +170,13 @@ function EditProfile() {
   }
 
   const saveProfile = async (imageUrls: {
-    profilePicUrl: string
-    backgroundPicUrl: string
+    profileUrl: string
+    backgroundUrl: string
   }) => {
     // 1 - save the profile image, displayname, and full name to the user's auth document
     if (user && !error) {
       await updateProfile(user, {
-        photoURL: imageUrls.profilePicUrl,
+        photoURL: imageUrls.profileUrl,
       })
         .then((res) => res)
         .catch((err) => {
@@ -186,6 +198,10 @@ function EditProfile() {
       // 3 - get the data and the reference object from the document
       const profileData = doc.data()
       const profileRef = doc.ref
+      console.log({
+        backgroundPicStateUrl: backgroundPicUrl,
+        imageUrlsObjectUrl: imageUrls.backgroundUrl,
+      })
       // 4 - update the document
       updateDoc(profileRef, {
         ...profileData,
@@ -196,12 +212,8 @@ function EditProfile() {
         title,
         location,
         bio,
-        backgroundImageUrl: backgroundPicUrl
-          ? backgroundPicUrl
-          : imageUrls.backgroundPicUrl,
-        profileImageUrl: profilePicUrl
-          ? profilePicUrl
-          : imageUrls.profilePicUrl,
+        backgroundImageUrl: imageUrls.backgroundUrl,
+        profileImageUrl: imageUrls.profileUrl,
         profileLink1: {
           title: link1Name || "",
           url: link1Url || "",
@@ -241,8 +253,11 @@ function EditProfile() {
     setIsLoading(true)
     const isReady = validate()
     if (isReady) {
-      const imageUrls = await uploadImages()
-      await saveProfile(imageUrls)
+      let { profileUrl, backgroundUrl } = await uploadImages()
+      await saveProfile({
+        profileUrl: profileUrl ? profileUrl : profilePicUrl,
+        backgroundUrl: backgroundUrl ? backgroundUrl : backgroundPicUrl,
+      })
       navigate(routes.portfolio)
     }
     setIsLoading(false)
@@ -358,7 +373,28 @@ function EditProfile() {
                 }
                 onDelete={(e) => {
                   e.preventDefault()
-                  console.log("deleted!")
+                  setIsLoading(true)
+                  setProfilePic(null)
+                  setProfilePicError("")
+                  if (profilePicUrl) {
+                    setProfilePicUrl("")
+                    const filepath = getFilePath(
+                      "images",
+                      user ? user.uid : "",
+                      "profilePic"
+                    )
+                    deleteFile(filepath).then(() => {
+                      user &&
+                        updateProfile(user, {
+                          photoURL: "",
+                        })
+                      saveProfile({
+                        profileUrl: "",
+                        backgroundUrl: backgroundPicUrl,
+                      })
+                    })
+                  }
+                  setIsLoading(false)
                 }}
                 isSelectShown={!profilePic && !profilePicUrl}
               />
@@ -389,7 +425,24 @@ function EditProfile() {
                 previewSizeClasses="h-40 w-80"
                 onDelete={(e) => {
                   e.preventDefault()
-                  console.log("deleted!")
+                  setIsLoading(true)
+                  setBackgroundPic(null)
+                  setBackgroundPicError("")
+                  if (backgroundPicUrl) {
+                    setBackgroundPicUrl("")
+                    const filepath = getFilePath(
+                      "images",
+                      user ? user.uid : "",
+                      "backgroundPic"
+                    )
+                    deleteFile(filepath).then(async () => {
+                      await saveProfile({
+                        profileUrl: profilePicUrl,
+                        backgroundUrl: "",
+                      })
+                    })
+                  }
+                  setIsLoading(false)
                 }}
                 isSelectShown={!backgroundPic && !backgroundPicUrl}
               />
