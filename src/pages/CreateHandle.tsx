@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
+import { updateProfile } from "firebase/auth"
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore"
 import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
@@ -8,60 +9,66 @@ import PageLayout from "../components/PageLayout"
 import { useAuthContext } from "../hooks/useAuthContext"
 import { db } from "../firebase/config"
 import { useNavigate } from "react-router-dom"
-
 import ErrorMessage from "../components/ErrorMessage"
-import { routes } from "../utilities/routes"
+import { getEditPortfolioRoute } from "../utilities/routes"
 
 function CreateHandle() {
   const [username, setUsername] = useState("")
   const [error, setError] = useState("")
-  const [isQueryPending, setIsQueryPending] = useState(false)
   const [isSubmitPending, setIsSubmitPending] = useState(false)
-  const [isUsernameTaken, setIsUsernameTaken] = useState<boolean | null>(null)
 
   const { user } = useAuthContext()
   const navigate = useNavigate()
+
+  const addUsernameToAuthUser = async () => {
+    if (user) {
+      await updateProfile(user, {
+        displayName: username,
+      })
+    } else {
+      setError("Please try again.")
+    }
+  }
 
   const addUsernameToUserDoc = async () => {
     await addDoc(collection(db, "users"), {
       userId: user?.uid,
       username,
     })
-      .then(() => {
-        navigate(routes.editProfile)
-      })
-      .catch((err) => {
-        setError(err.message)
-      })
-    setIsSubmitPending(false)
+  }
+
+  const isUsernameTaken = async (username: string) => {
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("username", "==", username))
+    const querySnapshot = await getDocs(q)
+    if (querySnapshot.empty) {
+      return false
+    } else {
+      return true
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
     setIsSubmitPending(true)
-    setIsQueryPending(true)
-    // Check if username exists
-    const usersRef = collection(db, "users")
-    const q = query(usersRef, where("username", "==", username))
-    const querySnapshot = await getDocs(q)
-    if (querySnapshot.empty) {
-      setIsUsernameTaken(false)
-    } else {
-      setIsUsernameTaken(true)
+    // Check if username is taken
+    const isUsernameAvailable = await isUsernameTaken(username)
+    if (isUsernameAvailable) {
       setError("Sorry, that username is taken. Please try another.")
       setIsSubmitPending(false)
+    } else {
+      await addUsernameToAuthUser()
+      await addUsernameToUserDoc()
+        .then(() => {
+          navigate(getEditPortfolioRoute(username))
+        })
+        .catch((err) => {
+          setError(err.message)
+        })
     }
-    setIsQueryPending(false)
+    setIsSubmitPending(false)
   }
-
-  useEffect(() => {
-    if (!isQueryPending && isUsernameTaken === false) {
-      if (!error) {
-        addUsernameToUserDoc()
-      }
-    }
-  }, [isQueryPending, isUsernameTaken, error, addUsernameToUserDoc])
 
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>

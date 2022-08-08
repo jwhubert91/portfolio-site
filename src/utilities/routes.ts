@@ -3,7 +3,7 @@ export const routes = {
   login: "/login",
   signup: "/signup",
   createHandle: "/handle",
-  editProfile: "/account/edit",
+  editProfile: "/@:profileSlug/edit",
   portfolio: "/@:profileSlug",
   projects: "/projects",
   createProject: "new",
@@ -11,3 +11,11 @@ export const routes = {
   editProject: "edit/:projectId",
   projectId: ":projectId",
 };
+
+export const getPortfolioRoute = (displayName: string)=> {
+  return `/@${displayName}`
+}
+
+export const getEditPortfolioRoute = (displayName: string)=> {
+  return `/@${displayName}/edit`
+}

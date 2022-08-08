@@ -16,7 +16,7 @@ import Input from "../components/Input"
 import TextArea from "../components/TextArea"
 import LinkInputRow from "../components/LinkInputRow"
 import Button from "../components/Button"
-import { routes } from "../utilities/routes"
+import { getPortfolioRoute } from "../utilities/routes"
 import ImageInput, { validateImageChange } from "../components/ImageInput"
 import { db, storage } from "../firebase/config"
 import ErrorMessage from "../components/ErrorMessage"
@@ -254,7 +254,12 @@ function EditProfile() {
         profileUrl: profileUrl ? profileUrl : profilePicUrl,
         backgroundUrl: backgroundUrl ? backgroundUrl : backgroundPicUrl,
       })
-      navigate(routes.portfolio)
+      if (user?.displayName) {
+        const portfolioRoute = getPortfolioRoute(user.displayName)
+        navigate(portfolioRoute)
+      } else {
+        setError("There was an error. Please try again.")
+      }
     }
     setIsLoading(false)
   }

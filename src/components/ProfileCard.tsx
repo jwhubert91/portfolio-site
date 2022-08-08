@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../hooks/useAuthContext"
 import Card from "./Card"
 import PillLink from "./PillLink"
 import ProfileImage from "./ProfileImage"
 import CardAdminButton from "./CardAdminButton"
 import { ExternalLinkType } from "../utilities/types"
 import { MdShortcut, MdModeEdit } from "react-icons/md"
-import { routes } from "../utilities/routes"
+import { getEditPortfolioRoute } from "../utilities/routes"
 
 interface ProfileCardProps {
   className?: string
@@ -26,6 +27,20 @@ function ProfileCard({
   backgroundImageSrc = "",
   profileImageSrc = "",
 }: ProfileCardProps) {
+  const { user } = useAuthContext()
+  const navigate = useNavigate()
+
+  const handleShareProfile = (): void => {
+    // TODO
+    console.log("Profile shared!")
+  }
+
+  const handleEditProfile = (): void => {
+    if (user?.displayName) {
+      navigate(getEditPortfolioRoute(user.displayName))
+    }
+  }
+
   const LinkNodes = () => {
     if (links.length > 0) {
       const linkNodes = links.map((link: ExternalLinkType, idx) => {
@@ -40,17 +55,6 @@ function ProfileCard({
     } else {
       return <></>
     }
-  }
-
-  const navigate = useNavigate()
-
-  const handleShareProfile = (): void => {
-    // TODO
-    console.log("Profile shared!")
-  }
-
-  const handleEditProfile = (): void => {
-    navigate(routes.editProfile)
   }
 
   return (
