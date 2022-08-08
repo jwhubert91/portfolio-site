@@ -24,7 +24,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="*" element={<FourOhFour />} />
+          <Route path={routes.fourOhFour} element={<FourOhFour />} />
           <Route path={routes.home} element={<Home />} />
           <Route
             path={routes.login}

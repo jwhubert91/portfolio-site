@@ -10,6 +10,7 @@ export const routes = {
   edit: "edit",
   editProject: "edit/:projectId",
   projectId: ":projectId",
+  fourOhFour: "*",
 };
 
 export const getPortfolioRoute = (displayName: string)=> {

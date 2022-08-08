@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useEffect, useState, useCallback } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import { useAuthContext } from "../hooks/useAuthContext"
@@ -9,43 +9,43 @@ import ProjectList from "../components/ProjectList"
 import AddProjectPrompt from "../components/AddProjectPrompt"
 import { useCollection } from "../hooks/useCollection"
 import { ExternalLinkType, ProfileType } from "../utilities/types"
+import { User } from "firebase/auth"
+import { routes } from "../utilities/routes"
 
 function Portfolio() {
-  const [title, setTitle] = useState("")
-  const [location, setLocation] = useState("")
-  const [bio, setBio] = useState("")
+  const [currentProfile, setCurrentProfile] = useState<ProfileType | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [isCurrentUserPortfolio, setIsCurrentUserPortfolio] =
+    useState<boolean>(false)
   const [personalLinks, setPersonalLinks] = useState<ExternalLinkType[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [profilePicUrl, setProfilePicUrl] = useState("")
-  const [backgroundPicUrl, setBackgroundPicUrl] = useState("")
+
+  const navigate = useNavigate()
 
   // TODO - BUG: Portfolio is not reloading when URL changes
   const { profileHandle } = useParams()
   const { documents: projects } = useCollection("projects")
   const { user, authIsReady } = useAuthContext()
 
-  const loadProfile = async () => {
-    setIsLoading(true)
+  const memoizedLoadProfile = useCallback(async () => {
     const usersRef = collection(db, "users")
     const q = query(usersRef, where("username", "==", profileHandle))
     const querySnapshot = await getDocs(q)
+    if (querySnapshot.empty) {
+      navigate(routes.fourOhFour, { replace: true })
+    }
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
+      setCurrentProfile(profileData)
+      setIsCurrentUserPortfolio(
+        currentUser?.displayName === profileData.username
+      )
       const {
-        title,
-        location,
-        bio,
-        profileImageUrl,
-        backgroundImageUrl,
         profileLink1,
         profileLink2,
         profileLink3,
         profileLink4,
         profileLink5,
       } = profileData
-      setTitle(title)
-      setLocation(location || "")
-      setBio(bio || "")
       const links: ExternalLinkType[] = [
         profileLink1,
         profileLink2,
@@ -54,35 +54,40 @@ function Portfolio() {
         profileLink5,
       ]
       setPersonalLinks(links)
-      setProfilePicUrl(profileImageUrl || "")
-      setBackgroundPicUrl(backgroundImageUrl || "")
     })
-    setIsLoading(false)
-  }
+  }, [profileHandle, currentUser, navigate])
 
   useEffect(() => {
-    if (authIsReady && user) {
-      loadProfile()
+    setCurrentUser(user)
+  }, [user])
+
+  useEffect(() => {
+    if (authIsReady && profileHandle) {
+      memoizedLoadProfile()
     }
-  }, [authIsReady, user])
+  }, [authIsReady, profileHandle, memoizedLoadProfile])
 
   return (
-    <PageLayout className="bg-culturedBlue" isLoading={isLoading}>
-      <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
-        <ProfileCard
-          title={title}
-          location={location}
-          bio={bio}
-          links={personalLinks}
-          className="mb-4"
-          profileImageSrc={profilePicUrl}
-          backgroundImageSrc={backgroundPicUrl}
-        />
-        <AddProjectPrompt className="mb-2 mx-auto" />
-        <h3 className="text-md mb-4">Past Work</h3>
-        {projects && <ProjectList projects={projects} />}
-        {/* <ProjectCard /> */}
-      </div>
+    <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
+      {currentProfile && (
+        <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
+          <ProfileCard
+            title={currentProfile.title}
+            location={currentProfile.location}
+            bio={currentProfile.bio}
+            links={personalLinks}
+            className="mb-4"
+            profileImageSrc={currentProfile.profileImageUrl}
+            backgroundImageSrc={currentProfile.backgroundImageUrl}
+          />
+          {isCurrentUserPortfolio && (
+            <AddProjectPrompt className="mb-2 mx-auto" />
+          )}
+          <h3 className="text-md mb-4">Past Work</h3>
+          {projects && <ProjectList projects={projects} />}
+          {/* <ProjectCard /> */}
+        </div>
+      )}
     </PageLayout>
   )
 }
