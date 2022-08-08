@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { getButtonStyle } from "./Button"
 import { useLogOut } from "../hooks/useLogOut"
 import { useNavigate } from "react-router-dom"
-import { routes } from "../utilities/routes"
+import { getPortfolioRoute, routes } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 function NavAuthButtons() {
@@ -18,13 +18,18 @@ function NavAuthButtons() {
     }
   }
 
+  const userProfileRoute = getPortfolioRoute(user?.displayName || "")
+
   return (
     <div className="overflow-visible">
       {authIsReady && (
         <>
           {user ? (
             <>
-              <Link to="/@:profileSlug" className="text-snowWhite ml-2 sm:ml-4">
+              <Link
+                to={userProfileRoute}
+                className="text-snowWhite ml-2 sm:ml-4"
+              >
                 Profile
               </Link>
               <button

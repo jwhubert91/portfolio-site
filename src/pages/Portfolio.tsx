@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import { useAuthContext } from "../hooks/useAuthContext"
@@ -18,13 +19,15 @@ function Portfolio() {
   const [profilePicUrl, setProfilePicUrl] = useState("")
   const [backgroundPicUrl, setBackgroundPicUrl] = useState("")
 
+  // TODO - BUG: Portfolio is not reloading when URL changes
+  const { profileHandle } = useParams()
   const { documents: projects } = useCollection("projects")
   const { user, authIsReady } = useAuthContext()
 
   const loadProfile = async () => {
     setIsLoading(true)
     const usersRef = collection(db, "users")
-    const q = query(usersRef, where("userId", "==", user?.uid))
+    const q = query(usersRef, where("username", "==", profileHandle))
     const querySnapshot = await getDocs(q)
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
