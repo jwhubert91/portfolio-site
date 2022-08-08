@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { onAuthStateChanged } from "firebase/auth"
 import Button, { getButtonStyle } from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
@@ -7,24 +8,30 @@ import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import ErrorMessage from "../components/ErrorMessage"
 import { useLogIn } from "../hooks/useLogin"
-import { routes } from "../utilities/routes"
+import { getPortfolioRoute } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { user } = useAuthContext()
+  const { user, authIsReady } = useAuthContext()
   const { login, error } = useLogIn()
   const navigate = useNavigate()
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
     login(email, password)
   }
+  // TODO: BUG - login functionality is fucked up and doesn't navigate to new page after login...
   useEffect(() => {
-    if (!error && user) {
-      navigate(routes.portfolio)
+    if (authIsReady) {
+      if (user) {
+        console.log(
+          "authIsReady, there's no error and the user has a displayname"
+        )
+        navigate(getPortfolioRoute(user.displayName || ""))
+      }
     }
-  }, [error, user, navigate])
+  }, [error, user, navigate, authIsReady, onAuthStateChanged])
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
