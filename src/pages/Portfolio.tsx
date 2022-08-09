@@ -78,6 +78,7 @@ function Portfolio() {
             className="mb-4"
             profileImageSrc={currentProfile.profileImageUrl}
             backgroundImageSrc={currentProfile.backgroundImageUrl}
+            isCurrentUserPortfolio={isCurrentUserPortfolio}
           />
           {isCurrentUserPortfolio && (
             <AddProjectPrompt className="mb-2 mx-auto" />

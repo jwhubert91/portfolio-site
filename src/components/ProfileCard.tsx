@@ -16,6 +16,7 @@ interface ProfileCardProps {
   links?: ExternalLinkType[]
   backgroundImageSrc?: string
   profileImageSrc?: string
+  isCurrentUserPortfolio?: boolean
 }
 
 function ProfileCard({
@@ -26,6 +27,7 @@ function ProfileCard({
   links = [],
   backgroundImageSrc = "",
   profileImageSrc = "",
+  isCurrentUserPortfolio = false,
 }: ProfileCardProps) {
   const { user } = useAuthContext()
   const navigate = useNavigate()
@@ -79,13 +81,15 @@ function ProfileCard({
           </div>
         )}
         <div className="absolute top-2 right-2">
-          <CardAdminButton
-            className="rounded sm:px-2"
-            onClick={handleEditProfile}
-            textLabel={"Edit"}
-          >
-            <MdModeEdit className="mx-auto" />
-          </CardAdminButton>
+          {isCurrentUserPortfolio && (
+            <CardAdminButton
+              className="rounded sm:px-2"
+              onClick={handleEditProfile}
+              textLabel={"Edit"}
+            >
+              <MdModeEdit className="mx-auto" />
+            </CardAdminButton>
+          )}
           <CardAdminButton
             className="rounded ml-[3px]"
             onClick={handleShareProfile}
