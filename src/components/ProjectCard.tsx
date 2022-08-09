@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
 import { getMonthStringFromInteger, makePath } from "../utilities/helpers"
-import { ProjectType, ExternalLinkType } from "../utilities/types"
+import { ProjectType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
 import { routes } from "../utilities/routes"
@@ -35,7 +35,11 @@ const projectData: ProjectType = {
   },
 }
 
-function ProjectCard() {
+interface ProjectCardProps {
+  isCurrentUserProject?: boolean
+}
+
+function ProjectCard({ isCurrentUserProject = false }: ProjectCardProps) {
   const startDateString = `${getMonthStringFromInteger(
     projectData.startMonth
   )} ${projectData.startYear}`
@@ -87,13 +91,15 @@ function ProjectCard() {
           />
         )}
       </div>
-      <CardAdminButton
-        className="rounded sm:px-2 absolute top-2 right-2"
-        onClick={handleEditProject}
-        textLabel={"Edit"}
-      >
-        <MdModeEdit className="mx-auto" />
-      </CardAdminButton>
+      {isCurrentUserProject && (
+        <CardAdminButton
+          className="rounded sm:px-2 absolute top-2 right-2"
+          onClick={handleEditProject}
+          textLabel={"Edit"}
+        >
+          <MdModeEdit className="mx-auto" />
+        </CardAdminButton>
+      )}
     </Card>
   )
 }

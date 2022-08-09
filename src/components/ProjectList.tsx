@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom"
 import { makePath } from "../utilities/helpers"
 import { routes } from "../utilities/routes"
-import Card from "./Card"
 import ProjectCard from "./ProjectCard"
 
 interface SimpleProjectProps {
@@ -11,13 +9,17 @@ interface SimpleProjectProps {
 
 interface ProjectListProps {
   projects: SimpleProjectProps[]
+  isCurrentUserPortfolio?: boolean
 }
 
-function ProjectList({ projects }: ProjectListProps) {
+function ProjectList({
+  projects,
+  isCurrentUserPortfolio = false,
+}: ProjectListProps) {
   return (
     <div>
       {projects.map((project) => {
-        const path = makePath(routes.projects, routes.edit, project.id)
+        // const path = makePath(routes.projects, routes.edit, project.id)
         return (
           // <Card key={project.id} className="mb-4">
           //   <Link to={path}>
@@ -27,7 +29,10 @@ function ProjectList({ projects }: ProjectListProps) {
           //   </Link>
           // </Card>
           // TODO: Pass actual props to ProjectCard component :)
-          <ProjectCard key={project.id} />
+          <ProjectCard
+            key={project.id}
+            isCurrentUserProject={isCurrentUserPortfolio}
+          />
         )
       })}
     </div>

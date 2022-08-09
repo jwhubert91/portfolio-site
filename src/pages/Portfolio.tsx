@@ -69,7 +69,7 @@ function Portfolio() {
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
       {currentProfile && (
-        <div className="w-full sm:max-w-2xl mx-auto py-2 sm:px-2">
+        <div className="w-full sm:max-w-2xl mx-auto pt-2 pb-8 sm:px-2">
           <ProfileCard
             title={currentProfile.title}
             location={currentProfile.location}
@@ -84,7 +84,12 @@ function Portfolio() {
             <AddProjectPrompt className="mb-2 mx-auto" />
           )}
           <h3 className="text-md mb-4">Past Work</h3>
-          {projects && <ProjectList projects={projects} />}
+          {projects && (
+            <ProjectList
+              projects={projects}
+              isCurrentUserPortfolio={isCurrentUserPortfolio}
+            />
+          )}
           {/* <ProjectCard /> */}
         </div>
       )}
