@@ -14,9 +14,13 @@ import PageLayout from "../components/PageLayout"
 import TextArea from "../components/TextArea"
 import { useAuthContext } from "../hooks/useAuthContext"
 
+// NOTE: If you get console errors when pressing enter while focused on a textarea, it's because of LastPass. You can get rid of them by disabling LastPass
+// article: https://www.rockyourcode.com/assertion-failed-input-argument-is-not-an-htmlinputelement/
+
 // firebase imports
 import { db } from "../firebase/config"
 import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
+import { ProjectType } from "../utilities/types"
 
 function ProjectForm() {
   const [projectTitle, setProjectTitle] = useState("")
@@ -39,14 +43,31 @@ function ProjectForm() {
 
   const { user } = useAuthContext()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   const ref = collection(db, "projects")
+  //   await addDoc(ref, {
+  //     title: projectTitle,
+  //     creatorId: user?.uid,
+  //   })
+  //   navigate(routes.portfolio)
+  // }
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const ref = collection(db, "projects")
-    await addDoc(ref, {
-      title: projectTitle,
-      creatorId: user?.uid,
-    })
-    navigate(routes.portfolio)
+    if (user && user.uid) {
+      const newProject: ProjectType = {
+        creatorId: user.providerId,
+        title: projectTitle,
+        startMonth: Number(startMonth),
+        startYear: Number(startYear),
+        endMonth: Number(endMonth),
+        endYear: Number(endYear),
+        inProgress: false,
+        summary256: summary,
+      }
+      console.log(newProject)
+    }
   }
 
   const handleDelete = async (e: React.FormEvent, id: string) => {
@@ -105,13 +126,13 @@ function ProjectForm() {
                 inputValue={summary}
               />
               {/* <ImageInput label="image preview" containerClassName="mb-4" /> */}
-              <TextArea
+              {/* <TextArea
                 label="Description"
                 description="Space for a longer description of the project, its motivations, process, other contributors, outcome, etc."
                 maxLength={2000}
                 inputClassName="h-48"
                 containerClassName="mb-3"
-              />
+              /> */}
             </div>
             <div className="flex-1 flex flex-col justify-start">
               <div className="mb-2">

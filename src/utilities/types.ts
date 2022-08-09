@@ -9,7 +9,7 @@ export interface ExternalLinkType {
 export type PermissionsType = "CREATOR_FREE" | "CREATOR_PAID" | "AGENCY_FREE" | "AGENCY_PAID"
 
 export interface ProjectType {
-  id: string,
+  id?: string,
   creatorId: string
   title: string,
   startMonth: number,
@@ -19,10 +19,10 @@ export interface ProjectType {
   inProgress: boolean,
   summary256: string,
   description?: string,
-  image: string,
-  projectLink1: ExternalLinkType,
-  projectLink2: ExternalLinkType,
-  projectLink3: ExternalLinkType,
+  image?: string,
+  projectLink1?: ExternalLinkType,
+  projectLink2?: ExternalLinkType,
+  projectLink3?: ExternalLinkType,
 }
 
 export interface ProfileType {
