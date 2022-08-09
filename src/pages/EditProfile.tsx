@@ -276,7 +276,7 @@ function EditProfile() {
       isNavAuthShown={newUserRef.current ? false : true}
       isLoading={isLoading}
     >
-      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
+      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
           <FormHeader className="mb-2" title="Edit Profile" />
           <p className="text-md mb-2 lg:mb-8 text-slate-500">

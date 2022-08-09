@@ -6,13 +6,14 @@ import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import Checkbox from "../components/Checkbox"
 import FormHeader from "../components/FormHeader"
-import ImageInput from "../components/ImageInput"
+import ImageInput, { validateImageChange } from "../components/ImageInput"
 import Input from "../components/Input"
 import LinkInputRow from "../components/LinkInputRow"
 import MonthPicker from "../components/MonthPicker"
 import PageLayout from "../components/PageLayout"
 import TextArea from "../components/TextArea"
 import { useAuthContext } from "../hooks/useAuthContext"
+import { useStorage } from "../hooks/useStorage"
 
 // NOTE: If you get console errors when pressing enter while focused on a textarea, it's because of LastPass. You can get rid of them by disabling LastPass
 // article: https://www.rockyourcode.com/assertion-failed-input-argument-is-not-an-htmlinputelement/
@@ -20,16 +21,20 @@ import { useAuthContext } from "../hooks/useAuthContext"
 // firebase imports
 import { db } from "../firebase/config"
 import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
-import { ProjectType } from "../utilities/types"
+import { ProjectImageType, ProjectType } from "../utilities/types"
 
 function ProjectForm() {
+  const [isLoading, setIsLoading] = useState(false)
   const [projectTitle, setProjectTitle] = useState("")
   const [summary, setSummary] = useState("")
   const [startMonth, setStartMonth] = useState("")
   const [startYear, setStartYear] = useState("")
   const [endMonth, setEndMonth] = useState("")
   const [endYear, setEndYear] = useState("")
-  const [isInProgress, setIsInProgress] = useState(false)
+  const [isProjectInProgress, setIsProjectInProgress] = useState(false)
+  const [projectPic1, setProjectPic1] = useState<File | null>(null)
+  const [projectPic1Url, setProjectPic1Url] = useState<string>("")
+  const [projectPic1Error, setProjectPic1Error] = useState("")
 
   const [link1Name, setLink1Name] = useState("")
   const [link1Url, setLink1Url] = useState("")
@@ -40,6 +45,7 @@ function ProjectForm() {
 
   const navigate = useNavigate()
   const { projectId } = useParams()
+  const { getFilePath, uploadFile } = useStorage()
 
   const { user } = useAuthContext()
 
@@ -53,8 +59,27 @@ function ProjectForm() {
   //   navigate(routes.portfolio)
   // }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const uploadImages = async () => {
+    if (user && user.uid && projectPic1) {
+      const uploadPath: string = getFilePath(
+        "images",
+        user.uid,
+        "projects",
+        projectPic1.name
+      )
+      const uploadResponse = await uploadFile(projectPic1, uploadPath)
+      if (typeof uploadResponse === "string") {
+        console.log(uploadResponse)
+        setProjectPic1Url(uploadResponse)
+      }
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
+    await uploadImages()
+    // projectPic1Url
     if (user && user.uid) {
       const newProject: ProjectType = {
         creatorId: user.providerId,
@@ -66,18 +91,33 @@ function ProjectForm() {
         inProgress: false,
         summary256: summary,
       }
-      console.log(newProject)
+      if (newProject && projectPic1 && projectPic1Url) {
+        const storedImage1: ProjectImageType = {
+          title: projectPic1.name,
+          url: projectPic1Url,
+          projectImageOrder: 1,
+        }
+        newProject.images = [storedImage1]
+      }
+      const ref = collection(db, "projects")
+      await addDoc(ref, {
+        ...newProject,
+      }).then((res) => console.log(res))
     }
+    setIsLoading(false)
   }
 
   const handleDelete = async (e: React.FormEvent, id: string) => {
     e.preventDefault()
+    setIsLoading(true)
     const ref = doc(db, "projects", id)
     await deleteDoc(ref)
     navigate(routes.portfolio)
+    setIsLoading(false)
   }
 
   const getProjectFromParams = async (id: string) => {
+    setIsLoading(true)
     const ref = doc(db, "projects", id)
     const docSnap = await getDoc(ref)
     if (docSnap.exists()) {
@@ -86,6 +126,7 @@ function ProjectForm() {
     } else {
       console.log("There was an error getting the document")
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
@@ -95,8 +136,8 @@ function ProjectForm() {
   }, [projectId])
 
   return (
-    <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-2 sm:py-4">
+    <PageLayout className="flex flex-col" isLoading={isLoading}>
+      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -108,7 +149,7 @@ function ProjectForm() {
                 containerClassName="mb-2"
                 inputClassName="p-2 sm:p-2"
                 inputValue={projectTitle}
-                label="project title"
+                label="project title ✍️"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setProjectTitle(value)
@@ -117,7 +158,7 @@ function ProjectForm() {
               />
               <TextArea
                 label="summary (256 characters)..."
-                description="The summary is visible anywhere links to your project appear"
+                description="The short summary is visible anywhere links to your project appear"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setSummary(value)
@@ -125,18 +166,50 @@ function ProjectForm() {
                 maxLength={256}
                 inputValue={summary}
               />
-              {/* <ImageInput label="image preview" containerClassName="mb-4" /> */}
-              {/* <TextArea
-                label="Description"
+              <ImageInput
+                containerClassName="py-2 mb-2"
+                label="Featured image 🎨"
+                description="An image that demonstrates this project. Less than 1 MB"
+                onChange={(e) => {
+                  setProjectPic1(null)
+                  setProjectPic1Error("")
+                  let { imageError, validatedImage } = validateImageChange(
+                    e,
+                    1000000,
+                    "project image 1"
+                  )
+                  if (imageError) {
+                    setProjectPic1Error(imageError)
+                  } else {
+                    setProjectPic1(validatedImage)
+                  }
+                }}
+                validation={projectPic1Error}
+                previewUrl={
+                  projectPic1
+                    ? URL.createObjectURL(projectPic1)
+                    : projectPic1Url
+                }
+                onDelete={(e) => {
+                  e.preventDefault()
+                  // TODO: delete file from storage
+                  // then, delete URL references to the file on the project object in firestore
+                }}
+                isSelectShown={!projectPic1 && !projectPic1Url}
+              />
+              <TextArea
+                label="Description 📖"
                 description="Space for a longer description of the project, its motivations, process, other contributors, outcome, etc."
                 maxLength={2000}
                 inputClassName="h-48"
                 containerClassName="mb-3"
-              /> */}
+              />
             </div>
             <div className="flex-1 flex flex-col justify-start">
               <div className="mb-2">
-                <p className="text-left font-semibold text-sm">Date started:</p>
+                <p className="text-left font-semibold text-sm">
+                  Date started: 🗓
+                </p>
                 <div className="flex">
                   <MonthPicker
                     label="month"
@@ -160,10 +233,10 @@ function ProjectForm() {
                 </div>
               </div>
               <div className="flex-1 flex flex-col justify-start">
-                {!isInProgress && (
+                {!isProjectInProgress && (
                   <div className="mb-2">
                     <p className="text-left font-semibold text-sm">
-                      Date ended:
+                      Date ended: 🏁
                     </p>
                     <div className="flex mb-2">
                       <MonthPicker
@@ -192,9 +265,9 @@ function ProjectForm() {
                   label="Is this project still in progress?"
                   onChange={(e) => {
                     const value = (e.target as HTMLInputElement).checked
-                    setIsInProgress(value)
+                    setIsProjectInProgress(value)
                   }}
-                  isChecked={isInProgress}
+                  isChecked={isProjectInProgress}
                   containerClassName="mb-4"
                 />
               </div>

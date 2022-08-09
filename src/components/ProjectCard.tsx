@@ -19,8 +19,6 @@ const projectData: ProjectType = {
   summary256: `Portful.co is a React web application that allows anyone to create a
   portfolio and share it online. Built with React, Redux, Typescript,
   Tailwind, and Firebase.`,
-  image:
-    "https://d1zdxptf8tk3f9.cloudfront.net/ckeditor_assets/pictures/2252/content_guilherme-vasconcelos-560064-unsplash.jpg",
   projectLink1: {
     title: "Website",
     url: "https://jameshubert.com",
@@ -61,15 +59,11 @@ function ProjectCard({ isCurrentUserProject = false }: ProjectCardProps) {
         <h3 className="font-bold text-lg">{projectData.title}</h3>
         <p className="text-slate-500">{completeDateString}</p>
         <p className="text-xs sm:text-sm my-2">{projectData.summary256}</p>
-        {projectData.image && (
+        {/* 
           <div className="mb-2 p-4 h-108 border border-1 border-mutedGray rounded overflow-hidden">
-            <img
-              src={projectData.image}
-              alt={projectData.title}
-              className="cover"
-            />
-          </div>
-        )}
+              <img src={image.url} alt={image.title} className="cover" />
+            </div>
+        */}
       </Link>
       <div className="text-xs flex flex-wrap justify-center my-1">
         {projectData.projectLink1 && (

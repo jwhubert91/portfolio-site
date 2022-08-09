@@ -1,9 +1,12 @@
-import { Url } from "url";
-import { permissionsLevels } from './constants'
-
 export interface ExternalLinkType {
   title: string,
   url: string,
+}
+
+export interface ProjectImageType {
+  title: string,
+  url: string,
+  projectImageOrder: number
 }
 
 export type PermissionsType = "CREATOR_FREE" | "CREATOR_PAID" | "AGENCY_FREE" | "AGENCY_PAID"
@@ -17,9 +20,9 @@ export interface ProjectType {
   endMonth: number | null,
   endYear: number | null,
   inProgress: boolean,
-  summary256: string,
+  summary256?: string,
   description?: string,
-  image?: string,
+  images?: ProjectImageType[],
   projectLink1?: ExternalLinkType,
   projectLink2?: ExternalLinkType,
   projectLink3?: ExternalLinkType,

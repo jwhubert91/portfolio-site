@@ -1,12 +1,30 @@
-import { ref, listAll, deleteObject } from 'firebase/storage'
+import { ref, listAll, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { storage } from '../firebase/config'
 
 export type FileGroup = "images"
-export type FileType = "profilePic" | "backgroundPic"
+export type FileType = "profilePic" | "backgroundPic" | "projects"
+
+export interface UploadResponse {
+  downloadUrl: string | null
+  error: string | null
+}
 
 export const useStorage = ()=> {
   const getFilePath = (fileGroup: FileGroup, uid: string, fileType: FileType, fileName?: string): string => {
     return `${fileGroup}/${uid}/${fileType}${fileName ? `/${fileName}` : ""}`
+  }
+
+  const uploadFile = async (file: File, path: string) => {
+    const storageRef = ref(storage, path)
+    await uploadBytes(storageRef, file)
+    .then(async (snapshot) => {
+      const downloadUrl = await getDownloadURL(snapshot.ref)
+      return downloadUrl
+    })
+    .catch((err) => {
+      console.log(`There was an error uploading the file ${file.name}: `, err.message)
+      return false
+    })
   }
 
   const deleteFile = async (filepath: string)=> {
@@ -19,5 +37,5 @@ export const useStorage = ()=> {
       }).catch((err) => console.log("Error deleting the file from storage: ", err.message))
   }
 
-  return { getFilePath, deleteFile }
+  return { getFilePath, deleteFile, uploadFile }
 }
