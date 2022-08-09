@@ -21,7 +21,6 @@ function Portfolio() {
 
   const navigate = useNavigate()
 
-  // TODO - BUG: Portfolio is not reloading when URL changes
   const { profileHandle } = useParams()
   const { documents: projects } = useCollection("projects")
   const { user, authIsReady } = useAuthContext()

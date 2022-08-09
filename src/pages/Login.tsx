@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
+import { User } from "firebase/auth"
+import { getPortfolioRoute } from "../utilities/routes"
 import { Link, useNavigate } from "react-router-dom"
-import { onAuthStateChanged } from "firebase/auth"
 import Button, { getButtonStyle } from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import FormHeader from "../components/FormHeader"
@@ -8,30 +9,30 @@ import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import ErrorMessage from "../components/ErrorMessage"
 import { useLogIn } from "../hooks/useLogin"
-import { getPortfolioRoute } from "../utilities/routes"
 import { useAuthContext } from "../hooks/useAuthContext"
 
 function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const { user, authIsReady } = useAuthContext()
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
   const { login, error } = useLogIn()
+  const { user, authIsReady } = useAuthContext()
   const navigate = useNavigate()
-  const handleLogin = (e: React.FormEvent) => {
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     login(email, password)
   }
-  // TODO: BUG - login functionality is fucked up and doesn't navigate to new page after login...
+
   useEffect(() => {
-    if (authIsReady) {
-      if (user) {
-        console.log(
-          "authIsReady, there's no error and the user has a displayname"
-        )
-        navigate(getPortfolioRoute(user.displayName || ""))
-      }
+    if (user && authIsReady) {
+      setCurrentUser(user)
     }
-  }, [error, user, navigate, authIsReady, onAuthStateChanged])
+    if (!!currentUser) {
+      currentUser && navigate(getPortfolioRoute(currentUser?.displayName || ""))
+    }
+  }, [user, authIsReady, currentUser, navigate])
+
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">

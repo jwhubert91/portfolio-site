@@ -9,7 +9,7 @@ export const useLogIn = () => {
   const [error, setError] = useState(null)
   const { dispatch } = useAuthContext()
 
-  const login = (email: string, password: string) => {
+  const login = async (email: string, password: string) => {
     setError(null)
     signInWithEmailAndPassword(auth, email, password)
       .then((res) => {

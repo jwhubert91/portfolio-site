@@ -12,24 +12,19 @@ import FourOhFour from "./pages/FourOhFour"
 import EditProfile from "./pages/EditProfile"
 import ProjectDetail from "./pages/ProjectDetail"
 
-// hooks
-import { useAuthContext } from "./hooks/useAuthContext"
-
 // utils
 import { routes } from "./utilities/routes"
 
+// TODO: Put back restricted routes for createhandle, signup, login
+
 function App() {
-  const { user } = useAuthContext()
   return (
     <>
       <BrowserRouter>
         <Routes>
           <Route path={routes.fourOhFour} element={<FourOhFour />} />
           <Route path={routes.home} element={<Home />} />
-          <Route
-            path={routes.login}
-            element={user ? <Portfolio /> : <Login />}
-          />
+          <Route path={routes.login} element={<Login />} />
           <Route path={routes.signup} element={<SignUp />} />
           <Route path={routes.createHandle} element={<CreateHandle />} />
           <Route path={routes.editProfile} element={<EditProfile />} />
