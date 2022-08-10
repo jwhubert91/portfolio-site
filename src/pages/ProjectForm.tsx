@@ -82,7 +82,7 @@ function ProjectForm() {
     // projectPic1Url
     if (user && user.uid) {
       const newProject: ProjectType = {
-        creatorId: user.providerId,
+        creatorId: user.uid,
         title: projectTitle,
         startMonth: Number(startMonth),
         startYear: Number(startYear),
@@ -169,7 +169,7 @@ function ProjectForm() {
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Featured image 🎨"
-                description="An image that demonstrates this project. Less than 1 MB"
+                description="An landscape image that demonstrates this project. Less than 1 MB"
                 onChange={(e) => {
                   setProjectPic1(null)
                   setProjectPic1Error("")
@@ -195,6 +195,7 @@ function ProjectForm() {
                   // TODO: delete file from storage
                   // then, delete URL references to the file on the project object in firestore
                 }}
+                previewSizeClasses="h-40 w-80"
                 isSelectShown={!projectPic1 && !projectPic1Url}
               />
               <TextArea

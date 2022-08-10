@@ -76,7 +76,7 @@ function ImageInput({
       {validation && <p className="text-sm text-red-600">{validation}</p>}
       {previewUrl && (
         <ImagePreview
-          imageClassName={previewSizeClasses}
+          imageClassName={`object-cover ${previewSizeClasses}`}
           previewUrl={previewUrl}
           label={imageDeleteButtonLabel}
           onDelete={onDelete}
