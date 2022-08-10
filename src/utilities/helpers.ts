@@ -17,7 +17,7 @@ export const getMonthStringFromInteger = (monthInt:number): null | string => {
   if (monthInt < 0 || monthInt > 11) {
     return null;
   }
-  return months[monthInt - 1];
+  return months[monthInt];
 }
 
 export const makePath = (...args: string[]): string=> {
