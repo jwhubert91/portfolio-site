@@ -92,6 +92,9 @@ function ProjectForm() {
         summary256: summary,
       }
       if (newProject && projectPic1 && projectPic1Url) {
+        // TODO: Bug - I don't think this block is ever entered
+        // ...maybe because image upload is async...
+        // ...fix the same way you fixed it on the new profile form?
         const storedImage1: ProjectImageType = {
           title: projectPic1.name,
           url: projectPic1Url,
