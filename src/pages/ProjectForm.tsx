@@ -96,6 +96,7 @@ function ProjectForm() {
       const newProject: ProjectType = {
         creatorId: user.uid,
         title: projectTitle,
+        urlSlug: encodeURIComponent(projectTitle),
         startMonth: Number(startMonth),
         startYear: Number(startYear),
         endMonth: isProjectInProgress ? null : Number(endMonth),

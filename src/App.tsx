@@ -28,8 +28,8 @@ function App() {
           <Route path={routes.signup} element={<SignUp />} />
           <Route path={routes.createHandle} element={<CreateHandle />} />
           <Route path={routes.editProfile} element={<EditProfile />} />
-          <Route path={routes.portfolio} element={<Portfolio />} />
-          <Route path={routes.projects}>
+          <Route path={routes.portfolio}>
+            <Route path={routes.portfolio} element={<Portfolio />} />
             <Route path={routes.createProject} element={<ProjectForm />} />
             <Route path={routes.editProject} element={<ProjectForm />} />
             <Route path={routes.projectId} element={<ProjectDetail />} />

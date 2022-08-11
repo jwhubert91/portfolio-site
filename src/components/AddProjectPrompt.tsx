@@ -2,7 +2,6 @@ import Button from "./Button"
 import { MdAddCircleOutline } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import { routes } from "../utilities/routes"
-import { makePath } from "../utilities/helpers"
 
 interface AddProjectPromptProps {
   className?: string
@@ -11,7 +10,7 @@ interface AddProjectPromptProps {
 function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
   const navigate = useNavigate()
   const handleClick = () => {
-    navigate(makePath(routes.projects, routes.createProject))
+    navigate(routes.createProject)
   }
   return (
     <Button

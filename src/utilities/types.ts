@@ -17,6 +17,7 @@ export interface ProjectType {
   id?: string,
   creatorId: string
   title: string,
+  urlSlug: string,
   startMonth: number,
   startYear: number,
   endMonth: number | null,

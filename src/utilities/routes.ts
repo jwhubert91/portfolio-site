@@ -2,14 +2,14 @@ export const routes = {
   home: "/",
   login: "/login",
   signup: "/signup",
-  createHandle: "/handle",
-  editProfile: "/@:profileHandle/edit",
   portfolio: "/@:profileHandle",
-  projects: "/projects",
-  createProject: "new",
-  editProject: "edit/:projectId",
-  projectId: ":projectId",
+  createHandle: "/@:profileHandle/handle",
+  editProfile: "/@:profileHandle/profile",
+  createProject: "/@:profileHandle/new",
+  projectDetail: "/@:profileHandle/:projectSlug",
+  editProject: "/@:profileHandle/:projectSlug/edit",
   fourOhFour: "*",
+  projectId: ":projectSlug",
 };
 
 export const getPortfolioRoute = (displayName: string)=> {
@@ -17,9 +17,13 @@ export const getPortfolioRoute = (displayName: string)=> {
 }
 
 export const getEditPortfolioRoute = (displayName: string)=> {
-  return `/@${displayName}/edit`
+  return `/@${displayName}/profile`
 }
 
-export const getEditProjectRoute = (projectId: string)=> {
-  return `/projects/edit/${projectId}`
+export const getProjectDetailRoute = (displayName: string, projectSlug: string) => {
+  return `/@${displayName}/${projectSlug}`
+}
+
+export const getEditProjectRoute = (displayName: string, projectSlug: string)=> {
+  return `/@${displayName}/${projectSlug}/edit`
 }
