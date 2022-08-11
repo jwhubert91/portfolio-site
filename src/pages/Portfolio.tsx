@@ -90,7 +90,6 @@ function Portfolio() {
               isCurrentUserPortfolio={isCurrentUserPortfolio}
             />
           )}
-          {/* <ProjectCard /> */}
         </div>
       )}
     </PageLayout>

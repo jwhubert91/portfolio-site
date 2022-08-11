@@ -7,7 +7,6 @@ export const routes = {
   portfolio: "/@:profileHandle",
   projects: "/projects",
   createProject: "new",
-  edit: "edit",
   editProject: "edit/:projectId",
   projectId: ":projectId",
   fourOhFour: "*",
@@ -19,4 +18,8 @@ export const getPortfolioRoute = (displayName: string)=> {
 
 export const getEditPortfolioRoute = (displayName: string)=> {
   return `/@${displayName}/edit`
+}
+
+export const getEditProjectRoute = (projectId: string)=> {
+  return `/projects/edit/${projectId}`
 }
