@@ -62,7 +62,7 @@ function ProjectForm() {
       if (!!projectPic1) {
         const uploadPath: string = getFilePath(
           "images",
-          user.uid,
+          uid,
           "projects",
           projectPic1.name
         )
@@ -80,7 +80,6 @@ function ProjectForm() {
   }
 
   const saveProject = async (imageUrls: { projectPic1DownloadUrl: string }) => {
-    const projectsRef = collection(db, "projects")
     const projectPic1Element: ProjectImageType = {
       url: imageUrls.projectPic1DownloadUrl,
       title: projectPic1?.name ? projectPic1?.name : "",
