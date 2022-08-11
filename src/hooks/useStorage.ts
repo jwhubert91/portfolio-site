@@ -23,7 +23,6 @@ export const useStorage = ()=> {
     })
     .catch((err) => {
       console.log(`There was an error uploading the file ${file.name}: `, err.message)
-      return false
     })
   }
 

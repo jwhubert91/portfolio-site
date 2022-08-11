@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate, useParams } from "react-router-dom"
-import { routes } from "../utilities/routes"
+import { routes, getPortfolioRoute } from "../utilities/routes"
 import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import Checkbox from "../components/Checkbox"
@@ -14,13 +14,15 @@ import PageLayout from "../components/PageLayout"
 import TextArea from "../components/TextArea"
 import { useAuthContext } from "../hooks/useAuthContext"
 import { useStorage } from "../hooks/useStorage"
+import ErrorMessage from "../components/ErrorMessage"
 
 // NOTE: If you get console errors when pressing enter while focused on a textarea, it's because of LastPass. You can get rid of them by disabling LastPass
 // article: https://www.rockyourcode.com/assertion-failed-input-argument-is-not-an-htmlinputelement/
 
 // firebase imports
-import { db } from "../firebase/config"
+import { db, storage } from "../firebase/config"
 import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { ProjectImageType, ProjectType } from "../utilities/types"
 
 function ProjectForm() {
@@ -35,6 +37,7 @@ function ProjectForm() {
   const [projectPic1, setProjectPic1] = useState<File | null>(null)
   const [projectPic1Url, setProjectPic1Url] = useState<string>("")
   const [projectPic1Error, setProjectPic1Error] = useState("")
+  const [error, setError] = useState("")
 
   const [link1Name, setLink1Name] = useState("")
   const [link1Url, setLink1Url] = useState("")
@@ -45,67 +48,75 @@ function ProjectForm() {
 
   const navigate = useNavigate()
   const { projectId } = useParams()
-  const { getFilePath, uploadFile } = useStorage()
+  const { getFilePath } = useStorage()
 
   const { user } = useAuthContext()
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   const ref = collection(db, "projects")
-  //   await addDoc(ref, {
-  //     title: projectTitle,
-  //     creatorId: user?.uid,
-  //   })
-  //   navigate(routes.portfolio)
-  // }
-
   const uploadImages = async () => {
-    if (user && user.uid && projectPic1) {
-      const uploadPath: string = getFilePath(
-        "images",
-        user.uid,
-        "projects",
-        projectPic1.name
-      )
-      const uploadResponse = await uploadFile(projectPic1, uploadPath)
-      if (typeof uploadResponse === "string") {
-        console.log(uploadResponse)
-        setProjectPic1Url(uploadResponse)
+    let imageUrls = {
+      projectPicUrl1: "",
+    }
+    // upload user thumbnail
+    if (user?.uid) {
+      const { uid } = user
+      if (!!projectPic1) {
+        const uploadPath: string = getFilePath(
+          "images",
+          user.uid,
+          "projects",
+          projectPic1.name
+        )
+        const storageRef = ref(storage, uploadPath)
+        await uploadBytes(storageRef, projectPic1)
+          .then(async (snapshot) => {
+            imageUrls.projectPicUrl1 = await getDownloadURL(snapshot.ref)
+          })
+          .catch((err) => {
+            setProjectPic1Error(err.message)
+          })
       }
     }
+    return imageUrls
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    await uploadImages()
-    // projectPic1Url
+  const saveProject = async (imageUrls: { projectPic1DownloadUrl: string }) => {
+    const projectsRef = collection(db, "projects")
+    const projectPic1Element: ProjectImageType = {
+      url: imageUrls.projectPic1DownloadUrl,
+      title: projectPic1?.name ? projectPic1?.name : "",
+      projectImageOrder: 0,
+    }
     if (user && user.uid) {
       const newProject: ProjectType = {
         creatorId: user.uid,
         title: projectTitle,
         startMonth: Number(startMonth),
         startYear: Number(startYear),
-        endMonth: Number(endMonth),
-        endYear: Number(endYear),
-        inProgress: false,
+        endMonth: isProjectInProgress ? null : Number(endMonth),
+        endYear: isProjectInProgress ? null : Number(endYear),
+        inProgress: isProjectInProgress,
         summary256: summary,
-      }
-      if (newProject && projectPic1 && projectPic1Url) {
-        // TODO: Bug - I don't think this block is ever entered
-        // ...maybe because image upload is async...
-        // ...fix the same way you fixed it on the new profile form?
-        const storedImage1: ProjectImageType = {
-          title: projectPic1.name,
-          url: projectPic1Url,
-          projectImageOrder: 1,
-        }
-        newProject.images = [storedImage1]
+        images: imageUrls.projectPic1DownloadUrl ? [projectPic1Element] : [],
       }
       const ref = collection(db, "projects")
       await addDoc(ref, {
         ...newProject,
       }).then((res) => console.log(res))
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsLoading(true)
+    let { projectPicUrl1 } = await uploadImages()
+    await saveProject({
+      projectPic1DownloadUrl: projectPicUrl1 ? projectPicUrl1 : projectPic1Url,
+    })
+    if (user?.displayName) {
+      const portfolioRoute = getPortfolioRoute(user.displayName)
+      navigate(portfolioRoute)
+    } else {
+      setError("There was an error. Please try again.")
     }
     setIsLoading(false)
   }
@@ -172,13 +183,13 @@ function ProjectForm() {
               <ImageInput
                 containerClassName="py-2 mb-2"
                 label="Featured image 🎨"
-                description="An landscape image that demonstrates this project. Less than 1 MB"
+                description="A landscape image that demonstrates this project. Less than 2 MB"
                 onChange={(e) => {
                   setProjectPic1(null)
                   setProjectPic1Error("")
                   let { imageError, validatedImage } = validateImageChange(
                     e,
-                    1000000,
+                    2000000,
                     "project image 1"
                   )
                   if (imageError) {
@@ -198,7 +209,7 @@ function ProjectForm() {
                   // TODO: delete file from storage
                   // then, delete URL references to the file on the project object in firestore
                 }}
-                previewSizeClasses="h-40 w-80"
+                previewSizeClasses="h-40"
                 isSelectShown={!projectPic1 && !projectPic1Url}
               />
               <TextArea
@@ -323,6 +334,7 @@ function ProjectForm() {
               </div>
             </div>
           </div>
+          {error && <ErrorMessage error={error} className="my-2" />}
           <Button buttonStyle="LARGE" className="mb-8 w-full lg:w-1/2 mx-auto">
             Publish
           </Button>

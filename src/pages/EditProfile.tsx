@@ -423,7 +423,7 @@ function EditProfile() {
                     ? URL.createObjectURL(backgroundPic)
                     : backgroundPicUrl
                 }
-                previewSizeClasses="h-40 w-80"
+                previewSizeClasses="h-40"
                 onDelete={(e) => {
                   e.preventDefault()
                   setIsLoading(true)
