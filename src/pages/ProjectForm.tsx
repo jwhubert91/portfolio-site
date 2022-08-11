@@ -21,7 +21,14 @@ import ErrorMessage from "../components/ErrorMessage"
 
 // firebase imports
 import { db, storage } from "../firebase/config"
-import { collection, doc, addDoc, getDoc, deleteDoc } from "firebase/firestore"
+import {
+  collection,
+  doc,
+  addDoc,
+  getDoc,
+  deleteDoc,
+  serverTimestamp,
+} from "firebase/firestore"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { ProjectImageType, ProjectType } from "../utilities/types"
 
@@ -96,6 +103,7 @@ function ProjectForm() {
         inProgress: isProjectInProgress,
         summary256: summary,
         images: imageUrls.projectPic1DownloadUrl ? [projectPic1Element] : [],
+        timestamp: serverTimestamp(),
       }
       const ref = collection(db, "projects")
       await addDoc(ref, {

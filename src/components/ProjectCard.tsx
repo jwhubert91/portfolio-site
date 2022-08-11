@@ -7,32 +7,6 @@ import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
 import { routes } from "../utilities/routes"
 
-const projectDummyData: ProjectType = {
-  id: "1",
-  creatorId: "1",
-  title: "Portful.co",
-  startMonth: 6,
-  startYear: 2022,
-  endMonth: null,
-  endYear: null,
-  inProgress: true,
-  summary256: `Portful.co is a React web application that allows anyone to create a
-  portfolio and share it online. Built with React, Redux, Typescript,
-  Tailwind, and Firebase.`,
-  projectLink1: {
-    title: "Website",
-    url: "https://jameshubert.com",
-  },
-  projectLink2: {
-    title: "GitHub",
-    url: "https://github.com/jwhubert91",
-  },
-  projectLink3: {
-    title: "Blog Post",
-    url: "https://dev.to/jwhubert91",
-  },
-}
-
 interface ProjectCardProps {
   isCurrentUserProject?: boolean
   projectData: ProjectType

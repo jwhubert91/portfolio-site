@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore"
+
 export interface ExternalLinkType {
   title: string,
   url: string,
@@ -26,6 +28,7 @@ export interface ProjectType {
   projectLink1?: ExternalLinkType,
   projectLink2?: ExternalLinkType,
   projectLink3?: ExternalLinkType,
+  timestamp: FieldValue,
 }
 
 export interface ProfileType {
