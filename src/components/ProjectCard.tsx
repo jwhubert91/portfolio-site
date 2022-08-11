@@ -16,7 +16,6 @@ function ProjectCard({
   isCurrentUserProject = false,
   projectData,
 }: ProjectCardProps) {
-  console.log(projectData)
   const startDateString = `${getMonthStringFromInteger(
     projectData.startMonth
   )} ${projectData.startYear}`
