@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../hooks/useAuthContext"
 import CenteredContent from "../components/CenteredContent"
 import PageLayout from "../components/PageLayout"
-import { routes } from "../utilities/routes"
+import { getPortfolioRoute, routes } from "../utilities/routes"
 import "./Home.css"
 
 function Home() {
   const navigate = useNavigate()
   const { user, authIsReady } = useAuthContext()
   const handleHeroCTAClick = () => {
-    user ? navigate(routes.portfolio) : navigate(routes.signup)
+    user?.displayName
+      ? navigate(getPortfolioRoute(user.displayName))
+      : navigate(routes.signup)
   }
   return (
     <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
