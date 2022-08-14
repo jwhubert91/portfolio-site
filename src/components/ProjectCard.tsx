@@ -5,7 +5,8 @@ import { getMonthStringFromInteger } from "../utilities/helpers"
 import { ProjectType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
-import { getProjectDetailRoute, routes } from "../utilities/routes"
+import { getProjectDetailRoute, getEditProjectRoute } from "../utilities/routes"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 interface ProjectCardProps {
   isCurrentUserProject?: boolean
@@ -16,24 +17,32 @@ function ProjectCard({
   isCurrentUserProject = false,
   projectData,
 }: ProjectCardProps) {
+  const navigate = useNavigate()
+  const { user } = useAuthContext()
+
   const startDateString = `${getMonthStringFromInteger(
     projectData.startMonth
   )} ${projectData.startYear}`
   const endDateString = projectData.inProgress
     ? "In Progress"
-    : `${getMonthStringFromInteger(projectData.startMonth)} ${
-        projectData.startYear
-      }`
+    : `${
+        projectData.endMonth
+          ? getMonthStringFromInteger(projectData.endMonth)
+          : ""
+      } ${projectData.endYear}`
   const completeDateString = `${startDateString} - ${endDateString}`
-  const navigate = useNavigate()
+
   const handleEditProject = () => {
-    navigate(routes.createProject)
+    if (user && user.displayName) {
+      navigate(getEditProjectRoute(user.displayName, projectData.urlSlug))
+    }
   }
-  // const projectDetailPath = makePath(routes.projects, String(projectData.id))
+
   const projectDetailPath = getProjectDetailRoute(
-    projectData.creatorId,
+    projectData.creatorDisplayname,
     projectData.urlSlug
   )
+
   return (
     <Card className="my-2 px-8 py-4 relative">
       {/* Change route to project page when it's ready */}

@@ -13,33 +13,33 @@ import ErrorMessage from "../components/ErrorMessage"
 import { getEditPortfolioRoute } from "../utilities/routes"
 
 function CreateHandle() {
-  const [username, setUsername] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [error, setError] = useState("")
   const [isSubmitPending, setIsSubmitPending] = useState(false)
 
   const { user } = useAuthContext()
   const navigate = useNavigate()
 
-  const addUsernameToAuthUser = async () => {
+  const addDisplayNameToAuthUser = async () => {
     if (user) {
       await updateProfile(user, {
-        displayName: username,
+        displayName: displayName,
       })
     } else {
       setError("Please try again.")
     }
   }
 
-  const addUsernameToUserDoc = async () => {
+  const addDisplayNameToUserDoc = async () => {
     await addDoc(collection(db, "users"), {
       userId: user?.uid,
-      username,
+      displayName,
     })
   }
 
-  const isUsernameTaken = async (username: string) => {
+  const isDisplayNameTaken = async (displayName: string) => {
     const usersRef = collection(db, "users")
-    const q = query(usersRef, where("username", "==", username))
+    const q = query(usersRef, where("displayName", "==", displayName))
     const querySnapshot = await getDocs(q)
     if (querySnapshot.empty) {
       return false
@@ -52,16 +52,15 @@ function CreateHandle() {
     e.preventDefault()
     setError("")
     setIsSubmitPending(true)
-    // Check if username is taken
-    const isUsernameAvailable = await isUsernameTaken(username)
-    if (isUsernameAvailable) {
-      setError("Sorry, that username is taken. Please try another.")
+    const isDisplayNameInUse = await isDisplayNameTaken(displayName)
+    if (isDisplayNameInUse) {
+      setError("Sorry, that displayName is taken. Please try another.")
       setIsSubmitPending(false)
     } else {
-      await addUsernameToAuthUser()
-      await addUsernameToUserDoc()
+      await addDisplayNameToAuthUser()
+      await addDisplayNameToUserDoc()
         .then(() => {
-          navigate(getEditPortfolioRoute(username))
+          navigate(getEditPortfolioRoute(displayName))
         })
         .catch((err) => {
           setError(err.message)
@@ -79,12 +78,12 @@ function CreateHandle() {
         >
           <FormHeader title="Let's get started" />
           <Input
-            inputValue={username}
-            label="Please choose a username"
+            inputValue={displayName}
+            label="Please choose a displayName"
             description="This is one of the easiest ways to find your portfolio"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
-              setUsername(value.toLowerCase())
+              setDisplayName(value.toLowerCase())
             }}
             type=""
             required

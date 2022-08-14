@@ -32,7 +32,7 @@ function App() {
             <Route path={routes.portfolio} element={<Portfolio />} />
             <Route path={routes.createProject} element={<ProjectForm />} />
             <Route path={routes.editProject} element={<ProjectForm />} />
-            <Route path={routes.projectId} element={<ProjectDetail />} />
+            <Route path={routes.projectDetail} element={<ProjectDetail />} />
           </Route>
         </Routes>
       </BrowserRouter>

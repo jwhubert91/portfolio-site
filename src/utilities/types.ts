@@ -16,6 +16,7 @@ export type PermissionsType = "CREATOR_FREE" | "CREATOR_PAID" | "AGENCY_FREE" | 
 export interface ProjectType {
   id?: string,
   creatorId: string
+  creatorDisplayname: string
   title: string,
   urlSlug: string,
   startMonth: number,
@@ -38,7 +39,7 @@ export interface ProfileType {
   lastName: string,
   pronouns?: string,
   profileType: PermissionsType,
-  username: string,
+  displayName: string,
   title: string,
   location?: string,
   bio?: string,

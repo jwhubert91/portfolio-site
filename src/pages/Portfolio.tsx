@@ -5,10 +5,10 @@ import { db } from "../firebase/config"
 import { useAuthContext } from "../hooks/useAuthContext"
 import PageLayout from "../components/PageLayout"
 import ProfileCard from "../components/ProfileCard"
-import ProjectList from "../components/ProjectList"
+import ProjectCard from "../components/ProjectCard"
 import AddProjectPrompt from "../components/AddProjectPrompt"
-import { useCollection } from "../hooks/useCollection"
-import { ExternalLinkType, ProfileType } from "../utilities/types"
+import { useProjectsCollection } from "../hooks/useProjectsCollection"
+import { ExternalLinkType, ProfileType, ProjectType } from "../utilities/types"
 import { User } from "firebase/auth"
 import { routes } from "../utilities/routes"
 
@@ -22,12 +22,12 @@ function Portfolio() {
   const navigate = useNavigate()
 
   const { profileHandle } = useParams()
-  const { documents: projects } = useCollection("projects")
+  const { documents: projects } = useProjectsCollection("projects")
   const { user, authIsReady } = useAuthContext()
 
   const memoizedLoadProfile = useCallback(async () => {
     const usersRef = collection(db, "users")
-    const q = query(usersRef, where("username", "==", profileHandle))
+    const q = query(usersRef, where("displayName", "==", profileHandle))
     const querySnapshot = await getDocs(q)
     if (querySnapshot.empty) {
       navigate(routes.fourOhFour, { replace: true })
@@ -36,7 +36,7 @@ function Portfolio() {
       const profileData: ProfileType = doc.data() as ProfileType
       setCurrentProfile(profileData)
       setIsCurrentUserPortfolio(
-        currentUser?.displayName === profileData.username
+        currentUser?.displayName === profileData.displayName
       )
       const {
         profileLink1,
@@ -84,12 +84,13 @@ function Portfolio() {
             <AddProjectPrompt className="mb-2 mx-auto" />
           )}
           <h3 className="text-md mb-4">Past Work</h3>
-          {projects && (
-            <ProjectList
-              projects={projects}
-              isCurrentUserPortfolio={isCurrentUserPortfolio}
+          {projects.map((project: ProjectType) => (
+            <ProjectCard
+              key={project.id}
+              isCurrentUserProject={isCurrentUserPortfolio}
+              projectData={project}
             />
-          )}
+          ))}
         </div>
       )}
     </PageLayout>

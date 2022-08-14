@@ -3,9 +3,10 @@ import { useEffect, useState } from "react"
 // firebase
 import { db } from "../firebase/config"
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore"
+import { ProjectType } from "../utilities/types"
 
-export const useCollection = (collectionName: string)=> {
-  const [documents, setDocuments] = useState(null)
+export const useProjectsCollection = (collectionName: string)=> {
+  const [documents, setDocuments] = useState<ProjectType[]>([])
 
   useEffect(()=> {
     let ref = collection(db, collectionName)

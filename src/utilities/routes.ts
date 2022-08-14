@@ -9,7 +9,6 @@ export const routes = {
   projectDetail: "/@:profileHandle/:projectSlug",
   editProject: "/@:profileHandle/:projectSlug/edit",
   fourOhFour: "*",
-  projectId: ":projectSlug",
 };
 
 export const getPortfolioRoute = (displayName: string)=> {

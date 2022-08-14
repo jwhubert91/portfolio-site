@@ -92,9 +92,10 @@ function ProjectForm() {
       title: projectPic1?.name ? projectPic1?.name : "",
       projectImageOrder: 0,
     }
-    if (user && user.uid) {
+    if (user && user.uid && user.displayName) {
       const newProject: ProjectType = {
         creatorId: user.uid,
+        creatorDisplayname: user.displayName,
         title: projectTitle,
         urlSlug: encodeURIComponent(projectTitle.toLowerCase()),
         startMonth: Number(startMonth),
