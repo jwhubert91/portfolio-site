@@ -16,6 +16,7 @@ interface InputProps {
   type?: HTMLInputTypeAttribute
   required?: boolean
   pattern?: string
+  bottomNote?: string
 }
 
 function Input({
@@ -26,6 +27,7 @@ function Input({
   inputValue = "",
   label,
   name = "",
+  bottomNote = "",
   onChange,
   placeholder = "",
   type = "text",
@@ -51,6 +53,9 @@ function Input({
         value={inputValue}
         required={required}
       />
+      {bottomNote && (
+        <span className="block text-sm text-gray-700">{bottomNote}</span>
+      )}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )

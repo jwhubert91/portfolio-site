@@ -31,10 +31,12 @@ import {
 } from "firebase/firestore"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { ProjectImageType, ProjectType } from "../utilities/types"
+import { encodeReadableURIComponent } from "../utilities/helpers"
 
 function ProjectForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [projectTitle, setProjectTitle] = useState("")
+  const [urlSlug, setUrlSlug] = useState("")
   const [summary, setSummary] = useState("")
   const [startMonth, setStartMonth] = useState("")
   const [startYear, setStartYear] = useState("")
@@ -97,7 +99,7 @@ function ProjectForm() {
         creatorId: user.uid,
         creatorDisplayname: user.displayName,
         title: projectTitle,
-        urlSlug: encodeURIComponent(projectTitle.toLowerCase()),
+        urlSlug,
         startMonth: Number(startMonth),
         startYear: Number(startYear),
         endMonth: isProjectInProgress ? null : Number(endMonth),
@@ -176,8 +178,12 @@ function ProjectForm() {
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setProjectTitle(value)
+                  const urlSlugResult: string = encodeReadableURIComponent(
+                    value.toLowerCase()
+                  )
+                  setUrlSlug(urlSlugResult)
                 }}
-                type="text"
+                bottomNote={`Project URL: @${user?.displayName}/${urlSlug}`}
               />
               <TextArea
                 label="summary (256 characters)..."

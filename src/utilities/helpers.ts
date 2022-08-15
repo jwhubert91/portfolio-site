@@ -20,6 +20,13 @@ export const getMonthStringFromInteger = (monthInt:number): null | string => {
   return months[monthInt];
 }
 
+export const encodeReadableURIComponent = (input: string): string => {
+  const filteredString = input.replace(/[\W]+/g, "_");
+  const cleanEndString = filteredString.replace(/_$/, '')
+  const finalString = cleanEndString.replace(/^_/, '')
+  return finalString;
+}
+
 export const makePath = (...args: string[]): string=> {
   let output = "";
   const argsLength = args.length
