@@ -108,6 +108,20 @@ function ProjectForm() {
         summary256: summary,
         images: imageUrls.projectPic1DownloadUrl ? [projectPic1Element] : [],
         timestamp: serverTimestamp(),
+        links: [
+          {
+            url: link1Url,
+            title: link1Name,
+          },
+          {
+            url: link2Url,
+            title: link2Name,
+          },
+          {
+            url: link3Url,
+            title: link3Url,
+          },
+        ],
       }
       const ref = collection(db, "projects")
       await addDoc(ref, {

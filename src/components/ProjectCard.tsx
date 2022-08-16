@@ -61,24 +61,10 @@ function ProjectCard({
         )}
       </Link>
       <div className="text-xs flex flex-wrap justify-center my-1">
-        {projectData.projectLink1 && (
-          <PillLink
-            url={projectData.projectLink1.url}
-            label={projectData.projectLink1.title}
-          />
-        )}
-        {projectData.projectLink2 && (
-          <PillLink
-            url={projectData.projectLink2.url}
-            label={projectData.projectLink2.title}
-          />
-        )}
-        {projectData.projectLink3 && (
-          <PillLink
-            url={projectData.projectLink3.url}
-            label={projectData.projectLink3.title}
-          />
-        )}
+        {projectData.links &&
+          projectData.links.map((link) => (
+            <PillLink url={link.url} label={link.title} />
+          ))}
       </div>
       {isCurrentUserProject && (
         <CardAdminButton

@@ -27,9 +27,7 @@ export interface ProjectType {
   summary256?: string,
   description?: string,
   images?: ProjectImageType[],
-  projectLink1?: ExternalLinkType,
-  projectLink2?: ExternalLinkType,
-  projectLink3?: ExternalLinkType,
+  links?: ExternalLinkType[],
   timestamp: FieldValue,
 }
 
