@@ -1,43 +1,27 @@
 import { useEffect, useState, useCallback } from "react"
 import { useParams } from "react-router-dom"
-import {
-  query,
-  where,
-  collection,
-  getDocs,
-  DocumentData,
-} from "firebase/firestore"
-import { db } from "../firebase/config"
 import PageLayout from "../components/PageLayout"
 import { ExternalLinkType, ProjectType } from "../utilities/types"
 import PillLink from "../components/PillLink"
+import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectDetail() {
   const [currentProject, setCurrentProject] = useState<ProjectType | null>(null)
 
   const { profileHandle, projectSlug } = useParams()
+  const { getProject } = useGetSingleProject()
 
   // useCallback to get rid of any useEffect errors
   const memoizedLoadProject = useCallback(async () => {
-    let result: DocumentData | null = null
-    const projectsRef = collection(db, "projects")
-    const q = query(
-      projectsRef,
-      where("creatorDisplayname", "==", profileHandle),
-      where("urlSlug", "==", projectSlug)
-    )
-    const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
-      result = doc.data()
-    })
-    setCurrentProject(result)
-  }, [profileHandle, projectSlug])
+    if (profileHandle && projectSlug) {
+      const project = await getProject(profileHandle, projectSlug)
+      setCurrentProject(project)
+    }
+  }, [profileHandle, projectSlug, getProject])
 
   useEffect(() => {
     memoizedLoadProject()
   }, [memoizedLoadProject])
-
-  console.log(currentProject)
 
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProject}>
