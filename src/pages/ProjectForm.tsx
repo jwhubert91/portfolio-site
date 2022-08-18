@@ -137,6 +137,9 @@ function ProjectForm() {
 
   const isProjectSlugTaken = async () => {
     if (user?.displayName && urlSlug) {
+      if (urlSlug === projectSlug) {
+        return false
+      }
       const existingProject = await getProject(user.displayName, urlSlug)
       if (!!existingProject) {
         return true
@@ -158,6 +161,11 @@ function ProjectForm() {
           setIsLoading(false)
           return
         } else {
+          // TODO: If you are updating an existing document, handle that here as well...
+          if (profileHandle && projectSlug) {
+            // updating an existing document
+          } else {
+          }
           let { projectPicUrl1 } = await uploadImages()
           await saveProject({
             projectPic1DownloadUrl: projectPicUrl1
