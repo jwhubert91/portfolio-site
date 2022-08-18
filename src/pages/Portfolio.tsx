@@ -66,6 +66,8 @@ function Portfolio() {
     }
   }, [authIsReady, profileHandle, memoizedLoadProfile])
 
+  console.log(projects)
+
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
       {currentProfile && (

@@ -32,7 +32,10 @@ import {
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
 import { ProjectImageType, ProjectType } from "../utilities/types"
 import { encodeReadableURIComponent } from "../utilities/helpers"
-import { useGetSingleProject } from "../hooks/useGetSingleProject"
+import {
+  RetrievedProjectType,
+  useGetSingleProject,
+} from "../hooks/useGetSingleProject"
 
 function ProjectForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -133,8 +136,9 @@ function ProjectForm() {
 
   const isProjectSlugTaken = async () => {
     if (user?.displayName && urlSlug) {
-      const projectExists = await getProject(user.displayName, urlSlug)
-      if (projectExists) {
+      const existingProject = await getProject(user.displayName, urlSlug)
+      if (!!existingProject) {
+        console.log(existingProject)
         return true
       } else {
         return false
@@ -145,23 +149,29 @@ function ProjectForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    const projectSlugInUse = await isProjectSlugTaken()
-    if (projectSlugInUse) {
-      setError(
-        "You've already used that project URL. Please choose a different project name."
-      )
-      setIsLoading(false)
-      return
-    }
-    let { projectPicUrl1 } = await uploadImages()
-    await saveProject({
-      projectPic1DownloadUrl: projectPicUrl1 ? projectPicUrl1 : projectPic1Url,
-    })
-    if (user?.displayName) {
-      const portfolioRoute = getPortfolioRoute(user.displayName)
-      navigate(portfolioRoute)
-    } else {
-      setError("There was an error. Please try again.")
+    if (user?.displayName && urlSlug) {
+      isProjectSlugTaken().then(async (res) => {
+        if (res === true) {
+          setError(
+            "You've already used that project URL. Please choose a different project name."
+          )
+          setIsLoading(false)
+          return
+        } else {
+          let { projectPicUrl1 } = await uploadImages()
+          await saveProject({
+            projectPic1DownloadUrl: projectPicUrl1
+              ? projectPicUrl1
+              : projectPic1Url,
+          })
+          if (user?.displayName) {
+            const portfolioRoute = getPortfolioRoute(user.displayName)
+            navigate(portfolioRoute)
+          } else {
+            setError("There was an error. Please try again.")
+          }
+        }
+      })
     }
     setIsLoading(false)
   }

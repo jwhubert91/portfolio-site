@@ -2,6 +2,11 @@ import { useState } from 'react'
 import { DocumentData, collection, query, where, getDocs } from 'firebase/firestore'
 import { db } from '../firebase/config'
 
+export interface RetrievedProjectType {
+  id: string
+  document: DocumentData
+}
+
 export const useGetSingleProject = () => {
     const [isPending, setIsPending] = useState(false)
 
