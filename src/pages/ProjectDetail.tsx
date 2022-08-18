@@ -3,10 +3,7 @@ import { useParams } from "react-router-dom"
 import PageLayout from "../components/PageLayout"
 import { ExternalLinkType, ProjectType } from "../utilities/types"
 import PillLink from "../components/PillLink"
-import {
-  useGetSingleProject,
-  RetrievedProjectType,
-} from "../hooks/useGetSingleProject"
+import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectDetail() {
   const [currentProject, setCurrentProject] = useState<ProjectType | null>(null)

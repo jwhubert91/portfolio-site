@@ -66,7 +66,7 @@ function Portfolio() {
     }
   }, [authIsReady, profileHandle, memoizedLoadProfile])
 
-  console.log(projects)
+  console.log("rendered Portfolio again")
 
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
@@ -86,9 +86,9 @@ function Portfolio() {
             <AddProjectPrompt className="mb-2 mx-auto" />
           )}
           <h3 className="text-md mb-4">Past Work</h3>
-          {projects.map((project: ProjectType) => (
+          {projects.map((project: ProjectType, idx) => (
             <ProjectCard
-              key={project.id}
+              key={idx}
               isCurrentUserProject={isCurrentUserPortfolio}
               projectData={project}
             />

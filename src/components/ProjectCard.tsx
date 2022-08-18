@@ -43,6 +43,8 @@ function ProjectCard({
     projectData.urlSlug
   )
 
+  console.log(projectData)
+
   return (
     <Card className="my-2 px-8 py-4 relative">
       {/* Change route to project page when it's ready */}
@@ -50,7 +52,7 @@ function ProjectCard({
         <h3 className="font-bold text-lg">{projectData.title}</h3>
         <p className="text-slate-500">{completeDateString}</p>
         <p className="text-xs sm:text-sm my-2">{projectData.summary256}</p>
-        {projectData.images && (
+        {projectData.images && projectData.images.length > 0 && (
           <div className="mb-2 p-4 h-108 border border-1 border-mutedGray rounded overflow-hidden">
             <img
               src={projectData.images[0].url}
@@ -62,9 +64,13 @@ function ProjectCard({
       </Link>
       <div className="text-xs flex flex-wrap justify-center my-1">
         {projectData.links &&
-          projectData.links.map((link) => (
-            <PillLink url={link.url} label={link.title} />
-          ))}
+          projectData.links.map((link, idx) => {
+            if (link.title.length > 0 && link.url.length > 0) {
+              return <PillLink url={link.url} label={link.title} key={idx} />
+            } else {
+              return <></>
+            }
+          })}
       </div>
       {isCurrentUserProject && (
         <CardAdminButton

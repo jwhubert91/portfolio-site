@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate, useParams } from "react-router-dom"
 import { routes, getPortfolioRoute } from "../utilities/routes"
@@ -25,23 +25,24 @@ import {
   collection,
   doc,
   addDoc,
-  getDoc,
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore"
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
-import { ProjectImageType, ProjectType } from "../utilities/types"
-import { encodeReadableURIComponent } from "../utilities/helpers"
 import {
-  RetrievedProjectType,
-  useGetSingleProject,
-} from "../hooks/useGetSingleProject"
+  ExternalLinkType,
+  ProjectImageType,
+  ProjectType,
+} from "../utilities/types"
+import { encodeReadableURIComponent } from "../utilities/helpers"
+import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectForm() {
   const [isLoading, setIsLoading] = useState(false)
   const [projectTitle, setProjectTitle] = useState("")
   const [urlSlug, setUrlSlug] = useState("")
   const [summary, setSummary] = useState("")
+  const [description, setDescription] = useState("")
   const [startMonth, setStartMonth] = useState("")
   const [startYear, setStartYear] = useState("")
   const [endMonth, setEndMonth] = useState("")
@@ -52,18 +53,18 @@ function ProjectForm() {
   const [projectPic1Error, setProjectPic1Error] = useState("")
   const [error, setError] = useState("")
 
-  const [link1Name, setLink1Name] = useState("")
-  const [link1Url, setLink1Url] = useState("")
-  const [link2Name, setLink2Name] = useState("")
-  const [link2Url, setLink2Url] = useState("")
-  const [link3Name, setLink3Name] = useState("")
-  const [link3Url, setLink3Url] = useState("")
+  const [link1Name, setLink1Name] = useState<string>("")
+  const [link1Url, setLink1Url] = useState<string>("")
+  const [link2Name, setLink2Name] = useState<string>("")
+  const [link2Url, setLink2Url] = useState<string>("")
+  const [link3Name, setLink3Name] = useState<string>("")
+  const [link3Url, setLink3Url] = useState<string>("")
 
   const navigate = useNavigate()
-  const { projectId } = useParams()
+  const { profileHandle, projectSlug } = useParams()
   const { getFilePath } = useStorage()
   const { user } = useAuthContext()
-  const { getProject } = useGetSingleProject()
+  const { getProject, isPending } = useGetSingleProject()
 
   const uploadImages = async () => {
     let imageUrls = {
@@ -138,7 +139,6 @@ function ProjectForm() {
     if (user?.displayName && urlSlug) {
       const existingProject = await getProject(user.displayName, urlSlug)
       if (!!existingProject) {
-        console.log(existingProject)
         return true
       } else {
         return false
@@ -185,27 +185,61 @@ function ProjectForm() {
     setIsLoading(false)
   }
 
-  const getProjectFromParams = async (id: string) => {
-    setIsLoading(true)
-    const ref = doc(db, "projects", id)
-    const docSnap = await getDoc(ref)
-    if (docSnap.exists()) {
-      const { title } = docSnap.data()
-      setProjectTitle(title)
-    } else {
-      console.log("There was an error getting the document")
-    }
-    setIsLoading(false)
-  }
+  const memoizedFillProject = useCallback(
+    async (handle: string, slug: string) => {
+      const foundProject: ProjectType | null = await getProject(handle, slug)
+      setIsLoading(true)
+      if (!!foundProject) {
+        if (typeof foundProject["title"] === "string") {
+          const projectTitle: string = foundProject["title"]
+          setProjectTitle(projectTitle)
+          const urlSlugResult: string = encodeReadableURIComponent(
+            projectTitle.toLowerCase()
+          )
+          setUrlSlug(urlSlugResult)
+        }
+        setSummary(foundProject["summary256"])
+        setDescription(foundProject["description"])
+        if (typeof foundProject["images"] === "object") {
+          const imagesArray: ProjectImageType[] = foundProject["images"]
+          if (imagesArray.length > 0) {
+            setProjectPic1Url(imagesArray[0].url)
+          }
+        }
+        if (typeof foundProject["inProgress"] === "boolean") {
+          const isInProgress = foundProject["inProgress"]
+          setIsProjectInProgress(isInProgress)
+        }
+        setStartMonth(foundProject["startMonth"])
+        setStartYear(foundProject["startYear"])
+        setEndMonth(foundProject["endMonth"])
+        setEndYear(foundProject["endYear"])
+        if (typeof foundProject["links"] === "object") {
+          const projectLinks: ExternalLinkType[] = foundProject["links"]
+          const projectLink1: ExternalLinkType = projectLinks[0]
+          const projectLink2: ExternalLinkType = projectLinks[1]
+          const projectLink3: ExternalLinkType = projectLinks[2]
+          setLink1Name(projectLink1.title)
+          setLink1Url(projectLink1.url)
+          setLink2Name(projectLink2.title)
+          setLink2Url(projectLink2.url)
+          setLink3Name(projectLink3.title)
+          setLink3Url(projectLink3.url)
+        }
+      }
+      setIsLoading(false)
+    },
+    []
+  )
 
   useEffect(() => {
-    if (!!projectId) {
-      getProjectFromParams(projectId)
+    if (!!profileHandle && !!projectSlug) {
+      memoizedFillProject(profileHandle, projectSlug)
     }
-  }, [projectId])
+  }, [profileHandle, projectSlug, memoizedFillProject])
 
   return (
-    <PageLayout className="flex flex-col" isLoading={isLoading}>
+    <PageLayout className="flex flex-col" isLoading={isLoading || isPending}>
       <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form
           onSubmit={handleSubmit}
@@ -277,6 +311,11 @@ function ProjectForm() {
                 maxLength={2000}
                 inputClassName="h-48"
                 containerClassName="mb-3"
+                onChange={(e) => {
+                  const value = (e.target as HTMLInputElement).value
+                  setDescription(value)
+                }}
+                inputValue={description}
               />
             </div>
             <div className="flex-1 flex flex-col justify-start">
@@ -397,11 +436,11 @@ function ProjectForm() {
           <Button buttonStyle="LARGE" className="mb-8 w-full lg:w-1/2 mx-auto">
             Publish
           </Button>
-          {!!projectId && (
+          {!!projectSlug && (
             <Button
               buttonStyle="ALERT"
               className="w-full lg:w-1/2 mx-auto text-xl"
-              onClick={(e) => handleDelete(e, projectId)}
+              onClick={(e) => handleDelete(e, projectSlug)}
             >
               <MdDeleteForever className="text-3xl mr-2" />
               <span>Delete Project</span>
