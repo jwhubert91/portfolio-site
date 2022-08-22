@@ -27,6 +27,11 @@ export const encodeReadableURIComponent = (input: string): string => {
   return finalString;
 }
 
+export const getFilenameFromImageURL = (url: string): string => {
+  const filename = url.substring(url.lastIndexOf('/')+1);
+  return filename
+}
+
 export const makePath = (...args: string[]): string=> {
   let output = "";
   const argsLength = args.length

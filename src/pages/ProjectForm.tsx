@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useState, useCallback, useRef } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate, useParams } from "react-router-dom"
 import { routes, getPortfolioRoute } from "../utilities/routes"
@@ -25,6 +25,7 @@ import {
   collection,
   doc,
   addDoc,
+  updateDoc,
   deleteDoc,
   serverTimestamp,
 } from "firebase/firestore"
@@ -34,7 +35,10 @@ import {
   ProjectImageType,
   ProjectType,
 } from "../utilities/types"
-import { encodeReadableURIComponent } from "../utilities/helpers"
+import {
+  encodeReadableURIComponent,
+  getFilenameFromImageURL,
+} from "../utilities/helpers"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectForm() {
@@ -62,15 +66,15 @@ function ProjectForm() {
 
   const navigate = useNavigate()
   const { profileHandle, projectSlug } = useParams()
-  const { getFilePath } = useStorage()
+  const { getFilePath, deleteFile } = useStorage()
   const { user } = useAuthContext()
-  const { getProject, isPending } = useGetSingleProject()
+  const { getProject, isPending, retrievedProjectRef } = useGetSingleProject()
+  const isExistingProject = useRef(urlSlug === projectSlug)
 
   const uploadImages = async () => {
     let imageUrls = {
       projectPicUrl1: "",
     }
-    // upload user thumbnail
     if (user?.uid) {
       const { uid } = user
       if (!!projectPic1) {
@@ -129,15 +133,25 @@ function ProjectForm() {
         ],
       }
       const ref = collection(db, "projects")
-      await addDoc(ref, {
-        ...newProject,
-      }).then((res) => console.log(res))
+      if (isExistingProject.current) {
+        // existing project
+        if (!!retrievedProjectRef) {
+          await updateDoc(retrievedProjectRef, {
+            ...newProject,
+          }).then((res) => console.log(res))
+        }
+      } else {
+        // new project
+        await addDoc(ref, {
+          ...newProject,
+        }).then((res) => console.log(res))
+      }
     }
   }
 
   const isProjectSlugTaken = async () => {
     if (user?.displayName && urlSlug) {
-      if (urlSlug === projectSlug) {
+      if (isExistingProject.current) {
         return false
       }
       const existingProject = await getProject(user.displayName, urlSlug)
@@ -162,10 +176,6 @@ function ProjectForm() {
           return
         } else {
           // TODO: If you are updating an existing document, handle that here as well...
-          if (profileHandle && projectSlug) {
-            // updating an existing document
-          } else {
-          }
           let { projectPicUrl1 } = await uploadImages()
           await saveProject({
             projectPic1DownloadUrl: projectPicUrl1
@@ -307,8 +317,29 @@ function ProjectForm() {
                 }
                 onDelete={(e) => {
                   e.preventDefault()
-                  // TODO: delete file from storage
-                  // then, delete URL references to the file on the project object in firestore
+                  // TODO: delete URL references to the file on the project object in firestore
+                  setIsLoading(true)
+                  setProjectPic1(null)
+                  setProjectPic1Error("")
+                  const filename = getFilenameFromImageURL(projectPic1Url)
+                  if (projectPic1Url && isExistingProject.current) {
+                    const filepath = getFilePath(
+                      "images",
+                      user ? user.uid : "",
+                      "projects",
+                      filename
+                    )
+                    setProjectPic1Url("")
+                    deleteFile(filepath).then(async () => {
+                      // now save the project with no image url
+                      if (!!retrievedProjectRef) {
+                        await updateDoc(retrievedProjectRef, {
+                          images: [],
+                        }).then((res) => console.log("image deleted"))
+                      }
+                    })
+                  }
+                  setIsLoading(false)
                 }}
                 previewSizeClasses="h-40"
                 isSelectShown={!projectPic1 && !projectPic1Url}

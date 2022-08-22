@@ -68,7 +68,7 @@ function ProjectCard({
             if (link.title.length > 0 && link.url.length > 0) {
               return <PillLink url={link.url} label={link.title} key={idx} />
             } else {
-              return <></>
+              return null
             }
           })}
       </div>

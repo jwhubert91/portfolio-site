@@ -66,8 +66,6 @@ function Portfolio() {
     }
   }, [authIsReady, profileHandle, memoizedLoadProfile])
 
-  console.log("rendered Portfolio again")
-
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
       {currentProfile && (
