@@ -43,8 +43,6 @@ function ProjectCard({
     projectData.urlSlug
   )
 
-  console.log(projectData)
-
   return (
     <Card className="my-2 px-8 py-4 relative">
       {/* Change route to project page when it's ready */}
@@ -72,6 +70,9 @@ function ProjectCard({
             }
           })}
       </div>
+      <p className="text-right font-medium underline cursor-pointer text-slate-700">
+        See project details
+      </p>
       {isCurrentUserProject && (
         <CardAdminButton
           className="rounded sm:px-2 absolute top-2 right-2"
