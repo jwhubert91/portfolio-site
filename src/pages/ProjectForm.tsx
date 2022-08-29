@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback, useRef } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import { MdDeleteForever } from "react-icons/md"
 import { useNavigate, useParams } from "react-router-dom"
-import { routes, getPortfolioRoute } from "../utilities/routes"
+import { getPortfolioRoute } from "../utilities/routes"
 import Button from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
 import Checkbox from "../components/Checkbox"
@@ -23,7 +23,6 @@ import ErrorMessage from "../components/ErrorMessage"
 import { db, storage } from "../firebase/config"
 import {
   collection,
-  doc,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -56,6 +55,7 @@ function ProjectForm() {
   const [projectPic1Url, setProjectPic1Url] = useState<string>("")
   const [projectPic1Error, setProjectPic1Error] = useState("")
   const [error, setError] = useState("")
+  const [isExistingProject, setIsExistingProject] = useState(false)
 
   const [link1Name, setLink1Name] = useState<string>("")
   const [link1Url, setLink1Url] = useState<string>("")
@@ -69,7 +69,6 @@ function ProjectForm() {
   const { getFilePath, deleteFile } = useStorage()
   const { user } = useAuthContext()
   const { getProject, isPending, retrievedProjectRef } = useGetSingleProject()
-  const isExistingProject = useRef(urlSlug === projectSlug)
 
   const uploadImages = async () => {
     let imageUrls = {
@@ -133,29 +132,29 @@ function ProjectForm() {
         ],
       }
       const ref = collection(db, "projects")
-      if (isExistingProject.current) {
+      if (isExistingProject) {
         // existing project
         if (!!retrievedProjectRef) {
           await updateDoc(retrievedProjectRef, {
             ...newProject,
-          }).then((res) => console.log(res))
+          })
         }
       } else {
         // new project
         await addDoc(ref, {
           ...newProject,
-        }).then((res) => console.log(res))
+        })
       }
     }
   }
 
   const isProjectSlugTaken = async () => {
     if (user?.displayName && urlSlug) {
-      if (isExistingProject.current) {
+      if (urlSlug === projectSlug) {
         return false
       }
-      const existingProject = await getProject(user.displayName, urlSlug)
-      if (!!existingProject) {
+      const foundProjectWithSlug = await getProject(user.displayName, urlSlug)
+      if (!!foundProjectWithSlug) {
         return true
       } else {
         return false
@@ -198,12 +197,12 @@ function ProjectForm() {
   const handleDelete = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    if (isExistingProject.current && retrievedProjectRef) {
+    if (isExistingProject && retrievedProjectRef) {
       // delete images from storage
       setProjectPic1(null)
       setProjectPic1Error("")
       const filename = getFilenameFromImageURL(projectPic1Url)
-      if (projectPic1Url && isExistingProject.current) {
+      if (projectPic1Url && isExistingProject) {
         const filepath = getFilePath(
           "images",
           user ? user.uid : "",
@@ -241,6 +240,9 @@ function ProjectForm() {
             projectTitle.toLowerCase()
           )
           setUrlSlug(urlSlugResult)
+          if (urlSlugResult === projectSlug) {
+            setIsExistingProject(true)
+          }
         }
         setSummary(foundProject["summary256"])
         setDescription(foundProject["description"])
@@ -273,7 +275,7 @@ function ProjectForm() {
       }
       setIsLoading(false)
     },
-    []
+    [projectSlug]
   )
 
   useEffect(() => {
@@ -281,12 +283,6 @@ function ProjectForm() {
       memoizedFillProject(profileHandle, projectSlug)
     }
   }, [profileHandle, projectSlug, memoizedFillProject])
-
-  useEffect(() => {
-    console.log(`isExistingProject: ${isExistingProject.current}`)
-    console.log(`projectSlug: ${projectSlug}`)
-    console.log(`urlSlug: ${urlSlug}`)
-  }, [isExistingProject.current])
 
   return (
     <PageLayout className="flex flex-col" isLoading={isLoading || isPending}>
@@ -354,7 +350,7 @@ function ProjectForm() {
                   setProjectPic1(null)
                   setProjectPic1Error("")
                   const filename = getFilenameFromImageURL(projectPic1Url)
-                  if (projectPic1Url && isExistingProject.current) {
+                  if (projectPic1Url && isExistingProject) {
                     const filepath = getFilePath(
                       "images",
                       user ? user.uid : "",
