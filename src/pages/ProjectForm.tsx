@@ -161,6 +161,7 @@ function ProjectForm() {
         return false
       }
     }
+    return false
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -194,12 +195,37 @@ function ProjectForm() {
     setIsLoading(false)
   }
 
-  const handleDelete = async (e: React.FormEvent, id: string) => {
+  const handleDelete = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    const ref = doc(db, "projects", id)
-    await deleteDoc(ref)
-    navigate(routes.portfolio)
+    if (isExistingProject.current && retrievedProjectRef) {
+      // delete images from storage
+      setProjectPic1(null)
+      setProjectPic1Error("")
+      const filename = getFilenameFromImageURL(projectPic1Url)
+      if (projectPic1Url && isExistingProject.current) {
+        const filepath = getFilePath(
+          "images",
+          user ? user.uid : "",
+          "projects",
+          filename
+        )
+        setProjectPic1Url("")
+        deleteFile(filepath).then(async () => {
+          // now save the project with no image url
+          if (!!retrievedProjectRef) {
+            await updateDoc(retrievedProjectRef, {
+              images: [],
+            }).then((res) => console.log("image deleted"))
+          }
+        })
+      }
+      // delete project from db
+      await deleteDoc(retrievedProjectRef)
+    }
+    if (profileHandle) {
+      navigate(getPortfolioRoute(profileHandle))
+    }
     setIsLoading(false)
   }
 
@@ -255,6 +281,12 @@ function ProjectForm() {
       memoizedFillProject(profileHandle, projectSlug)
     }
   }, [profileHandle, projectSlug, memoizedFillProject])
+
+  useEffect(() => {
+    console.log(`isExistingProject: ${isExistingProject.current}`)
+    console.log(`projectSlug: ${projectSlug}`)
+    console.log(`urlSlug: ${urlSlug}`)
+  }, [isExistingProject.current])
 
   return (
     <PageLayout className="flex flex-col" isLoading={isLoading || isPending}>
@@ -479,7 +511,7 @@ function ProjectForm() {
             <Button
               buttonStyle="ALERT"
               className="w-full lg:w-1/2 mx-auto text-xl"
-              onClick={(e) => handleDelete(e, projectSlug)}
+              onClick={(e) => handleDelete(e)}
             >
               <MdDeleteForever className="text-3xl mr-2" />
               <span>Delete Project</span>

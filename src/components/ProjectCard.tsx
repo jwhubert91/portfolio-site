@@ -70,9 +70,11 @@ function ProjectCard({
             }
           })}
       </div>
-      <p className="text-right font-medium underline cursor-pointer text-slate-700">
-        See project details
-      </p>
+      <Link to={projectDetailPath}>
+        <p className="text-right font-medium underline cursor-pointer text-slate-700">
+          See project details
+        </p>
+      </Link>
       {isCurrentUserProject && (
         <CardAdminButton
           className="rounded sm:px-2 absolute top-2 right-2"
