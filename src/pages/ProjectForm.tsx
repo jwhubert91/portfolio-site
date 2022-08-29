@@ -404,6 +404,7 @@ function ProjectForm() {
                     inputClassName="sm:text-sm"
                     inputValue={startYear}
                     label="year"
+                    minNumberValue={1900}
                     onChange={(e) => {
                       const value = (e.target as HTMLInputElement).value
                       setStartYear(value)
@@ -431,6 +432,7 @@ function ProjectForm() {
                         containerClassName="flex-1 ml-2"
                         inputClassName="sm:text-sm"
                         inputValue={endYear}
+                        minNumberValue={1900}
                         label="year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value

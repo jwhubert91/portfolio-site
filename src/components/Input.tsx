@@ -17,6 +17,7 @@ interface InputProps {
   required?: boolean
   pattern?: string
   bottomNote?: string
+  minNumberValue?: number
 }
 
 function Input({
@@ -33,6 +34,7 @@ function Input({
   type = "text",
   required = false,
   pattern,
+  minNumberValue,
 }: InputProps) {
   const inputClasses = `${defaultInputClasses} ${inputClassName}`
   return (
@@ -52,6 +54,7 @@ function Input({
         pattern={pattern}
         value={inputValue}
         required={required}
+        min={minNumberValue}
       />
       {bottomNote && (
         <span className="block text-sm text-gray-700">{bottomNote}</span>
