@@ -35,9 +35,7 @@ function Portfolio() {
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
       setCurrentProfile(profileData)
-      setIsCurrentUserPortfolio(
-        currentUser?.displayName === profileData.displayName
-      )
+      setIsCurrentUserPortfolio(currentUser?.displayName === profileHandle)
       const {
         profileLink1,
         profileLink2,
