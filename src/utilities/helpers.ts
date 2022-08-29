@@ -11,14 +11,7 @@ export const months = [
   "October",
   "November",
   "December",
-];
-
-export const getMonthStringFromInteger = (monthInt:number): null | string => {
-  if (monthInt < 0 || monthInt > 11) {
-    return null;
-  }
-  return months[monthInt];
-}
+]
 
 export const encodeReadableURIComponent = (input: string): string => {
   const filteredString = input.replace(/[\W]+/g, "_");
