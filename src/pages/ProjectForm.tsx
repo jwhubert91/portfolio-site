@@ -448,6 +448,12 @@ function ProjectForm() {
                   onChange={(e) => {
                     const value = (e.target as HTMLInputElement).checked
                     setIsProjectInProgress(value)
+                    if (!value) {
+                      const thisYear = new Date().getFullYear()
+                      setEndYear(thisYear.toString())
+                    } else {
+                      setEndYear("")
+                    }
                   }}
                   isChecked={isProjectInProgress}
                   containerClassName="mb-4"
