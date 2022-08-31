@@ -179,12 +179,12 @@ function ProjectForm() {
             const portfolioRoute = getPortfolioRoute(user.displayName)
             navigate(portfolioRoute)
           } else {
+            setIsLoading(false)
             setError("There was an error. Please try again.")
           }
         }
       })
     }
-    setIsLoading(false)
   }
 
   const handleDelete = async (e: React.FormEvent) => {
