@@ -1,4 +1,5 @@
 import { FieldValue } from "firebase/firestore"
+import { StorageReference } from "firebase/storage"
 
 export interface ExternalLinkType {
   title: string,
@@ -8,6 +9,7 @@ export interface ExternalLinkType {
 export interface ProjectImageType {
   title: string,
   url: string,
+  storagePath: string,
   projectImageOrder: number
 }
 

@@ -1,4 +1,4 @@
-import { ref, listAll, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { storage } from '../firebase/config'
 
 export type FileGroup = "images"
@@ -11,7 +11,7 @@ export interface UploadResponse {
 
 export const useStorage = ()=> {
   const getFilePath = (fileGroup: FileGroup, uid: string, fileType: FileType, fileName?: string): string => {
-    return `${fileGroup}/${uid}/${fileType}${fileName ? `/${fileName}` : ""}`
+    return `${fileGroup}/${uid}/${fileType}/${fileName ? `${fileName}` : ""}`
   }
 
   const uploadFile = async (file: File, path: string) => {
@@ -27,13 +27,12 @@ export const useStorage = ()=> {
   }
 
   const deleteFile = async (filepath: string)=> {
-    const listRef = ref(storage, filepath)
-    listAll(listRef)
-      .then((res) => {
-        res.items.forEach((itemRef) => {
-          deleteObject(itemRef)
-        })
-      }).catch((err) => console.log("Error deleting the file from storage: ", err.message))
+    console.log(`Entered deleteFile function in useStorage with ${filepath} filepath`)
+    const fileRef = ref(storage, filepath)
+    deleteObject(fileRef).then((res) => {
+      console.log(`file deleted from deleteFile function in useStorage hook`)
+    })
+    .catch((err) => console.log("Error deleting the file from storage: ", err.message))
   }
 
   return { getFilePath, deleteFile, uploadFile }

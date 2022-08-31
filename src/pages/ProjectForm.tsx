@@ -34,10 +34,7 @@ import {
   ProjectImageType,
   ProjectType,
 } from "../utilities/types"
-import {
-  encodeReadableURIComponent,
-  getFilenameFromImageURL,
-} from "../utilities/helpers"
+import { encodeReadableURIComponent } from "../utilities/helpers"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectForm() {
@@ -53,6 +50,7 @@ function ProjectForm() {
   const [isProjectInProgress, setIsProjectInProgress] = useState(false)
   const [projectPic1, setProjectPic1] = useState<File | null>(null)
   const [projectPic1Url, setProjectPic1Url] = useState<string>("")
+  const [projectPic1StoragePath, setProjectPic1StoragePath] = useState("")
   const [projectPic1Error, setProjectPic1Error] = useState("")
   const [error, setError] = useState("")
   const [isExistingProject, setIsExistingProject] = useState(false)
@@ -71,9 +69,7 @@ function ProjectForm() {
   const { getProject, isPending, retrievedProjectRef } = useGetSingleProject()
 
   const uploadImages = async () => {
-    let imageUrls = {
-      projectPicUrl1: "",
-    }
+    let projectImages: ProjectImageType[] = []
     if (user?.uid) {
       const { uid } = user
       if (!!projectPic1) {
@@ -86,22 +82,23 @@ function ProjectForm() {
         const storageRef = ref(storage, uploadPath)
         await uploadBytes(storageRef, projectPic1)
           .then(async (snapshot) => {
-            imageUrls.projectPicUrl1 = await getDownloadURL(snapshot.ref)
+            const newProjectImage: ProjectImageType = {
+              url: await getDownloadURL(snapshot.ref),
+              title: projectPic1.name,
+              storagePath: snapshot.ref.fullPath,
+              projectImageOrder: 0,
+            }
+            projectImages.push(newProjectImage)
           })
           .catch((err) => {
             setProjectPic1Error(err.message)
           })
       }
     }
-    return imageUrls
+    return projectImages
   }
 
-  const saveProject = async (imageUrls: { projectPic1DownloadUrl: string }) => {
-    const projectPic1Element: ProjectImageType = {
-      url: imageUrls.projectPic1DownloadUrl,
-      title: projectPic1?.name ? projectPic1?.name : "",
-      projectImageOrder: 0,
-    }
+  const saveProject = async (projectImages: ProjectImageType[]) => {
     if (user && user.uid && user.displayName) {
       const newProject: ProjectType = {
         creatorId: user.uid,
@@ -114,7 +111,7 @@ function ProjectForm() {
         endYear: isProjectInProgress ? null : Number(endYear),
         inProgress: isProjectInProgress,
         summary256: summary,
-        images: imageUrls.projectPic1DownloadUrl ? [projectPic1Element] : [],
+        images: projectImages,
         timestamp: serverTimestamp(),
         links: [
           {
@@ -176,12 +173,8 @@ function ProjectForm() {
           return
         } else {
           // TODO: If you are updating an existing document, handle that here as well...
-          let { projectPicUrl1 } = await uploadImages()
-          await saveProject({
-            projectPic1DownloadUrl: projectPicUrl1
-              ? projectPicUrl1
-              : projectPic1Url,
-          })
+          let projectImages = await uploadImages()
+          await saveProject(projectImages)
           if (user?.displayName) {
             const portfolioRoute = getPortfolioRoute(user.displayName)
             navigate(portfolioRoute)
@@ -201,21 +194,15 @@ function ProjectForm() {
       // delete images from storage
       setProjectPic1(null)
       setProjectPic1Error("")
-      const filename = getFilenameFromImageURL(projectPic1Url)
-      if (projectPic1Url && isExistingProject) {
-        const filepath = getFilePath(
-          "images",
-          user ? user.uid : "",
-          "projects",
-          filename
-        )
+      if (isExistingProject && projectPic1StoragePath) {
         setProjectPic1Url("")
-        deleteFile(filepath).then(async () => {
-          // now save the project with no image url
+        deleteFile(projectPic1StoragePath).then(async () => {
+          setProjectPic1StoragePath("")
+          // file deleted, now update the project document with no image url
           if (!!retrievedProjectRef) {
             await updateDoc(retrievedProjectRef, {
               images: [],
-            }).then((res) => console.log("image deleted"))
+            })
           }
         })
       }
@@ -250,6 +237,7 @@ function ProjectForm() {
           const imagesArray: ProjectImageType[] = foundProject["images"]
           if (imagesArray.length > 0) {
             setProjectPic1Url(imagesArray[0].url)
+            setProjectPic1StoragePath(imagesArray[0].storagePath)
           }
         }
         if (typeof foundProject["inProgress"] === "boolean") {
@@ -349,16 +337,10 @@ function ProjectForm() {
                   setIsLoading(true)
                   setProjectPic1(null)
                   setProjectPic1Error("")
-                  const filename = getFilenameFromImageURL(projectPic1Url)
-                  if (projectPic1Url && isExistingProject) {
-                    const filepath = getFilePath(
-                      "images",
-                      user ? user.uid : "",
-                      "projects",
-                      filename
-                    )
+                  if (projectPic1StoragePath && isExistingProject) {
                     setProjectPic1Url("")
-                    deleteFile(filepath).then(async () => {
+                    deleteFile(projectPic1StoragePath).then(async () => {
+                      setProjectPic1StoragePath("")
                       // now save the project with no image url
                       if (!!retrievedProjectRef) {
                         await updateDoc(retrievedProjectRef, {
