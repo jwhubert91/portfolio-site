@@ -68,6 +68,19 @@ function ProjectForm() {
   const { user } = useAuthContext()
   const { getProject, isPending, retrievedProjectRef } = useGetSingleProject()
 
+  const validate = () => {
+    setError("")
+    if (projectTitle === undefined) {
+      setError("Please enter a project title")
+      return false
+    }
+    if (summary === undefined) {
+      setError("Please enter a summary")
+      return false
+    }
+    return true
+  }
+
   const uploadImages = async () => {
     let projectImages: ProjectImageType[] = []
     if (user?.uid) {
@@ -163,7 +176,8 @@ function ProjectForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-    if (user?.displayName && urlSlug) {
+    const isValidated = validate()
+    if (isValidated && user?.displayName && urlSlug) {
       isProjectSlugTaken().then(async (res) => {
         if (res === true) {
           setError(
@@ -295,6 +309,7 @@ function ProjectForm() {
                   )
                   setUrlSlug(urlSlugResult)
                 }}
+                required
                 bottomNote={`Project URL: @${user?.displayName}/${urlSlug}`}
               />
               <TextArea
@@ -306,6 +321,7 @@ function ProjectForm() {
                 }}
                 maxLength={256}
                 inputValue={summary}
+                required
               />
               <ImageInput
                 containerClassName="py-2 mb-2"

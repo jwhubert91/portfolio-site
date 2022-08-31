@@ -42,8 +42,11 @@ function Input({
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
       )}
-      {description && (
-        <p className="text-xs italic text-black">{description}</p>
+      {(required || description) && (
+        <p className="text-xs italic text-black">
+          {required ? "Required. " : ""}
+          {description}
+        </p>
       )}
       <input
         type={type}
