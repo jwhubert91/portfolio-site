@@ -52,6 +52,7 @@ function ProjectForm() {
   const [projectPic1Url, setProjectPic1Url] = useState<string>("")
   const [projectPic1StoragePath, setProjectPic1StoragePath] = useState("")
   const [projectPic1Error, setProjectPic1Error] = useState("")
+  const [previousImages, setPreviousImages] = useState<ProjectImageType[]>([])
   const [error, setError] = useState("")
   const [isExistingProject, setIsExistingProject] = useState(false)
 
@@ -85,6 +86,7 @@ function ProjectForm() {
     let projectImages: ProjectImageType[] = []
     if (user?.uid) {
       const { uid } = user
+      // situation 1 - there is a new picture file so we upload it to firebase storage here...
       if (!!projectPic1) {
         const uploadPath: string = getFilePath(
           "images",
@@ -186,9 +188,20 @@ function ProjectForm() {
           setIsLoading(false)
           return
         } else {
-          // TODO: If you are updating an existing document, handle that here as well...
-          let projectImages = await uploadImages()
-          await saveProject(projectImages)
+          // TODO: Image save problem is below this line
+          let projectImages
+          if (projectPic1) {
+            // situation 1 - there is a new preview image
+            projectImages = await uploadImages()
+            await saveProject(projectImages)
+          } else if (previousImages) {
+            // situation 2 - there is an existing saved image and there are no changes to the image
+            await saveProject(previousImages)
+          } else {
+            // situation 3 - there is no new image and no existing image
+            await saveProject([])
+          }
+          // TODO: Image save problem is above this line
           if (user?.displayName) {
             const portfolioRoute = getPortfolioRoute(user.displayName)
             navigate(portfolioRoute)
@@ -252,6 +265,7 @@ function ProjectForm() {
           if (imagesArray.length > 0) {
             setProjectPic1Url(imagesArray[0].url)
             setProjectPic1StoragePath(imagesArray[0].storagePath)
+            setPreviousImages(imagesArray)
           }
         }
         if (typeof foundProject["inProgress"] === "boolean") {
