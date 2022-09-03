@@ -367,6 +367,7 @@ function ProjectForm() {
                   setIsLoading(true)
                   setProjectPic1(null)
                   setProjectPic1Error("")
+                  setPreviousImages([])
                   if (projectPic1StoragePath && isExistingProject) {
                     setProjectPic1Url("")
                     deleteFile(projectPic1StoragePath).then(async () => {
