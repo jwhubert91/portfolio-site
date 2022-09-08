@@ -165,7 +165,10 @@ function ProjectForm() {
       if (urlSlug === projectSlug) {
         return false
       }
-      const foundProjectWithSlug = await getProject(user.displayName, urlSlug)
+      const foundProjectWithSlug = (await getProject(
+        user.displayName,
+        urlSlug
+      )) as unknown as ProjectType
       if (!!foundProjectWithSlug) {
         return true
       } else {
@@ -258,8 +261,10 @@ function ProjectForm() {
             setIsExistingProject(true)
           }
         }
-        setSummary(foundProject["summary256"])
-        setDescription(foundProject["description"])
+        setSummary(foundProject["summary256"] ? foundProject["summary256"] : "")
+        setDescription(
+          foundProject["description"] ? foundProject["description"] : ""
+        )
         if (typeof foundProject["images"] === "object") {
           const imagesArray: ProjectImageType[] = foundProject["images"]
           if (imagesArray.length > 0) {
@@ -272,10 +277,14 @@ function ProjectForm() {
           const isInProgress = foundProject["inProgress"]
           setIsProjectInProgress(isInProgress)
         }
-        setStartMonth(foundProject["startMonth"])
-        setStartYear(foundProject["startYear"])
-        setEndMonth(foundProject["endMonth"])
-        setEndYear(foundProject["endYear"])
+        setStartMonth(String(foundProject["startMonth"]))
+        setStartYear(String(foundProject["startYear"]))
+        setEndMonth(
+          foundProject["endMonth"] ? String(foundProject["endMonth"]) : ""
+        )
+        setEndYear(
+          foundProject["endYear"] ? String(foundProject["endYear"]) : ""
+        )
         if (typeof foundProject["links"] === "object") {
           const projectLinks: ExternalLinkType[] = foundProject["links"]
           const projectLink1: ExternalLinkType = projectLinks[0]

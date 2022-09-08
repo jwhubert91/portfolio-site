@@ -37,7 +37,6 @@ export const useGetSingleProject = () => {
           links,
           timestamp
         } = result
-        console.log(result)
         resultDocument = {
           creatorId,
           creatorDisplayname,
