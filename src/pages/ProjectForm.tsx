@@ -246,9 +246,19 @@ function ProjectForm() {
     setIsLoading(false)
   }
 
+  const memoizedGetProject = useCallback(
+    async (handle: string, slug: string) => {
+      return (await getProject(handle, slug)) as unknown as ProjectType
+    },
+    [getProject]
+  )
+
   const memoizedFillProject = useCallback(
     async (handle: string, slug: string) => {
-      const foundProject: ProjectType | null = await getProject(handle, slug)
+      const foundProject: ProjectType | null = await memoizedGetProject(
+        handle,
+        slug
+      )
       setIsLoading(true)
       if (!!foundProject) {
         if (typeof foundProject["title"] === "string") {
@@ -301,7 +311,7 @@ function ProjectForm() {
       }
       setIsLoading(false)
     },
-    [projectSlug]
+    [projectSlug, memoizedGetProject]
   )
 
   useEffect(() => {
