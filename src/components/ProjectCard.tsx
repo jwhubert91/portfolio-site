@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
-import { months } from "../utilities/helpers"
+import { months, getDateString } from "../utilities/helpers"
 import { ProjectType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
@@ -20,15 +20,14 @@ function ProjectCard({
   const navigate = useNavigate()
   const { user } = useAuthContext()
 
-  const startDateString = `${months[projectData.startMonth]} ${
-    projectData.startYear
-  }`
-  const endDateString = projectData.inProgress
-    ? "In Progress"
-    : `${projectData.endMonth ? months[projectData.endMonth] : ""} ${
-        projectData.endYear
-      }`
-  const completeDateString = `${startDateString} - ${endDateString}`
+  const { startMonth, startYear, endMonth, endYear, inProgress } = projectData
+  const completeDateString = getDateString(
+    startMonth,
+    startYear,
+    endMonth,
+    endYear,
+    inProgress
+  )
 
   const handleEditProject = () => {
     if (user && user.displayName) {

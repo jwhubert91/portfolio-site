@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import PageLayout from "../components/PageLayout"
-import { ExternalLinkType, ProjectType } from "../utilities/types"
+import { ExternalLinkType, ProfileType, ProjectType } from "../utilities/types"
 import PillLink from "../components/PillLink"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectDetail() {
   const [currentProject, setCurrentProject] = useState<ProjectType | null>(null)
+  const [projectProfile, setProjectProfile] = useState<ProfileType | null>(null)
 
   const { profileHandle, projectSlug } = useParams()
   const { getProject } = useGetSingleProject()
@@ -27,7 +28,7 @@ function ProjectDetail() {
     <PageLayout className="bg-culturedBlue" isLoading={!currentProject}>
       {currentProject && (
         <div className="w-full sm:max-w-2xl mx-auto p-4 sm:px-2">
-          <div>{currentProject.creatorDisplayname}</div>
+          {projectProfile && <>profile info</>}
           <h2 className="font-bold text-xl">{currentProject.title}</h2>
           <p className="text-base">Date Started - Date Finished or Current</p>
           <p className="text-black text-sm mb-2">{currentProject.summary256}</p>

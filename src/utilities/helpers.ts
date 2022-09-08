@@ -13,6 +13,19 @@ export const months = [
   "December",
 ]
 
+export const getDateString = (startMonth: number, startYear: number, endMonth: number | null, endYear: number | null, inProgress: boolean)=> {
+  const startDateString = `${months[startMonth]} ${
+    startYear
+  }`
+  const endDateString = inProgress
+    ? "In Progress"
+    : `${endMonth ? months[endMonth] : ""} ${
+        endYear
+      }`
+  const completeDateString = `${startDateString} - ${endDateString}`
+  return completeDateString
+}
+
 export const encodeReadableURIComponent = (input: string): string => {
   const filteredString = input.replace(/[\W]+/g, "_");
   const cleanEndString = filteredString.replace(/_$/, '')
