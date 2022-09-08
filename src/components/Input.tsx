@@ -14,6 +14,10 @@ interface InputProps {
   onChange?: (e: SyntheticEvent) => void
   placeholder?: string
   type?: HTMLInputTypeAttribute
+  required?: boolean
+  pattern?: string
+  bottomNote?: string
+  minNumberValue?: number
 }
 
 function Input({
@@ -24,9 +28,13 @@ function Input({
   inputValue = "",
   label,
   name = "",
+  bottomNote = "",
   onChange,
   placeholder = "",
   type = "text",
+  required = false,
+  pattern,
+  minNumberValue,
 }: InputProps) {
   const inputClasses = `${defaultInputClasses} ${inputClassName}`
   return (
@@ -34,8 +42,11 @@ function Input({
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
       )}
-      {description && (
-        <p className="text-xs italic text-black">{description}</p>
+      {(required || description) && (
+        <p className="text-xs italic text-black">
+          {required ? "Required. " : ""}
+          {description}
+        </p>
       )}
       <input
         type={type}
@@ -43,8 +54,14 @@ function Input({
         name={name}
         onChange={onChange}
         placeholder={placeholder}
+        pattern={pattern}
         value={inputValue}
+        required={required}
+        min={minNumberValue}
       />
+      {bottomNote && (
+        <span className="block text-sm text-gray-700">{bottomNote}</span>
+      )}
       {validation && <p className="text-sm text-red-600">{validation}</p>}
     </label>
   )

@@ -1,12 +1,19 @@
 import Button from "../components/Button"
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../hooks/useAuthContext"
 import CenteredContent from "../components/CenteredContent"
 import PageLayout from "../components/PageLayout"
-import { routes } from "../utilities/routes"
+import { getPortfolioRoute, routes } from "../utilities/routes"
 import "./Home.css"
 
 function Home() {
   const navigate = useNavigate()
+  const { user, authIsReady } = useAuthContext()
+  const handleHeroCTAClick = () => {
+    user?.displayName
+      ? navigate(getPortfolioRoute(user.displayName))
+      : navigate(routes.signup)
+  }
   return (
     <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
       <CenteredContent>
@@ -18,13 +25,15 @@ function Home() {
             Share your past work, highlight projects, and display your contact
             info. All for free.
           </p>
-          <Button
-            buttonStyle="LARGE"
-            className="mx-auto mt-4 xl:mt-12"
-            onClick={() => navigate(routes.signup)}
-          >
-            Create a Portfolio
-          </Button>
+          {authIsReady && (
+            <Button
+              buttonStyle="LARGE"
+              className="mx-auto mt-4 xl:mt-12"
+              onClick={handleHeroCTAClick}
+            >
+              Create a Portfolio
+            </Button>
+          )}
         </>
       </CenteredContent>
     </PageLayout>

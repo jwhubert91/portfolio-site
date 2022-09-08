@@ -1,31 +1,53 @@
-import { Url } from "url";
+import { FieldValue } from "firebase/firestore"
+import { StorageReference } from "firebase/storage"
 
 export interface ExternalLinkType {
   title: string,
   url: string,
 }
 
-export interface ProjectType {
+export interface ProjectImageType {
   title: string,
+  url: string,
+  storagePath: string,
+  projectImageOrder: number
+}
+
+export type PermissionsType = "CREATOR_FREE" | "CREATOR_PAID" | "AGENCY_FREE" | "AGENCY_PAID"
+
+export interface ProjectType {
+  id?: string,
+  creatorId: string
+  creatorDisplayname: string
+  title: string,
+  urlSlug: string,
   startMonth: number,
   startYear: number,
   endMonth: number | null,
   endYear: number | null,
   inProgress: boolean,
-  summary256: string,
+  summary256?: string,
   description?: string,
-  image: string,
-  externalLinks: ExternalLinkType[],
+  images?: ProjectImageType[],
+  links?: ExternalLinkType[],
+  timestamp: FieldValue,
 }
 
-export interface User {
-  name: string,
-  username: string,
+export interface ProfileType {
+  userId: string
+  firstName: string,
+  lastName: string,
   pronouns?: string,
+  profileType: PermissionsType,
+  displayName: string,
   title: string,
   location?: string,
   bio?: string,
-  profileLinks: ExternalLinkType[],
-  profileImage: Url,
-  backgroundImage: Url,
+  profileImageUrl?: string,
+  backgroundImageUrl?: string,
+  profileLink1: ExternalLinkType,
+  profileLink2: ExternalLinkType,
+  profileLink3: ExternalLinkType,
+  profileLink4: ExternalLinkType,
+  profileLink5: ExternalLinkType,
 }

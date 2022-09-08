@@ -1,7 +1,8 @@
 import Button from "./Button"
 import { MdAddCircleOutline } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
-import { routes } from "../utilities/routes"
+import { getNewProjectRoute } from "../utilities/routes"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 interface AddProjectPromptProps {
   className?: string
@@ -9,8 +10,11 @@ interface AddProjectPromptProps {
 
 function AddProjectPrompt({ className = "" }: AddProjectPromptProps) {
   const navigate = useNavigate()
+  const { user } = useAuthContext()
   const handleClick = () => {
-    navigate(routes.createProject)
+    if (!!user && user?.displayName) {
+      navigate(getNewProjectRoute(user.displayName))
+    }
   }
   return (
     <Button

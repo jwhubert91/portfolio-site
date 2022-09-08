@@ -1,5 +1,6 @@
 import { ReactElement, ReactNode } from "react"
 import Footer from "./Footer"
+import LoadingIndicator from "./LoadingIndicator"
 import Navbar from "./Navbar"
 
 interface PageLayoutProps {
@@ -8,6 +9,7 @@ interface PageLayoutProps {
   isFooterShown?: boolean
   isNavAuthShown?: boolean
   isNavBgTransparent?: boolean
+  isLoading?: boolean
 }
 
 function PageLayout({
@@ -16,18 +18,21 @@ function PageLayout({
   isFooterShown = true,
   isNavAuthShown = true,
   isNavBgTransparent = false,
+  isLoading = false,
 }: PageLayoutProps) {
   return (
-    <>
-      <div className={`min-h-screen overflow-x-hidden ${className}`}>
+    <div className="flex flex-col">
+      <div
+        className={`flex flex-col min-h-screen overflow-x-hidden ${className}`}
+      >
         <Navbar
           isBgTransparent={isNavBgTransparent}
           isNavAuthShown={isNavAuthShown}
         />
-        {children}
+        {isLoading ? <LoadingIndicator /> : children}
       </div>
       {isFooterShown && <Footer />}
-    </>
+    </div>
   )
 }
 

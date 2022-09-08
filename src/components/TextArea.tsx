@@ -10,6 +10,7 @@ interface TextAreaProps {
   placeholder?: string
   onChange?: (e: SyntheticEvent) => void
   inputValue?: string | number | readonly string[] | undefined
+  required?: boolean
 }
 
 function TextArea({
@@ -21,14 +22,18 @@ function TextArea({
   maxLength = 9999,
   onChange,
   inputValue,
+  required = false,
 }: TextAreaProps) {
   return (
     <label className={`text-left mb-2 ${containerClassName}`}>
       {label && (
         <span className="block text-sm font-medium text-gray-700">{label}</span>
       )}
-      {description && (
-        <p className="text-xs italic text-black">{description}</p>
+      {(description || required) && (
+        <p className="text-xs italic text-black">
+          {required ? "Required. " : ""}
+          {description}
+        </p>
       )}
       <textarea
         className={`${inputClassName} ${defaultInputClasses}`}
@@ -36,6 +41,7 @@ function TextArea({
         onChange={onChange}
         value={inputValue}
         placeholder={placeholder}
+        required={required}
       />
     </label>
   )

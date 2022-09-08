@@ -1,17 +1,38 @@
-import React from "react"
+import { ReactElement } from "react"
+import { useAuthContext } from "../hooks/useAuthContext"
+import "./ProfileImage.css"
 
 interface ProfileImageProps {
   className?: string
+  profileImageSrc?: string
+  size?: "small"
 }
 
-function ProfileImage({ className = "" }: ProfileImageProps) {
-  return (
-    <img
-      src="https://media-exp2.licdn.com/dms/image/C4E03AQGbNwOX9g-I3Q/profile-displayphoto-shrink_800_800/0/1517065249979?e=1663200000&v=beta&t=muyKo0HoeR99hhQcQsOvPdOWUZ6-J4deEDjIjic8qRI"
-      className={`w-24 h-24 sm:w-28 sm:h-28 border border-white border-2 rounded-full object-cover ${className}`}
-      alt="James Hubert"
-    />
-  )
+function ProfileImage({
+  className = "",
+  profileImageSrc = "",
+  size,
+}: ProfileImageProps) {
+  const { user } = useAuthContext()
+  const sizeClasses = size === "small" ? "w-8 h-8" : "w-24 h-24 sm:w-28 sm:h-28"
+  const borderClasses = "border border-white border-2 rounded-full"
+  const ImageComponent = (): ReactElement => {
+    return (
+      <img
+        src={profileImageSrc}
+        className={` object-cover ${sizeClasses} ${borderClasses} ${className}`}
+        alt={user?.displayName || "profile image"}
+      />
+    )
+  }
+  const GradientComponent = (): ReactElement => {
+    return (
+      <div
+        className={`profileImageGradient ${sizeClasses} ${borderClasses} ${className}`}
+      ></div>
+    )
+  }
+  return <>{profileImageSrc ? <ImageComponent /> : <GradientComponent />}</>
 }
 
 export default ProfileImage

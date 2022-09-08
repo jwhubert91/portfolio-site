@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Button, { getButtonStyle } from "../components/Button"
 import CenteredContent from "../components/CenteredContent"
@@ -6,23 +6,32 @@ import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
+import { useSignUp } from "../hooks/useSignUp"
+import ErrorMessage from "../components/ErrorMessage"
+import { useAuthContext } from "../hooks/useAuthContext"
 
 // For more regarding synthetic input events: https://bobbyhadz.com/blog/typescript-property-value-not-exist-type-eventtarget
 
 function SignUp() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
+  const { user } = useAuthContext()
+
   const navigate = useNavigate()
-  const handleSignUp = (e: React.FormEvent) => {
+  const { signUp, error, isPending } = useSignUp()
+
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log({
-      email,
-      password,
-    })
-    setEmail("")
-    setPassword("")
-    navigate(routes.createProfile)
+    signUp(email, password)
   }
+
+  useEffect(() => {
+    if (!error && user) {
+      navigate(routes.createHandle)
+    }
+  }, [error, user, navigate])
+
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
       <CenteredContent innerClassName="w-full sm:w-[540px]">
@@ -31,6 +40,7 @@ function SignUp() {
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
         >
           <FormHeader title="Sign Up" />
+          {!!error && <ErrorMessage error={error} />}
           <Input
             containerClassName="mb-2"
             inputValue={email}
@@ -40,6 +50,7 @@ function SignUp() {
               setEmail(value)
             }}
             type="email"
+            required
           />
           <Input
             inputValue={password}
@@ -49,10 +60,17 @@ function SignUp() {
               setPassword(value)
             }}
             type="password"
+            required
           />
-          <Button buttonStyle="LARGE" className="mt-4">
-            Continue
-          </Button>
+          {isPending ? (
+            <Button buttonStyle="LARGE" className="mt-4" disabled>
+              Continue
+            </Button>
+          ) : (
+            <Button buttonStyle="LARGE" className="mt-4">
+              Continue
+            </Button>
+          )}
         </form>
         <p className="text-sm sm:text-base">
           Already have an account?{" "}

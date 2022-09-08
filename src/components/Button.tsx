@@ -16,6 +16,7 @@ interface ButtonProps {
   onClick?: (e: React.SyntheticEvent) => void
   buttonStyle: ButtonStyles
   title?: string
+  disabled?: boolean
 }
 
 function Button({
@@ -24,11 +25,17 @@ function Button({
   className = "",
   onClick,
   title = "",
+  disabled = false,
 }: ButtonProps) {
   const buttonInner = children
   const buttonClasses = `${getButtonStyle(buttonStyle)} ${className}`
   return (
-    <button onClick={onClick} className={buttonClasses} title={title}>
+    <button
+      onClick={onClick}
+      className={buttonClasses}
+      title={title}
+      disabled={disabled}
+    >
       {buttonInner}
     </button>
   )

@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom"
+import { useAuthContext } from "../hooks/useAuthContext"
 import Card from "./Card"
 import PillLink from "./PillLink"
 import ProfileImage from "./ProfileImage"
 import CardAdminButton from "./CardAdminButton"
 import { ExternalLinkType } from "../utilities/types"
 import { MdShortcut, MdModeEdit } from "react-icons/md"
-import { routes } from "../utilities/routes"
+import { getEditPortfolioRoute } from "../utilities/routes"
 
 interface ProfileCardProps {
   className?: string
@@ -13,6 +14,9 @@ interface ProfileCardProps {
   location?: string
   bio?: string
   links?: ExternalLinkType[]
+  backgroundImageSrc?: string
+  profileImageSrc?: string
+  isCurrentUserPortfolio?: boolean
 }
 
 function ProfileCard({
@@ -21,13 +25,27 @@ function ProfileCard({
   location = "",
   bio = "",
   links = [],
+  backgroundImageSrc = "",
+  profileImageSrc = "",
+  isCurrentUserPortfolio = false,
 }: ProfileCardProps) {
-  const backgroundImageSrc =
-    "https://media.giphy.com/media/l0K47723zLLU11gac/giphy.gif"
+  const { user } = useAuthContext()
+  const navigate = useNavigate()
+
+  const handleShareProfile = (): void => {
+    // TODO
+    console.log("Profile shared!")
+  }
+
+  const handleEditProfile = (): void => {
+    if (user?.displayName) {
+      navigate(getEditPortfolioRoute(user.displayName))
+    }
+  }
 
   const LinkNodes = () => {
     if (links.length > 0) {
-      const linkNodes = links.map((link, idx) => {
+      const linkNodes = links.map((link: ExternalLinkType, idx) => {
         const { title, url } = link
         if (title.length > 0 && url.length > 0) {
           return <PillLink label={title} url={url} key={idx} />
@@ -41,23 +59,15 @@ function ProfileCard({
     }
   }
 
-  const navigate = useNavigate()
-
-  const handleShareProfile = (): void => {
-    console.log("Profile shared!")
-  }
-
-  const handleEditProfile = (): void => {
-    navigate(routes.editProfile)
-  }
-
   return (
     <Card className={className}>
       <div
-        className="bg-xiketicBlack bg-cover h-36 md:h-52 flex items-end justify-center p-2"
+        className={`bg-white bg-cover h-32 ${
+          backgroundImageSrc && "md:h-52 p-2"
+        } flex items-center md:items-end justify-center`}
         style={{ backgroundImage: `url(${backgroundImageSrc})` }}
       >
-        <ProfileImage />
+        <ProfileImage profileImageSrc={profileImageSrc} />
       </div>
       <div className="relative text-center p-2">
         <h2 className="text-2xl font-bold">James Hubert</h2>
@@ -71,13 +81,15 @@ function ProfileCard({
           </div>
         )}
         <div className="absolute top-2 right-2">
-          <CardAdminButton
-            className="rounded sm:px-2"
-            onClick={handleEditProfile}
-            textLabel={"Edit"}
-          >
-            <MdModeEdit className="mx-auto" />
-          </CardAdminButton>
+          {isCurrentUserPortfolio && (
+            <CardAdminButton
+              className="rounded sm:px-2"
+              onClick={handleEditProfile}
+              textLabel={"Edit"}
+            >
+              <MdModeEdit className="mx-auto" />
+            </CardAdminButton>
+          )}
           <CardAdminButton
             className="rounded ml-[3px]"
             onClick={handleShareProfile}
