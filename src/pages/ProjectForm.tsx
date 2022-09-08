@@ -124,6 +124,7 @@ function ProjectForm() {
         startYear: Number(startYear),
         endMonth: isProjectInProgress ? null : Number(endMonth),
         endYear: isProjectInProgress ? null : Number(endYear),
+        description,
         inProgress: isProjectInProgress,
         summary256: summary,
         images: projectImages,

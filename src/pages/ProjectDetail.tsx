@@ -83,11 +83,15 @@ function ProjectDetail() {
           )}
           <p className="text-black text-sm mb-2">{currentProject.summary256}</p>
           {currentProject.images && (
-            <img
-              src={currentProject.images[0].url}
-              alt={currentProject.title}
-              className="cover mb-2"
-            />
+            <div className="flex justify-center w-full max-h-[500px] my-6">
+              <div className="w-full max-w-[500px]">
+                <img
+                  src={currentProject.images[0].url}
+                  alt={currentProject.title}
+                  className="cover mb-2"
+                />
+              </div>
+            </div>
           )}
           <p className="mb-4">{currentProject.description}</p>
           {currentProject.links && (
