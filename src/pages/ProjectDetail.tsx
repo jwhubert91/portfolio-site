@@ -103,6 +103,7 @@ function ProjectDetail() {
                       <PillLink url={link.url} label={link.title} key={idx} />
                     )
                   }
+                  return null
                 }
               )}
             </div>
