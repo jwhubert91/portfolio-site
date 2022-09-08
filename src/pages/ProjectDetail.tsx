@@ -58,7 +58,7 @@ function ProjectDetail() {
 
   useEffect(() => {
     memoizedLoadProject()
-  }, [])
+  }, [memoizedLoadProject])
 
   return (
     <PageLayout className="bg-culturedBlue" isLoading={!currentProject}>
