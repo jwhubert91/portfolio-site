@@ -1,7 +1,7 @@
 import { useNavigate, Link } from "react-router-dom"
 import Card from "./Card"
 import PillLink from "./PillLink"
-import { months, getDateString } from "../utilities/helpers"
+import { getDateString } from "../utilities/helpers"
 import { ProjectType } from "../utilities/types"
 import CardAdminButton from "./CardAdminButton"
 import { MdModeEdit } from "react-icons/md"
