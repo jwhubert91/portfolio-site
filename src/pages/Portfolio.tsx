@@ -77,6 +77,8 @@ function Portfolio() {
             profileImageSrc={currentProfile.profileImageUrl}
             backgroundImageSrc={currentProfile.backgroundImageUrl}
             isCurrentUserPortfolio={isCurrentUserPortfolio}
+            fullName={`${currentProfile.firstName} ${currentProfile.lastName}`}
+            handle={currentProfile.displayName}
           />
           {isCurrentUserPortfolio && (
             <AddProjectPrompt className="mb-2 mx-auto" />

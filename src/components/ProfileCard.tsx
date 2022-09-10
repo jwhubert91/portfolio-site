@@ -17,6 +17,8 @@ interface ProfileCardProps {
   backgroundImageSrc?: string
   profileImageSrc?: string
   isCurrentUserPortfolio?: boolean
+  fullName: string
+  handle: string
 }
 
 function ProfileCard({
@@ -28,6 +30,8 @@ function ProfileCard({
   backgroundImageSrc = "",
   profileImageSrc = "",
   isCurrentUserPortfolio = false,
+  fullName,
+  handle,
 }: ProfileCardProps) {
   const { user } = useAuthContext()
   const navigate = useNavigate()
@@ -70,8 +74,8 @@ function ProfileCard({
         <ProfileImage profileImageSrc={profileImageSrc} />
       </div>
       <div className="relative text-center p-2">
-        <h2 className="text-2xl font-bold">James Hubert</h2>
-        <p className="text-slate-600">@james</p>
+        <h2 className="text-2xl font-bold">{fullName}</h2>
+        <p className="text-slate-600">@{handle}</p>
         <p>{title}</p>
         <p className="mb-2">{location}</p>
         <p className="text-sm max-w-md mx-auto mb-4">{bio}</p>
