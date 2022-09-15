@@ -27,10 +27,9 @@ export const useStorage = ()=> {
   }
 
   const deleteFile = async (filepath: string)=> {
-    console.log(`Entered deleteFile function in useStorage with ${filepath} filepath`)
     const fileRef = ref(storage, filepath)
     deleteObject(fileRef).then((res) => {
-      console.log(`file deleted from deleteFile function in useStorage hook`)
+      console.log("file deleted from storage")
     })
     .catch((err) => console.log("Error deleting the file from storage: ", err.message))
   }
