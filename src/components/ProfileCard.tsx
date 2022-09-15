@@ -39,6 +39,10 @@ function ProfileCard({
 
   const handleShareProfile = (): void => {
     // TODO: generate link to current url and copy to clipboard
+    const currentHost = window.location.hostname
+    const profileLink = currentHost + "/@" + handle
+    console.log(profileLink + "copied to clipboard")
+    navigator.clipboard.writeText(profileLink)
     toast("Profile link 🔗 copied to clipboard!")
   }
 
