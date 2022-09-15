@@ -34,7 +34,7 @@ import {
   ProjectImageType,
   ProjectType,
 } from "../utilities/types"
-import { encodeReadableURIComponent } from "../utilities/helpers"
+import { encodeReadableURIComponent, months } from "../utilities/helpers"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
 
 function ProjectForm() {
@@ -43,10 +43,10 @@ function ProjectForm() {
   const [urlSlug, setUrlSlug] = useState("")
   const [summary, setSummary] = useState("")
   const [description, setDescription] = useState("")
-  const [startMonth, setStartMonth] = useState("")
-  const [startYear, setStartYear] = useState("")
-  const [endMonth, setEndMonth] = useState("")
-  const [endYear, setEndYear] = useState("")
+  const [startMonth, setStartMonth] = useState<string>("")
+  const [startYear, setStartYear] = useState<string>("")
+  const [endMonth, setEndMonth] = useState<string>("")
+  const [endYear, setEndYear] = useState<string>("")
   const [isProjectInProgress, setIsProjectInProgress] = useState(false)
   const [projectPic1, setProjectPic1] = useState<File | null>(null)
   const [projectPic1Url, setProjectPic1Url] = useState<string>("")
@@ -78,6 +78,19 @@ function ProjectForm() {
     if (summary === undefined) {
       setError("Please enter a summary")
       return false
+    }
+    if (!isProjectInProgress) {
+      if (endYear < startYear) {
+        setError("Project end year must be later than start year")
+        return false
+      }
+      if (
+        endYear === startYear &&
+        months.indexOf(endMonth) < months.indexOf(startMonth)
+      ) {
+        setError("Project end month must be after the start month")
+        return false
+      }
     }
     return true
   }
@@ -120,9 +133,9 @@ function ProjectForm() {
         creatorDisplayname: user.displayName,
         title: projectTitle,
         urlSlug,
-        startMonth: Number(startMonth),
+        startMonth: months.indexOf(startMonth),
         startYear: Number(startYear),
-        endMonth: isProjectInProgress ? null : Number(endMonth),
+        endMonth: isProjectInProgress ? null : months.indexOf(endMonth),
         endYear: isProjectInProgress ? null : Number(endYear),
         description,
         inProgress: isProjectInProgress,
@@ -183,6 +196,10 @@ function ProjectForm() {
     e.preventDefault()
     setIsLoading(true)
     const isValidated = validate()
+    if (!isValidated) {
+      setIsLoading(false)
+      return
+    }
     if (isValidated && user?.displayName && urlSlug) {
       isProjectSlugTaken().then(async (res) => {
         if (res === true) {
@@ -289,10 +306,10 @@ function ProjectForm() {
           const isInProgress = foundProject["inProgress"]
           setIsProjectInProgress(isInProgress)
         }
-        setStartMonth(String(foundProject["startMonth"]))
+        setStartMonth(months[foundProject["startMonth"]])
         setStartYear(String(foundProject["startYear"]))
         setEndMonth(
-          foundProject["endMonth"] ? String(foundProject["endMonth"]) : ""
+          foundProject["endMonth"] ? months[foundProject["endMonth"]] : ""
         )
         setEndYear(
           foundProject["endYear"] ? String(foundProject["endYear"]) : ""
@@ -459,6 +476,7 @@ function ProjectForm() {
                         value={endMonth}
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
+                          console.log(`endMonth set as: ${value}`)
                           setEndMonth(value)
                         }}
                       />
@@ -470,6 +488,7 @@ function ProjectForm() {
                         label="year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
+                          console.log(`endYear set as: ${value}`)
                           setEndYear(value)
                         }}
                         type="number"
@@ -483,9 +502,14 @@ function ProjectForm() {
                     const value = (e.target as HTMLInputElement).checked
                     setIsProjectInProgress(value)
                     if (!value) {
-                      const thisYear = new Date().getFullYear()
+                      // inProgress is checked false - set end year to current as default
+                      const thisDate = new Date()
+                      const thisMonth = thisDate.getMonth()
+                      const thisYear = thisDate.getFullYear()
+                      setEndMonth(months[thisMonth])
                       setEndYear(thisYear.toString())
                     } else {
+                      // inProgress is checked true
                       setEndYear("")
                     }
                   }}
