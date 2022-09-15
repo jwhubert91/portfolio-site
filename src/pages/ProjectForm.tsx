@@ -70,7 +70,6 @@ function ProjectForm() {
   const { getProject, isPending, retrievedProjectRef } = useGetSingleProject()
 
   const validate = () => {
-    console.log("validation entered")
     setError("")
     if (projectTitle === undefined) {
       setError("Please enter a project title")
@@ -81,20 +80,16 @@ function ProjectForm() {
       return false
     }
     if (!isProjectInProgress) {
-      console.log(`endYear: ${endYear}, startYear: ${startYear}`)
       if (endYear < startYear) {
         setError("Project end year must be later than start year")
+        return false
       }
       if (
         endYear === startYear &&
         months.indexOf(endMonth) < months.indexOf(startMonth)
       ) {
-        console.log(
-          `endMonth: ${months.indexOf(endMonth)}, startMonth: ${months.indexOf(
-            startMonth
-          )}`
-        )
-        setError("Project end date must be after the start date")
+        setError("Project end month must be after the start month")
+        return false
       }
     }
     return true
@@ -201,6 +196,10 @@ function ProjectForm() {
     e.preventDefault()
     setIsLoading(true)
     const isValidated = validate()
+    if (!isValidated) {
+      setIsLoading(false)
+      return
+    }
     if (isValidated && user?.displayName && urlSlug) {
       isProjectSlugTaken().then(async (res) => {
         if (res === true) {
