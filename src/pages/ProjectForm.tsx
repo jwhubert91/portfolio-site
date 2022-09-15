@@ -250,7 +250,8 @@ function ProjectForm() {
     async (handle: string, slug: string) => {
       return (await getProject(handle, slug)) as unknown as ProjectType
     },
-    [getProject]
+    // eslint-disable-next-line
+    []
   )
 
   const memoizedFillProject = useCallback(
