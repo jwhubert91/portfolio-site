@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import { useParams, useNavigate, Link } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import { useAuthContext } from "../hooks/useAuthContext"
@@ -22,7 +22,10 @@ function Portfolio() {
   const navigate = useNavigate()
 
   const { profileHandle } = useParams()
-  const { documents: projects } = useProjectsCollection("projects")
+  const { documents: projects } = useProjectsCollection(
+    "projects",
+    profileHandle
+  )
   const { user, authIsReady } = useAuthContext()
 
   const memoizedLoadProfile = useCallback(async () => {
@@ -84,13 +87,24 @@ function Portfolio() {
             <AddProjectPrompt className="mb-2 mx-auto" />
           )}
           <h3 className="text-md mb-4">Past Work</h3>
-          {projects.map((project: ProjectType, idx) => (
-            <ProjectCard
-              key={idx}
-              isCurrentUserProject={isCurrentUserPortfolio}
-              projectData={project}
-            />
-          ))}
+          {projects.length > 0 ? (
+            projects.map((project: ProjectType, idx) => (
+              <ProjectCard
+                key={idx}
+                isCurrentUserProject={isCurrentUserPortfolio}
+                projectData={project}
+              />
+            ))
+          ) : (
+            <p className="text-center text-sm w-full sm:w-2/3 mx-auto italic">
+              There are currently no projects for this user. Try again later or
+              if this is your profile,{" "}
+              <Link to={routes.login} className="underline">
+                log in
+              </Link>{" "}
+              to add something 😊
+            </p>
+          )}
         </div>
       )}
     </PageLayout>
