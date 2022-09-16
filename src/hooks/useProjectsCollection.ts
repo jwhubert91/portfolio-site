@@ -7,7 +7,6 @@ import { ProjectType } from "../utilities/types"
 
 export const useProjectsCollection = (collectionName: string, displayName?: string)=> {
   const [documents, setDocuments] = useState<ProjectType[]>([])
-  console.log(`Entered useProjectsCollection hook with collectionName ${collectionName} and displayName ${displayName}`)
 
   useEffect(()=> {
     let ref = collection(db, collectionName)
@@ -21,7 +20,6 @@ export const useProjectsCollection = (collectionName: string, displayName?: stri
         results.push({...doc.data(), id: doc.id})
       })
       // @ts-ignore
-      console.log(results)
       // @ts-ignore
       setDocuments(results)
     })
