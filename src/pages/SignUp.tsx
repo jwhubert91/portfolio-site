@@ -74,7 +74,7 @@ function SignUp() {
         </form>
         <p className="text-sm sm:text-base">
           Already have an account?{" "}
-          <Link to="/login" className={getButtonStyle("CLEAN")}>
+          <Link to="/accounts/login" className={getButtonStyle("CLEAN")}>
             Log in instead
           </Link>
         </p>

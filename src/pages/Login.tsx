@@ -72,7 +72,7 @@ function Login() {
         </p>
         <p className="text-sm sm:text-base">
           Don't have an account?{" "}
-          <Link to="/signup" className={getButtonStyle("CLEAN")}>
+          <Link to="/accounts/signup" className={getButtonStyle("CLEAN")}>
             Sign up instead
           </Link>
         </p>
