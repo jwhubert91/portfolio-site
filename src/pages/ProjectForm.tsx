@@ -362,7 +362,7 @@ function ProjectForm() {
                   setUrlSlug(urlSlugResult)
                 }}
                 required
-                bottomNote={`Project URL: @${user?.displayName}/${urlSlug}`}
+                bottomNote={`Project URL: ${user?.displayName}/${urlSlug}`}
               />
               <TextArea
                 label="summary (256 characters)..."

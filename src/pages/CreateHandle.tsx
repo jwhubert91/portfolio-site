@@ -10,7 +10,7 @@ import { useAuthContext } from "../hooks/useAuthContext"
 import { db } from "../firebase/config"
 import { useNavigate } from "react-router-dom"
 import ErrorMessage from "../components/ErrorMessage"
-import { getEditPortfolioRoute } from "../utilities/routes"
+import { getEditPortfolioRoute, isDisplayNameValid } from "../utilities/routes"
 
 function CreateHandle() {
   const [displayName, setDisplayName] = useState("")
@@ -53,7 +53,12 @@ function CreateHandle() {
     setError("")
     setIsSubmitPending(true)
     const isDisplayNameInUse = await isDisplayNameTaken(displayName)
-    if (isDisplayNameInUse) {
+    if (!isDisplayNameValid(displayName)) {
+      setError(
+        "Sorry, that displayName is reserved or uses special characters. Please try another."
+      )
+      setIsSubmitPending(false)
+    } else if (isDisplayNameInUse) {
       setError("Sorry, that displayName is taken. Please try another.")
       setIsSubmitPending(false)
     } else {

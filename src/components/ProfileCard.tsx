@@ -40,7 +40,7 @@ function ProfileCard({
   const handleShareProfile = (): void => {
     // TODO: generate link to current url and copy to clipboard
     const currentHost = window.location.hostname
-    const profileLink = "https://" + currentHost + "/@" + handle
+    const profileLink = "https://" + currentHost + "/" + handle
     navigator.clipboard.writeText(profileLink)
     toast("Profile link 🔗 copied to clipboard!")
   }
@@ -79,7 +79,7 @@ function ProfileCard({
       </div>
       <div className="relative text-center p-2">
         <h2 className="text-2xl font-bold">{fullName}</h2>
-        <p className="text-slate-600">@{handle}</p>
+        <p className="text-slate-600">{handle}</p>
         <p>{title}</p>
         <p className="mb-2">{location}</p>
         <p className="text-sm max-w-md mx-auto mb-4">{bio}</p>

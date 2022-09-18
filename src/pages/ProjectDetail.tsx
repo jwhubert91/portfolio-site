@@ -72,7 +72,7 @@ function ProjectDetail() {
                   size="small"
                 />
                 <span className="ml-2 font-bold">
-                  @{creatorProfile.displayName}
+                  {creatorProfile.displayName}
                 </span>
               </div>
             </Link>
