@@ -49,4 +49,4 @@ export const isDisplayNameValid = (displayName: string):Boolean=> {
 // Route helpers
 const reservedPathCharacters = "!*'();:@&=+$,/?%#[]. "
 
-const reservedPathSegments = ["accounts", "account", "settings", "setting", "portful", "portfuls", "portfolio", "profile", "help", "contact", "about", "info", "explore", "feed", "jobs", "job", "saved", "notifications", "messages", "create", "edit"]
+const reservedPathSegments = ["accounts", "account", "settings", "setting", "portful", "portfuls", "portfolio", "profile", "help", "contact", "about", "info", "explore", "feed", "jobs", "job", "saved", "notifications", "messages", "create", "edit", "new", "handle", "logout"]
