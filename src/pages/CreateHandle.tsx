@@ -53,7 +53,7 @@ function CreateHandle() {
     setError("")
     setIsSubmitPending(true)
     const isDisplayNameInUse = await isDisplayNameTaken(displayName)
-    if (isDisplayNameValid(displayName)) {
+    if (!isDisplayNameValid(displayName)) {
       setError(
         "Sorry, that displayName is invalid or uses special characters. Please try another."
       )
