@@ -326,6 +326,7 @@ function EditProfile() {
                   setTitle(value)
                 }}
                 type="text"
+                required
               />
               <Input
                 containerClassName="mb-2"

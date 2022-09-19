@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import { updateProfile } from "firebase/auth"
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore"
 import Button from "../components/Button"
@@ -11,13 +11,17 @@ import { db } from "../firebase/config"
 import { useNavigate } from "react-router-dom"
 import ErrorMessage from "../components/ErrorMessage"
 import { getEditPortfolioRoute, isDisplayNameValid } from "../utilities/routes"
+import { ProfileType } from "../utilities/types"
 
 function CreateHandle() {
   const [displayName, setDisplayName] = useState("")
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const [isSubmitPending, setIsSubmitPending] = useState(false)
 
-  const { user } = useAuthContext()
+  let newUserRef = useRef(true)
+
+  const { user, authIsReady } = useAuthContext()
   const navigate = useNavigate()
 
   const addDisplayNameToAuthUser = async () => {
@@ -52,6 +56,12 @@ function CreateHandle() {
     e.preventDefault()
     setError("")
     setIsSubmitPending(true)
+    const isExistingUserWithUnchangedDisplayName: boolean =
+      !newUserRef.current && displayName === user?.displayName
+    if (isExistingUserWithUnchangedDisplayName) {
+      // user exists and displayname is unchanged, send them to next page without db update
+      navigate(getEditPortfolioRoute(displayName))
+    }
     const isDisplayNameInUse = await isDisplayNameTaken(displayName)
     if (!isDisplayNameValid(displayName)) {
       setError(
@@ -74,8 +84,34 @@ function CreateHandle() {
     setIsSubmitPending(false)
   }
 
+  const memoizedLoad = useCallback(async () => {
+    setIsLoading(true)
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("userId", "==", user?.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      const profileData: ProfileType = doc.data() as ProfileType
+      newUserRef.current = profileData.displayName ? false : true
+      if (!!user?.displayName) {
+        setDisplayName(user.displayName)
+      }
+    })
+    setIsLoading(false)
+  }, [user])
+
+  useEffect(() => {
+    if (authIsReady && user && user.displayName) {
+      // there's no displayName for this user
+      memoizedLoad()
+    }
+  }, [user, authIsReady, navigate, memoizedLoad])
+
   return (
-    <PageLayout className="flex flex-col" isNavAuthShown={false}>
+    <PageLayout
+      className="flex flex-col"
+      isLoading={isLoading}
+      isNavAuthShown={false}
+    >
       <CenteredContent innerClassName="w-full sm:w-[540px]">
         <form
           onSubmit={handleSubmit}
