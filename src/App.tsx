@@ -1,5 +1,12 @@
 // libraries
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { useEffect, useCallback } from "react"
+import { Routes, Route, useNavigate } from "react-router-dom"
+import { collection, query, where, getDocs } from "firebase/firestore"
+import { db } from "./firebase/config"
+import { ProfileType } from "./utilities/types"
+
+// hooks
+import { useAuthContext } from "./hooks/useAuthContext"
 
 // components
 import CreateHandle from "./pages/CreateHandle"
@@ -18,24 +25,50 @@ import { routes } from "./utilities/routes"
 // TODO: Put back restricted routes for createhandle, signup, login
 
 function App() {
+  const { user, authIsReady } = useAuthContext()
+  const navigate = useNavigate()
+
+  const memoizedValidateMinimumProfile = useCallback(async () => {
+    const usersRef = collection(db, "users")
+    const q = query(usersRef, where("userId", "==", user?.uid))
+    const querySnapshot = await getDocs(q)
+    querySnapshot.forEach((doc) => {
+      const profileData: ProfileType = doc.data() as ProfileType
+      if (
+        !profileData.firstName ||
+        !profileData.lastName ||
+        !profileData.title
+      ) {
+        navigate(routes.editProfile)
+      }
+    })
+  }, [user, navigate])
+
+  useEffect(() => {
+    if (authIsReady && user && !user.displayName) {
+      // there's no displayName for this user
+      navigate(routes.createHandle)
+    } else if (authIsReady && user) {
+      memoizedValidateMinimumProfile()
+    }
+  }, [user, authIsReady, navigate, memoizedValidateMinimumProfile])
+
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path={routes.fourOhFour} element={<FourOhFour />} />
-          <Route path={routes.home} element={<Home />} />
-          <Route path={routes.login} element={<Login />} />
-          <Route path={routes.signup} element={<SignUp />} />
-          <Route path={routes.createHandle} element={<CreateHandle />} />
-          <Route path={routes.editProfile} element={<EditProfile />} />
-          <Route path={routes.portfolio}>
-            <Route path={routes.portfolio} element={<Portfolio />} />
-            <Route path={routes.createProject} element={<ProjectForm />} />
-            <Route path={routes.editProject} element={<ProjectForm />} />
-            <Route path={routes.projectDetail} element={<ProjectDetail />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path={routes.fourOhFour} element={<FourOhFour />} />
+        <Route path={routes.home} element={<Home />} />
+        <Route path={routes.login} element={<Login />} />
+        <Route path={routes.signup} element={<SignUp />} />
+        <Route path={routes.createHandle} element={<CreateHandle />} />
+        <Route path={routes.editProfile} element={<EditProfile />} />
+        <Route path={routes.portfolio}>
+          <Route path={routes.portfolio} element={<Portfolio />} />
+          <Route path={routes.createProject} element={<ProjectForm />} />
+          <Route path={routes.editProject} element={<ProjectForm />} />
+          <Route path={routes.projectDetail} element={<ProjectDetail />} />
+        </Route>
+      </Routes>
     </>
   )
 }
