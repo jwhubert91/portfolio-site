@@ -43,9 +43,9 @@ function ProjectForm() {
   const [urlSlug, setUrlSlug] = useState("")
   const [summary, setSummary] = useState("")
   const [description, setDescription] = useState("")
-  const [startMonth, setStartMonth] = useState<string>("")
+  const [startMonth, setStartMonth] = useState<string>(months[0])
   const [startYear, setStartYear] = useState<string>("")
-  const [endMonth, setEndMonth] = useState<string>("")
+  const [endMonth, setEndMonth] = useState<string>(months[0])
   const [endYear, setEndYear] = useState<string>("")
   const [isProjectInProgress, setIsProjectInProgress] = useState(false)
   const [projectPic1, setProjectPic1] = useState<File | null>(null)
@@ -79,6 +79,10 @@ function ProjectForm() {
       setError("Please enter a summary")
       return false
     }
+    if (Number(startYear) < 1900) {
+      setError("Sorry! The project's start year must be after 1900.")
+      return false
+    }
     if (!isProjectInProgress) {
       if (endYear < startYear) {
         setError("Project end year must be later than start year")
@@ -89,6 +93,10 @@ function ProjectForm() {
         months.indexOf(endMonth) < months.indexOf(startMonth)
       ) {
         setError("Project end month must be after the start month")
+        return false
+      }
+      if (Number(endYear) < 1900) {
+        setError("Sorry! The project's end year must be after 1900.")
         return false
       }
     }
@@ -128,6 +136,11 @@ function ProjectForm() {
 
   const saveProject = async (projectImages: ProjectImageType[]) => {
     if (user && user.uid && user.displayName) {
+      console.log(
+        `project saving with endMonth state value = ${endMonth} and to server with value ${months.indexOf(
+          endMonth
+        )}`
+      )
       const newProject: ProjectType = {
         creatorId: user.uid,
         creatorDisplayname: user.displayName,
@@ -331,6 +344,10 @@ function ProjectForm() {
     },
     [projectSlug, memoizedGetProject]
   )
+
+  useEffect(() => {
+    console.log(`current endMonth is ${endMonth}`)
+  }, [endMonth])
 
   useEffect(() => {
     if (!!profileHandle && !!projectSlug) {
