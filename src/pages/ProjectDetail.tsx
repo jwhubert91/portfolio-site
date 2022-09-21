@@ -82,7 +82,7 @@ function ProjectDetail() {
             <p className="text-base">{projectDateString}</p>
           )}
           <p className="text-black text-sm mb-2">{currentProject.summary256}</p>
-          {currentProject.images && (
+          {!!currentProject.images && currentProject.images?.length > 0 && (
             <div className="flex justify-center w-full max-h-[500px] my-6">
               <div className="w-full max-w-[500px]">
                 <img

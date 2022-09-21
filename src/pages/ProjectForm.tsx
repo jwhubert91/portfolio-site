@@ -43,9 +43,9 @@ function ProjectForm() {
   const [urlSlug, setUrlSlug] = useState("")
   const [summary, setSummary] = useState("")
   const [description, setDescription] = useState("")
-  const [startMonth, setStartMonth] = useState<string>("")
+  const [startMonth, setStartMonth] = useState<string>(months[0])
   const [startYear, setStartYear] = useState<string>("")
-  const [endMonth, setEndMonth] = useState<string>("")
+  const [endMonth, setEndMonth] = useState<string>(months[0])
   const [endYear, setEndYear] = useState<string>("")
   const [isProjectInProgress, setIsProjectInProgress] = useState(false)
   const [projectPic1, setProjectPic1] = useState<File | null>(null)
@@ -79,6 +79,10 @@ function ProjectForm() {
       setError("Please enter a summary")
       return false
     }
+    if (Number(startYear) < 1970) {
+      setError("Sorry! The project's start year must be after 1970.")
+      return false
+    }
     if (!isProjectInProgress) {
       if (endYear < startYear) {
         setError("Project end year must be later than start year")
@@ -89,6 +93,10 @@ function ProjectForm() {
         months.indexOf(endMonth) < months.indexOf(startMonth)
       ) {
         setError("Project end month must be after the start month")
+        return false
+      }
+      if (Number(endYear) < 1970) {
+        setError("Sorry! The project's end year must be after 1970.")
         return false
       }
     }
@@ -309,10 +317,14 @@ function ProjectForm() {
         setStartMonth(months[foundProject["startMonth"]])
         setStartYear(String(foundProject["startYear"]))
         setEndMonth(
-          foundProject["endMonth"] ? months[foundProject["endMonth"]] : ""
+          foundProject["endMonth"]
+            ? months[foundProject["endMonth"]]
+            : months[0]
         )
         setEndYear(
-          foundProject["endYear"] ? String(foundProject["endYear"]) : ""
+          foundProject["endYear"]
+            ? String(foundProject["endYear"])
+            : String(new Date().getFullYear())
         )
         if (typeof foundProject["links"] === "object") {
           const projectLinks: ExternalLinkType[] = foundProject["links"]
@@ -455,7 +467,7 @@ function ProjectForm() {
                     inputClassName="sm:text-sm"
                     inputValue={startYear}
                     label="year"
-                    minNumberValue={1900}
+                    minNumberValue={1970}
                     onChange={(e) => {
                       const value = (e.target as HTMLInputElement).value
                       setStartYear(value)
@@ -476,7 +488,6 @@ function ProjectForm() {
                         value={endMonth}
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
-                          console.log(`endMonth set as: ${value}`)
                           setEndMonth(value)
                         }}
                       />
@@ -484,11 +495,10 @@ function ProjectForm() {
                         containerClassName="flex-1 ml-2"
                         inputClassName="sm:text-sm"
                         inputValue={endYear}
-                        minNumberValue={1900}
+                        minNumberValue={1970}
                         label="year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
-                          console.log(`endYear set as: ${value}`)
                           setEndYear(value)
                         }}
                         type="number"
