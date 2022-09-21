@@ -1,14 +1,12 @@
 import { useEffect, useState, useCallback } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import PageLayout from "../components/PageLayout"
-import ProfileImage from "../components/ProfileImage"
 import { ExternalLinkType, ProfileType, ProjectType } from "../utilities/types"
 import { getDateString } from "../utilities/helpers"
 import PillLink from "../components/PillLink"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
-import { getPortfolioRoute } from "../utilities/routes"
 import ProfileLink from "../components/ProfileLink"
 
 function ProjectDetail() {
