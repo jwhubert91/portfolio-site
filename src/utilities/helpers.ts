@@ -19,7 +19,7 @@ export const getDateString = (startMonth: number, startYear: number, endMonth: n
   }`
   const endDateString = inProgress
     ? "In Progress"
-    : `${endMonth ? months[endMonth] : ""} ${
+    : `${endMonth ? months[endMonth] : months[0]} ${
         endYear
       }`
   const completeDateString = `${startDateString} - ${endDateString}`

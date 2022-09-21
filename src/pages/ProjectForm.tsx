@@ -322,10 +322,14 @@ function ProjectForm() {
         setStartMonth(months[foundProject["startMonth"]])
         setStartYear(String(foundProject["startYear"]))
         setEndMonth(
-          foundProject["endMonth"] ? months[foundProject["endMonth"]] : ""
+          foundProject["endMonth"]
+            ? months[foundProject["endMonth"]]
+            : months[0]
         )
         setEndYear(
-          foundProject["endYear"] ? String(foundProject["endYear"]) : ""
+          foundProject["endYear"]
+            ? String(foundProject["endYear"])
+            : String(new Date().getFullYear())
         )
         if (typeof foundProject["links"] === "object") {
           const projectLinks: ExternalLinkType[] = foundProject["links"]
