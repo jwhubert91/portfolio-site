@@ -1,14 +1,13 @@
 import { useEffect, useState, useCallback } from "react"
-import { useParams, Link } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "../firebase/config"
 import PageLayout from "../components/PageLayout"
-import ProfileImage from "../components/ProfileImage"
 import { ExternalLinkType, ProfileType, ProjectType } from "../utilities/types"
 import { getDateString } from "../utilities/helpers"
 import PillLink from "../components/PillLink"
 import { useGetSingleProject } from "../hooks/useGetSingleProject"
-import { getPortfolioRoute } from "../utilities/routes"
+import ProfileLink from "../components/ProfileLink"
 
 function ProjectDetail() {
   const [currentProject, setCurrentProject] = useState<ProjectType | null>(null)
@@ -65,17 +64,10 @@ function ProjectDetail() {
       {currentProject && (
         <div className="w-full sm:max-w-2xl mx-auto p-4 sm:px-2">
           {creatorProfile && (
-            <Link to={getPortfolioRoute(creatorProfile.displayName)}>
-              <div className="flex items-center">
-                <ProfileImage
-                  profileImageSrc={creatorProfile.profileImageUrl}
-                  size="small"
-                />
-                <span className="ml-2 font-bold">
-                  {creatorProfile.displayName}
-                </span>
-              </div>
-            </Link>
+            <ProfileLink
+              displayName={creatorProfile.displayName}
+              profileImageUrl={creatorProfile.profileImageUrl}
+            />
           )}
           <h2 className="text-4xl my-2">{currentProject.title}</h2>
           {projectDateString && (
