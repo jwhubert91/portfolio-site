@@ -136,11 +136,6 @@ function ProjectForm() {
 
   const saveProject = async (projectImages: ProjectImageType[]) => {
     if (user && user.uid && user.displayName) {
-      console.log(
-        `project saving with endMonth state value = ${endMonth} and to server with value ${months.indexOf(
-          endMonth
-        )}`
-      )
       const newProject: ProjectType = {
         creatorId: user.uid,
         creatorDisplayname: user.displayName,
@@ -350,10 +345,6 @@ function ProjectForm() {
   )
 
   useEffect(() => {
-    console.log(`current endMonth is ${endMonth}`)
-  }, [endMonth])
-
-  useEffect(() => {
     if (!!profileHandle && !!projectSlug) {
       memoizedFillProject(profileHandle, projectSlug)
     }
@@ -497,7 +488,6 @@ function ProjectForm() {
                         value={endMonth}
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
-                          console.log(`endMonth set as: ${value}`)
                           setEndMonth(value)
                         }}
                       />
@@ -509,7 +499,6 @@ function ProjectForm() {
                         label="year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
-                          console.log(`endYear set as: ${value}`)
                           setEndYear(value)
                         }}
                         type="number"
