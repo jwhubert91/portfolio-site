@@ -79,8 +79,8 @@ function ProjectForm() {
       setError("Please enter a summary")
       return false
     }
-    if (Number(startYear) < 1900) {
-      setError("Sorry! The project's start year must be after 1900.")
+    if (Number(startYear) < 1970) {
+      setError("Sorry! The project's start year must be after 1970.")
       return false
     }
     if (!isProjectInProgress) {
@@ -95,8 +95,8 @@ function ProjectForm() {
         setError("Project end month must be after the start month")
         return false
       }
-      if (Number(endYear) < 1900) {
-        setError("Sorry! The project's end year must be after 1900.")
+      if (Number(endYear) < 1970) {
+        setError("Sorry! The project's end year must be after 1970.")
         return false
       }
     }
@@ -467,7 +467,7 @@ function ProjectForm() {
                     inputClassName="sm:text-sm"
                     inputValue={startYear}
                     label="year"
-                    minNumberValue={1900}
+                    minNumberValue={1970}
                     onChange={(e) => {
                       const value = (e.target as HTMLInputElement).value
                       setStartYear(value)
@@ -495,7 +495,7 @@ function ProjectForm() {
                         containerClassName="flex-1 ml-2"
                         inputClassName="sm:text-sm"
                         inputValue={endYear}
-                        minNumberValue={1900}
+                        minNumberValue={1970}
                         label="year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
