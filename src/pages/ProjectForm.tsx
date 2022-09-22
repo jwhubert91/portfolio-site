@@ -364,7 +364,7 @@ function ProjectForm() {
                 containerClassName="mb-2"
                 inputClassName="p-2 sm:p-2"
                 inputValue={projectTitle}
-                label="project title ✍️"
+                label="Project Title ✍️"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setProjectTitle(value)
@@ -377,7 +377,7 @@ function ProjectForm() {
                 bottomNote={`Project URL: ${user?.displayName}/${urlSlug}`}
               />
               <TextArea
-                label="summary (256 characters)..."
+                label="Summary (256 characters)..."
                 description="The short summary is visible anywhere links to your project appear"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
@@ -385,11 +385,12 @@ function ProjectForm() {
                 }}
                 maxLength={256}
                 inputValue={summary}
+                rows={6}
                 required
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
-                label="Featured image 🎨"
+                label="Featured Image 🎨"
                 description="A landscape image that demonstrates this project. Less than 2 MB"
                 onChange={(e) => {
                   setProjectPic1(null)
@@ -451,11 +452,11 @@ function ProjectForm() {
             <div className="flex-1 flex flex-col justify-start">
               <div className="mb-2">
                 <p className="text-left font-semibold text-sm">
-                  Date started: 🗓
+                  Date Started: 🗓
                 </p>
                 <div className="flex">
                   <MonthPicker
-                    label="month"
+                    label="Month"
                     value={startMonth}
                     onChange={(e) => {
                       const value = (e.target as HTMLInputElement).value
@@ -466,7 +467,7 @@ function ProjectForm() {
                     containerClassName="flex-1 ml-2"
                     inputClassName="sm:text-sm"
                     inputValue={startYear}
-                    label="year"
+                    label="Year"
                     minNumberValue={1970}
                     onChange={(e) => {
                       const value = (e.target as HTMLInputElement).value
@@ -480,11 +481,11 @@ function ProjectForm() {
                 {!isProjectInProgress && (
                   <div className="mb-2">
                     <p className="text-left font-semibold text-sm">
-                      Date ended: 🏁
+                      Date Ended: 🏁
                     </p>
                     <div className="flex mb-2">
                       <MonthPicker
-                        label="month"
+                        label="Month"
                         value={endMonth}
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
@@ -496,7 +497,7 @@ function ProjectForm() {
                         inputClassName="sm:text-sm"
                         inputValue={endYear}
                         minNumberValue={1970}
-                        label="year"
+                        label="Year"
                         onChange={(e) => {
                           const value = (e.target as HTMLInputElement).value
                           setEndYear(value)

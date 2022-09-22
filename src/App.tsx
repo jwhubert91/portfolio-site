@@ -1,6 +1,6 @@
 // libraries
 import { useEffect, useCallback } from "react"
-import { Routes, Route, useNavigate } from "react-router-dom"
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom"
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { db } from "./firebase/config"
 import { ProfileType } from "./utilities/types"
@@ -20,13 +20,14 @@ import EditProfile from "./pages/EditProfile"
 import ProjectDetail from "./pages/ProjectDetail"
 
 // utils
-import { routes } from "./utilities/routes"
+import { getEditPortfolioRoute, routes } from "./utilities/routes"
 
 // TODO: Put back restricted routes for createhandle, signup, login
 
 function App() {
   const { user, authIsReady } = useAuthContext()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const memoizedValidateMinimumProfile = useCallback(async () => {
     const usersRef = collection(db, "users")
@@ -35,14 +36,15 @@ function App() {
     querySnapshot.forEach((doc) => {
       const profileData: ProfileType = doc.data() as ProfileType
       if (
-        !profileData.firstName ||
-        !profileData.lastName ||
-        !profileData.title
+        (!profileData.firstName ||
+          !profileData.lastName ||
+          !profileData.title) &&
+        !location.pathname.includes("profile")
       ) {
-        navigate(routes.editProfile)
+        navigate(getEditPortfolioRoute(profileData.displayName))
       }
     })
-  }, [user, navigate])
+  }, [user, navigate, location.pathname])
 
   useEffect(() => {
     if (authIsReady && user && !user.displayName) {

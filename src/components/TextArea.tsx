@@ -11,6 +11,7 @@ interface TextAreaProps {
   onChange?: (e: SyntheticEvent) => void
   inputValue?: string | number | readonly string[] | undefined
   required?: boolean
+  rows?: number
 }
 
 function TextArea({
@@ -23,6 +24,7 @@ function TextArea({
   onChange,
   inputValue,
   required = false,
+  rows = 3,
 }: TextAreaProps) {
   return (
     <label className={`text-left mb-2 ${containerClassName}`}>
@@ -36,12 +38,13 @@ function TextArea({
         </p>
       )}
       <textarea
-        className={`${inputClassName} ${defaultInputClasses}`}
+        className={`${defaultInputClasses} ${inputClassName}`}
         maxLength={maxLength}
         onChange={onChange}
         value={inputValue}
         placeholder={placeholder}
         required={required}
+        rows={rows}
       />
     </label>
   )

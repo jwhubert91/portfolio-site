@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from "react"
-import { MdDeleteForever } from "react-icons/md"
+// import { MdDeleteForever } from "react-icons/md"
 import { useNavigate } from "react-router-dom"
 import {
   updateDoc,
@@ -264,11 +264,11 @@ function EditProfile() {
     setIsLoading(false)
   }
 
-  const handleDeactivate = (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO
-    console.log("Profile deactivated")
-  }
+  // const handleDeactivate = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   // TODO
+  //   console.log("Profile deactivated")
+  // }
 
   return (
     <PageLayout
@@ -287,7 +287,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={firstName}
-                label="first name"
+                label="First Name"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setFirstName(value)
@@ -298,7 +298,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={lastName}
-                label="last name"
+                label="Last Name"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setLastName(value)
@@ -309,7 +309,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={pronouns}
-                label="optional pronouns"
+                label="Pronouns"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setPronouns(value)
@@ -319,7 +319,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={title}
-                label="title 💼"
+                label="Title 💼"
                 placeholder="Architect, Designer, Web Developer"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
@@ -331,7 +331,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={location}
-                label="location 🌎"
+                label="Location 🌎"
                 placeholder="New York, NY"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
@@ -340,10 +340,12 @@ function EditProfile() {
                 type="text"
               />
               <TextArea
-                label="A short bio 👀"
+                label="A Short Bio 👀"
                 description="256 characters to tell your fellow humans who you are"
                 placeholder="I am a..."
                 maxLength={256}
+                inputClassName={"sm:font-sm"}
+                rows={6}
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setBio(value)
@@ -353,7 +355,7 @@ function EditProfile() {
               {/* Net Ninja videos on uploading images are: 160 */}
               <ImageInput
                 containerClassName="py-2 mb-2"
-                label="Profile picture 📸"
+                label="Profile Picture 📸"
                 description="A square headshot is best. Less than 1 MB"
                 onChange={(e) => {
                   setProfilePic(null)
@@ -402,7 +404,7 @@ function EditProfile() {
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
-                label="Background image 🌉"
+                label="Background Image 🌉"
                 description="A wide or landscape image works best here. Less than 1 MB."
                 onChange={(e) => {
                   setBackgroundPic(null)
@@ -529,7 +531,8 @@ function EditProfile() {
           >
             Publish
           </Button>
-          {!newUserRef.current && (
+          {/* TODO: Handle deactivate
+           {!newUserRef.current && (
             <Button
               buttonStyle="ALERT"
               className="w-full lg:w-1/2 mx-auto text-xl"
@@ -539,7 +542,7 @@ function EditProfile() {
               <MdDeleteForever className="text-3xl mr-2" />
               <span>Deactivate Profile</span>
             </Button>
-          )}
+          )} */}
         </form>
       </CenteredContent>
     </PageLayout>
