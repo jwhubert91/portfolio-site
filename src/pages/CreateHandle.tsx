@@ -120,7 +120,7 @@ function CreateHandle() {
           <FormHeader title="Let's get started" />
           <Input
             inputValue={displayName}
-            label="Please choose a displayName"
+            label="Please choose a display name"
             description="This is one of the easiest ways to find your portfolio"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value

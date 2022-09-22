@@ -24,7 +24,7 @@ function LinkInputRow({
         inputValue={linkNameInputValue}
         containerClassName="p-0"
         inputClassName="text-sm sm:text-sm sm:p-0"
-        label="link title"
+        label="Link Title"
         onChange={onNameChange}
         type="text"
       />
@@ -32,7 +32,7 @@ function LinkInputRow({
         inputValue={urlInputValue}
         containerClassName="p-0 flex-auto"
         inputClassName="text-sm sm:text-sm sm:p-0"
-        label="url"
+        label="URL"
         onChange={onURLChange}
         type="url"
       />

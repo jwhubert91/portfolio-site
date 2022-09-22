@@ -287,7 +287,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={firstName}
-                label="first name"
+                label="First Name"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setFirstName(value)
@@ -298,7 +298,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={lastName}
-                label="last name"
+                label="Last Name"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setLastName(value)
@@ -309,7 +309,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={pronouns}
-                label="pronouns"
+                label="Pronouns"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setPronouns(value)
@@ -319,7 +319,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={title}
-                label="title 💼"
+                label="Title 💼"
                 placeholder="Architect, Designer, Web Developer"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
@@ -331,7 +331,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={location}
-                label="location 🌎"
+                label="Location 🌎"
                 placeholder="New York, NY"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
@@ -340,7 +340,7 @@ function EditProfile() {
                 type="text"
               />
               <TextArea
-                label="A short bio 👀"
+                label="A Short Bio 👀"
                 description="256 characters to tell your fellow humans who you are"
                 placeholder="I am a..."
                 maxLength={256}
@@ -353,7 +353,7 @@ function EditProfile() {
               {/* Net Ninja videos on uploading images are: 160 */}
               <ImageInput
                 containerClassName="py-2 mb-2"
-                label="Profile picture 📸"
+                label="Profile Picture 📸"
                 description="A square headshot is best. Less than 1 MB"
                 onChange={(e) => {
                   setProfilePic(null)
@@ -402,7 +402,7 @@ function EditProfile() {
               />
               <ImageInput
                 containerClassName="py-2 mb-2"
-                label="Background image 🌉"
+                label="Background Image 🌉"
                 description="A wide or landscape image works best here. Less than 1 MB."
                 onChange={(e) => {
                   setBackgroundPic(null)

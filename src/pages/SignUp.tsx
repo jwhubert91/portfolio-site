@@ -44,7 +44,7 @@ function SignUp() {
           <Input
             containerClassName="mb-2"
             inputValue={email}
-            label="email"
+            label="Email"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setEmail(value)
@@ -54,7 +54,7 @@ function SignUp() {
           />
           <Input
             inputValue={password}
-            label="password"
+            label="Password"
             onChange={(e) => {
               const value = (e.target as HTMLInputElement).value
               setPassword(value)
