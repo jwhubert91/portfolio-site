@@ -97,12 +97,24 @@ function Portfolio() {
             ))
           ) : (
             <p className="text-center text-sm w-full sm:w-2/3 mx-auto italic">
-              There are currently no projects for this user. Try again later or
-              if this is your profile,{" "}
-              <Link to={routes.login} className="underline">
-                log in
-              </Link>{" "}
-              to add something 😊
+              {isCurrentUserPortfolio ? (
+                <>
+                  You currently don't have any projects listed. Click{" "}
+                  <Link to={routes.createProject} className="underline bold">
+                    here
+                  </Link>{" "}
+                  to create one!
+                </>
+              ) : (
+                <>
+                  There are currently no projects for this user. Try again later
+                  or if this is your profile,{" "}
+                  <Link to={routes.login} className="underline bold">
+                    log in
+                  </Link>{" "}
+                  to add something 😊
+                </>
+              )}
             </p>
           )}
         </div>
