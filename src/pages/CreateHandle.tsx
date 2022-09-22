@@ -101,7 +101,6 @@ function CreateHandle() {
 
   useEffect(() => {
     if (authIsReady && user && user.displayName) {
-      // there's no displayName for this user
       memoizedLoad()
     }
   }, [user, authIsReady, navigate, memoizedLoad])
