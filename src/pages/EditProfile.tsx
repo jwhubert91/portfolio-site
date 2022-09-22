@@ -344,6 +344,8 @@ function EditProfile() {
                 description="256 characters to tell your fellow humans who you are"
                 placeholder="I am a..."
                 maxLength={256}
+                inputClassName={"sm:font-sm"}
+                rows={6}
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setBio(value)
