@@ -385,6 +385,7 @@ function ProjectForm() {
                 }}
                 maxLength={256}
                 inputValue={summary}
+                rows={6}
                 required
               />
               <ImageInput
