@@ -44,7 +44,7 @@ function App() {
         navigate(getEditPortfolioRoute(profileData.displayName))
       }
     })
-  }, [user, navigate])
+  }, [user, navigate, location.pathname])
 
   useEffect(() => {
     if (authIsReady && user && !user.displayName) {
