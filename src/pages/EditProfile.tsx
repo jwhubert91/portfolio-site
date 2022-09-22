@@ -309,7 +309,7 @@ function EditProfile() {
               <Input
                 containerClassName="mb-2"
                 inputValue={pronouns}
-                label="optional pronouns"
+                label="pronouns"
                 onChange={(e) => {
                   const value = (e.target as HTMLInputElement).value
                   setPronouns(value)
