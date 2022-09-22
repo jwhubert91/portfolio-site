@@ -81,7 +81,7 @@ function ProfileCard({
         <h2 className="text-2xl font-bold">{fullName}</h2>
         <p className="text-slate-600">{handle}</p>
         <p>{title}</p>
-        <p className="mb-2">{location}</p>
+        <p className="mb-2">📍{location}</p>
         <p className="text-sm max-w-md mx-auto mb-4">{bio}</p>
         {links.length > 0 && (
           <div className="text-sm flex flex-wrap justify-center">
