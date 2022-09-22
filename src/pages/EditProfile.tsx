@@ -264,11 +264,11 @@ function EditProfile() {
     setIsLoading(false)
   }
 
-  const handleDeactivate = (e: React.FormEvent) => {
-    e.preventDefault()
-    // TODO
-    console.log("Profile deactivated")
-  }
+  // const handleDeactivate = (e: React.FormEvent) => {
+  //   e.preventDefault()
+  //   // TODO
+  //   console.log("Profile deactivated")
+  // }
 
   return (
     <PageLayout
@@ -529,7 +529,8 @@ function EditProfile() {
           >
             Publish
           </Button>
-          {!newUserRef.current && (
+          {/* TODO: Handle deactivate
+           {!newUserRef.current && (
             <Button
               buttonStyle="ALERT"
               className="w-full lg:w-1/2 mx-auto text-xl"
@@ -539,7 +540,7 @@ function EditProfile() {
               <MdDeleteForever className="text-3xl mr-2" />
               <span>Deactivate Profile</span>
             </Button>
-          )}
+          )} */}
         </form>
       </CenteredContent>
     </PageLayout>
