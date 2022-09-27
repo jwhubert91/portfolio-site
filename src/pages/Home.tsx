@@ -1,7 +1,7 @@
 import Button from "../components/Button"
 import { useNavigate } from "react-router-dom"
 import { useAuthContext } from "../hooks/useAuthContext"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import PageLayout from "../components/PageLayout"
 import { getPortfolioRoute, routes } from "../utilities/routes"
 import "./Home.css"
@@ -16,7 +16,7 @@ function Home() {
   }
   return (
     <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
-      <CenteredContent>
+      <PageInner isVerticallyCentered={true}>
         <>
           <h2 className="text-snowWhite font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight">
             You don't need a website.
@@ -35,7 +35,7 @@ function Home() {
             </Button>
           )}
         </>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }

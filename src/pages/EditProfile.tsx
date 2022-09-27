@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore"
 import { useAuthContext } from "../hooks/useAuthContext"
 import PageLayout from "../components/PageLayout"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import TextArea from "../components/TextArea"
@@ -276,7 +276,7 @@ function EditProfile() {
       isNavAuthShown={newUserRef.current ? false : true}
       isLoading={isLoading}
     >
-      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-4">
+      <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
           <FormHeader className="mb-2" title="Edit Profile" />
           <p className="text-md mb-2 lg:mb-8 text-slate-500">
@@ -545,7 +545,7 @@ function EditProfile() {
             </Button>
           )} */}
         </form>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }

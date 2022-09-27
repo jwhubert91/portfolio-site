@@ -3,7 +3,7 @@ import { User } from "firebase/auth"
 import { getPortfolioRoute } from "../utilities/routes"
 import { Link, useNavigate } from "react-router-dom"
 import Button, { getButtonStyle } from "../components/Button"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
@@ -35,7 +35,10 @@ function Login() {
 
   return (
     <PageLayout className="flex flex-col" isNavAuthShown={false}>
-      <CenteredContent innerClassName="w-full sm:w-[540px]">
+      <PageInner
+        isVerticallyCentered={true}
+        innerClassName="w-full sm:w-[540px]"
+      >
         <form
           onSubmit={handleLogin}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -76,7 +79,7 @@ function Login() {
             Sign up instead
           </Link>
         </p>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }

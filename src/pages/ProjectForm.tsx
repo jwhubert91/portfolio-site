@@ -3,7 +3,7 @@ import { MdDeleteForever } from "react-icons/md"
 import { useNavigate, useParams } from "react-router-dom"
 import { getPortfolioRoute } from "../utilities/routes"
 import Button from "../components/Button"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import Checkbox from "../components/Checkbox"
 import FormHeader from "../components/FormHeader"
 import ImageInput, { validateImageChange } from "../components/ImageInput"
@@ -352,7 +352,7 @@ function ProjectForm() {
 
   return (
     <PageLayout className="flex flex-col" isLoading={isLoading || isPending}>
-      <CenteredContent innerClassName="w-full sm:w-[540px] lg:w-full py-4">
+      <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -593,7 +593,7 @@ function ProjectForm() {
             </Button>
           )}
         </form>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }
