@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import PageLayout from "../components/PageLayout"
 import { routes } from "../utilities/routes"
 import { getButtonStyle } from "../components/Button"
@@ -7,7 +7,10 @@ import { getButtonStyle } from "../components/Button"
 function FourOhFour() {
   return (
     <PageLayout className="flex flex-col">
-      <CenteredContent innerClassName="w-full sm:w-[540px]">
+      <PageInner
+        isVerticallyCentered={true}
+        innerClassName="w-full sm:w-[540px]"
+      >
         <h1 className="text-5xl font-bold mb-4">404</h1>
         <p>
           You've reached the 404 page. That means the URL you typed in didn't go
@@ -21,7 +24,7 @@ function FourOhFour() {
           </Link>{" "}
           to sign in.
         </p>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }

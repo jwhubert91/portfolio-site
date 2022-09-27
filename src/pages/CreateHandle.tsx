@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react"
 import { updateProfile } from "firebase/auth"
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore"
 import Button from "../components/Button"
-import CenteredContent from "../components/CenteredContent"
+import PageInner from "../components/PageInner"
 import FormHeader from "../components/FormHeader"
 import Input from "../components/Input"
 import PageLayout from "../components/PageLayout"
@@ -111,7 +111,10 @@ function CreateHandle() {
       isLoading={isLoading}
       isNavAuthShown={false}
     >
-      <CenteredContent innerClassName="w-full sm:w-[540px]">
+      <PageInner
+        isVerticallyCentered={true}
+        innerClassName="w-full sm:w-[540px]"
+      >
         <form
           onSubmit={handleSubmit}
           className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white mb-4"
@@ -139,7 +142,7 @@ function CreateHandle() {
           )}
           {error && <ErrorMessage error={error} className="my-2" />}
         </form>
-      </CenteredContent>
+      </PageInner>
     </PageLayout>
   )
 }
