@@ -386,6 +386,7 @@ function ProjectForm() {
                 maxLength={256}
                 inputValue={summary}
                 rows={6}
+                isCharacterCountDisplayed={true}
                 required
               />
               <ImageInput
@@ -439,7 +440,7 @@ function ProjectForm() {
               <TextArea
                 label="Description 📖"
                 description="Space for a longer description of the project, its motivations, process, other contributors, outcome, etc."
-                maxLength={2000}
+                maxLength={3000}
                 inputClassName="h-48"
                 containerClassName="mb-3"
                 onChange={(e) => {
@@ -447,6 +448,7 @@ function ProjectForm() {
                   setDescription(value)
                 }}
                 inputValue={description}
+                isCharacterCountDisplayed={true}
               />
             </div>
             <div className="flex-1 flex flex-col justify-start">

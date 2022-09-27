@@ -12,6 +12,7 @@ interface TextAreaProps {
   inputValue?: string | number | readonly string[] | undefined
   required?: boolean
   rows?: number
+  isCharacterCountDisplayed?: boolean
 }
 
 function TextArea({
@@ -25,7 +26,11 @@ function TextArea({
   inputValue,
   required = false,
   rows = 3,
+  isCharacterCountDisplayed = false,
 }: TextAreaProps) {
+  const currentValueLength: number | undefined = isCharacterCountDisplayed
+    ? inputValue?.toString().length
+    : 0
   return (
     <label className={`text-left mb-2 ${containerClassName}`}>
       {label && (
@@ -46,6 +51,11 @@ function TextArea({
         required={required}
         rows={rows}
       />
+      {isCharacterCountDisplayed && (
+        <p className="text-xs italic text-black text-right">
+          {currentValueLength}/{maxLength}
+        </p>
+      )}
     </label>
   )
 }

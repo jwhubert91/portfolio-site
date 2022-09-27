@@ -351,6 +351,7 @@ function EditProfile() {
                   setBio(value)
                 }}
                 inputValue={bio}
+                isCharacterCountDisplayed={true}
               />
               {/* Net Ninja videos on uploading images are: 160 */}
               <ImageInput
