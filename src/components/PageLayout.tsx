@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async"
 import Footer from "./Footer"
 import LoadingIndicator from "./LoadingIndicator"
 import Navbar from "./Navbar"
+import InvisibleH1 from "./InvisibleH1"
 
 interface PageLayoutProps {
   children?: ReactElement | ReactNode
@@ -14,6 +15,7 @@ interface PageLayoutProps {
   isLoading?: boolean
   helmetTitle: string
   helmetDescription: string
+  invisibleH1Title: string
 }
 
 function PageLayout({
@@ -25,6 +27,7 @@ function PageLayout({
   isLoading = false,
   helmetTitle,
   helmetDescription,
+  invisibleH1Title,
 }: PageLayoutProps) {
   const location = useLocation()
   return (
@@ -41,6 +44,7 @@ function PageLayout({
           isBgTransparent={isNavBgTransparent}
           isNavAuthShown={isNavAuthShown}
         />
+        <InvisibleH1 title={invisibleH1Title} />
         {isLoading ? <LoadingIndicator /> : children}
       </div>
       {isFooterShown && <Footer />}

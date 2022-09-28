@@ -38,6 +38,7 @@ function SignUp() {
       isNavAuthShown={false}
       helmetTitle="Sign Up"
       helmetDescription="Sign up for Portful.co - Create your free online portfolio in 5 minutes"
+      invisibleH1Title="Sign up for Portful.co - Create your free online portfolio in 5 minutes"
     >
       <PageInner
         isVerticallyCentered={true}

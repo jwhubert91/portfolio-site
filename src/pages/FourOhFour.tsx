@@ -10,6 +10,7 @@ function FourOhFour() {
       className="flex flex-col"
       helmetTitle="404 Not Found"
       helmetDescription="404 - Page not found"
+      invisibleH1Title="404 - Page not found"
     >
       <PageInner
         isVerticallyCentered={true}

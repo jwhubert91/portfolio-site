@@ -356,6 +356,7 @@ function ProjectForm() {
       isLoading={isLoading || isPending}
       helmetTitle="Edit your project"
       helmetDescription="Create or edit a project"
+      invisibleH1Title={`Create or edit a project`}
     >
       <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form

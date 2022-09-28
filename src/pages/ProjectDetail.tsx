@@ -65,6 +65,7 @@ function ProjectDetail() {
       isLoading={!currentProject}
       helmetTitle={`${projectSlug} by ${profileHandle} on Portful.co`}
       helmetDescription={`${projectSlug} - ${currentProject?.summary256}`}
+      invisibleH1Title={`${projectSlug} by ${profileHandle} on Portful.co`}
     >
       {currentProject && (
         <div className="w-full sm:max-w-2xl mx-auto p-4 sm:px-2">
