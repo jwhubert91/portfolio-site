@@ -33,7 +33,12 @@ function SignUp() {
   }, [error, user, navigate])
 
   return (
-    <PageLayout className="flex flex-col" isNavAuthShown={false}>
+    <PageLayout
+      className="flex flex-col"
+      isNavAuthShown={false}
+      helmetTitle="Sign Up"
+      helmetDescription="Sign up for Portful.co - Create your free online portfolio in 5 minutes"
+    >
       <PageInner
         isVerticallyCentered={true}
         innerClassName="w-full sm:w-[540px]"

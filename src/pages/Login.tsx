@@ -34,7 +34,12 @@ function Login() {
   }, [user, authIsReady, currentUser, navigate])
 
   return (
-    <PageLayout className="flex flex-col" isNavAuthShown={false}>
+    <PageLayout
+      className="flex flex-col"
+      isNavAuthShown={false}
+      helmetTitle="Login"
+      helmetDescription="Login to your account"
+    >
       <PageInner
         isVerticallyCentered={true}
         innerClassName="w-full sm:w-[540px]"

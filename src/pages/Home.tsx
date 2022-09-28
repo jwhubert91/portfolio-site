@@ -15,7 +15,12 @@ function Home() {
       : navigate(routes.signup)
   }
   return (
-    <PageLayout className="flex flex-col Homepage" isNavBgTransparent={true}>
+    <PageLayout
+      className="flex flex-col Homepage"
+      isNavBgTransparent={true}
+      helmetTitle="Portful - Home"
+      helmetDescription="Portful.co - Create your online portfolio in 5 minutes"
+    >
       <PageInner isVerticallyCentered={true}>
         <>
           <h2 className="text-snowWhite font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight">

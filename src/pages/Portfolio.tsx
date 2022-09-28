@@ -69,7 +69,12 @@ function Portfolio() {
   }, [authIsReady, profileHandle, memoizedLoadProfile])
 
   return (
-    <PageLayout className="bg-culturedBlue" isLoading={!currentProfile}>
+    <PageLayout
+      className="bg-culturedBlue"
+      isLoading={!currentProfile}
+      helmetTitle={`${profileHandle}'s portfolio`}
+      helmetDescription={`View ${profileHandle}'s past work in their online portfolio`}
+    >
       <PageInner className="my-2">
         {currentProfile && (
           <div className="w-full sm:max-w-2xl mx-auto pt-2 pb-8 sm:px-2">
