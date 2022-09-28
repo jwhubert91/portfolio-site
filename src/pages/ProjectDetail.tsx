@@ -60,7 +60,12 @@ function ProjectDetail() {
   }, [memoizedLoadProject])
 
   return (
-    <PageLayout className="bg-culturedBlue" isLoading={!currentProject}>
+    <PageLayout
+      className="bg-culturedBlue"
+      isLoading={!currentProject}
+      helmetTitle={`${projectSlug} by ${profileHandle} on Portful.co`}
+      helmetDescription={`${projectSlug} - ${currentProject?.summary256}`}
+    >
       {currentProject && (
         <div className="w-full sm:max-w-2xl mx-auto p-4 sm:px-2">
           {creatorProfile && (

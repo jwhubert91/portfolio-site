@@ -275,6 +275,8 @@ function EditProfile() {
       className="flex flex-col"
       isNavAuthShown={newUserRef.current ? false : true}
       isLoading={isLoading}
+      helmetTitle="Edit Profile"
+      helmetDescription="Edit your profile"
     >
       <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">

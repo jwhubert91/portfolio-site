@@ -6,7 +6,11 @@ import { getButtonStyle } from "../components/Button"
 
 function FourOhFour() {
   return (
-    <PageLayout className="flex flex-col">
+    <PageLayout
+      className="flex flex-col"
+      helmetTitle="404 Not Found"
+      helmetDescription="404 - Page not found"
+    >
       <PageInner
         isVerticallyCentered={true}
         innerClassName="w-full sm:w-[540px]"

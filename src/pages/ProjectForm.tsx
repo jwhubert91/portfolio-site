@@ -351,7 +351,12 @@ function ProjectForm() {
   }, [profileHandle, projectSlug, memoizedFillProject])
 
   return (
-    <PageLayout className="flex flex-col" isLoading={isLoading || isPending}>
+    <PageLayout
+      className="flex flex-col"
+      isLoading={isLoading || isPending}
+      helmetTitle="Edit your project"
+      helmetDescription="Create or edit a project"
+    >
       <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form
           onSubmit={handleSubmit}

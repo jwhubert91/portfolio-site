@@ -110,6 +110,8 @@ function CreateHandle() {
       className="flex flex-col"
       isLoading={isLoading}
       isNavAuthShown={false}
+      helmetTitle="Create New Handle"
+      helmetDescription="Create a username so your portfolio can be easily found"
     >
       <PageInner
         isVerticallyCentered={true}
