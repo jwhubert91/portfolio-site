@@ -276,7 +276,7 @@ function EditProfile() {
       isNavAuthShown={newUserRef.current ? false : true}
       isLoading={isLoading}
       helmetTitle="Edit Profile"
-      helmetDescription="Edit your profile"
+      helmetDescription="Profile edit page - Edit your Portful profile"
       invisibleH1Title="Profile edit page - Edit your Portful profile"
     >
       <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">

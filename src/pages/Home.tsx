@@ -18,9 +18,9 @@ function Home() {
     <PageLayout
       className="flex flex-col Homepage"
       isNavBgTransparent={true}
-      helmetTitle="Portful - Home"
+      helmetTitle="Portful.co - Create your online portfolio in 5 minutes"
       helmetDescription="Portful.co - Create your online portfolio in 5 minutes"
-      invisibleH1Title="Portful.co - Create your online portfolio in 5 minutes"
+      invisibleH1Title="Portful.co lets you create a portfolio and fill it with past projects to show employers, clients and friends. Signing up takes 5 minutes and it's free."
     >
       <PageInner isVerticallyCentered={true}>
         <>

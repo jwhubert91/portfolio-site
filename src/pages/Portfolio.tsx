@@ -72,9 +72,9 @@ function Portfolio() {
     <PageLayout
       className="bg-culturedBlue"
       isLoading={!currentProfile}
-      helmetTitle={`${profileHandle}'s portfolio`}
-      helmetDescription={`View ${profileHandle}'s past work in their online portfolio`}
-      invisibleH1Title={`${profileHandle}'s online portfolio`}
+      helmetTitle={`${currentProfile?.firstName} ${currentProfile?.lastName} (@${profileHandle}) • Portful online portfolio`}
+      helmetDescription={`${currentProfile?.firstName} ${currentProfile?.lastName} (@${profileHandle}) • Portful online portfolio`}
+      invisibleH1Title={`${currentProfile?.firstName} ${currentProfile?.lastName} (@${profileHandle}) • Portful online portfolio`}
     >
       <PageInner className="my-2">
         {currentProfile && (
