@@ -74,6 +74,7 @@ function Portfolio() {
       isLoading={!currentProfile}
       helmetTitle={`${profileHandle}'s portfolio`}
       helmetDescription={`View ${profileHandle}'s past work in their online portfolio`}
+      invisibleH1Title={`${profileHandle}'s online portfolio`}
     >
       <PageInner className="my-2">
         {currentProfile && (

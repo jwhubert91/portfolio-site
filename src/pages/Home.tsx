@@ -20,6 +20,7 @@ function Home() {
       isNavBgTransparent={true}
       helmetTitle="Portful - Home"
       helmetDescription="Portful.co - Create your online portfolio in 5 minutes"
+      invisibleH1Title="Portful.co - Create your online portfolio in 5 minutes"
     >
       <PageInner isVerticallyCentered={true}>
         <>

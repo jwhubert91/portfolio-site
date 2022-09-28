@@ -112,6 +112,7 @@ function CreateHandle() {
       isNavAuthShown={false}
       helmetTitle="Create New Handle"
       helmetDescription="Create a username so your portfolio can be easily found"
+      invisibleH1Title="Create a new Portful displayname"
     >
       <PageInner
         isVerticallyCentered={true}

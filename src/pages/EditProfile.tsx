@@ -277,6 +277,7 @@ function EditProfile() {
       isLoading={isLoading}
       helmetTitle="Edit Profile"
       helmetDescription="Edit your profile"
+      invisibleH1Title="Profile edit page - Edit your Portful profile"
     >
       <PageInner innerClassName="w-full sm:w-[540px] lg:w-full py-4">
         <form className="flex flex-col px-6 py-8 shadow sm:rounded-md bg-white">
